@@ -1,0 +1,52 @@
+[
+    {
+        "Id": 1,
+        "CategoryId": 2,
+        "SubCategoryId": 201,
+        "Name": "Excavator Bucket",
+        "Description": "Heavy Duty Bucket",
+        "Price": 1250,
+        "IsBestSeller": true,
+        "Image": "bucket.png"
+    },
+    {
+        "Id": 2,
+        "CategoryId": 2,
+        "SubCategoryId": 203,
+        "Name": "Bucket Pin",
+        "Description": "High Strength Steel",
+        "Price": 45,
+        "IsBestSeller": true,
+        "Image": "pin.png"
+    },
+    {
+        "Id": 3,
+        "CategoryId": 2,
+        "SubCategoryId": 203,
+        "Name": "Bucket Bush",
+        "Description": "Premium Bush",
+        "Price": 32,
+        "IsBestSeller": true,
+        "Image": "bush.png"
+    },
+    {
+        "Id": 4,
+        "CategoryId": 3,
+        "SubCategoryId": 301,
+        "Name": "Rock Breaker Chisel",
+        "Description": "Hydraulic Chisel",
+        "Price": 550,
+        "IsBestSeller": true,
+        "Image": "chisel.png"
+    },
+    {
+        "Id": 5,
+        "CategoryId": 1,
+        "SubCategoryId": 102,
+        "Name": "Loader Link",
+        "Description": "Fabricated Link",
+        "Price": 240,
+        "IsBestSeller": false,
+        "Image": "fabrication.png"
+    }
+]

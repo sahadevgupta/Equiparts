@@ -1,0 +1,95 @@
+[
+    {
+        "Id": 1,
+        "Name": "Backhoe Loader Parts",
+        "Image": "backhoe_loader.png",
+        "SubCategories": [
+            {
+                "Id": 101,
+                "CategoryId": 1,
+                "Name": "Genuine",
+                "Image": "genuine.png"
+            },
+            {
+                "Id": 102,
+                "CategoryId": 1,
+                "Name": "Fabrication",
+                "Image": "fabrication.png"
+            },
+            {
+                "Id": 103,
+                "CategoryId": 1,
+                "Name": "Pin & Bushes",
+                "Image": "pin_bush.png"
+            },
+            {
+                "Id": 104,
+                "CategoryId": 1,
+                "Name": "Coming Soon",
+                "Image": "coming_soon.png"
+            }
+        ]
+    },
+    {
+        "Id": 2,
+        "Name": "Excavator Parts",
+        "Image": "excavator.png",
+        "SubCategories": [
+            {
+                "Id": 201,
+                "CategoryId": 2,
+                "Name": "Buckets",
+                "Image": "bucket.png"
+            },
+            {
+                "Id": 202,
+                "CategoryId": 2,
+                "Name": "Fabrication",
+                "Image": "fabrication.png"
+            },
+            {
+                "Id": 203,
+                "CategoryId": 2,
+                "Name": "Pin & Bushes",
+                "Image": "pin_bush.png"
+            },
+            {
+                "Id": 204,
+                "CategoryId": 2,
+                "Name": "Stick Ends",
+                "Image": "stickend.png"
+            },
+            {
+                "Id": 205,
+                "CategoryId": 2,
+                "Name": "Lock Bushes",
+                "Image": "lock_bush.png"
+            },
+            {
+                "Id": 206,
+                "CategoryId": 2,
+                "Name": "Spacers",
+                "Image": "spacer.png"
+            },
+            {
+                "Id": 207,
+                "CategoryId": 2,
+                "Name": "Coming Soon",
+                "Image": "coming_soon.png"
+            }
+        ]
+    },
+    {
+        "Id": 3,
+        "Name": "Rock Breaker Parts",
+        "Image": "rock_breaker.png",
+        "SubCategories": [
+            {
+                "Id": 301,
+                "CategoryId": 3,
+                "Name": "Chisels",
+                "Image": "chisel.png"
+            }
+        ]
+    }
+]

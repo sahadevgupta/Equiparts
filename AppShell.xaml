@@ -5,7 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     xmlns:views="clr-namespace:Equiparts.Views"
-    Title="Equiparts">
+    Shell.NavBarIsVisible="False"
+    FlyoutBehavior="Disabled">
 
     <TabBar>
         <Tab Title="Home">
@@ -44,7 +45,7 @@
                                  Glyph="{x:Static fontresources:FontAwesomeIcons.Home}"/>
             </Tab.Icon>
 
-            <ShellContent ContentTemplate="{DataTemplate views:TransactionPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate views:OrdersPage}"/>
         </Tab>
 
         <!-- <Tab Title="{x:Static resources:AppResources.MoreTab}">
@@ -57,4 +58,5 @@
         </Tab> -->
 
     </TabBar>
+
 </Shell>
