@@ -1,12 +1,220 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Equiparts.Views.CartPage"
-             Title="CartPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+<ContentPage
+    x:Class="Equiparts.Views.CartPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
+    xmlns:models="clr-namespace:Equiparts.Models"
+    x:DataType="viewModels:CartViewModel"
+    BackgroundColor="{StaticResource PageBackground}"
+    Shell.NavBarIsVisible="False">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- Header -->
+
+        <Grid
+            Padding="20,20,20,15"
+            BackgroundColor="{StaticResource Primary}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Text="My Cart"
+                FontSize="26"
+                FontAttributes="Bold"
+                TextColor="White"/>
+
+            <Image
+                Grid.Column="1"
+                Source="cart.png"
+                HeightRequest="28"/>
+        </Grid>
+
+        <!-- Cart Items -->
+
+        <CollectionView
+            Grid.Row="1"
+            Margin="15"
+            ItemsSource="{Binding Items}"
+            SelectionMode="None">
+
+            <CollectionView.EmptyView>
+
+                <VerticalStackLayout
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Spacing="15">
+
+                    <Image
+                        Source="cart_empty.png"
+                        HeightRequest="180"/>
+
+                    <Label
+                        Text="Your cart is empty"
+                        FontSize="22"
+                        FontAttributes="Bold"/>
+
+                    <Label
+                        Text="Browse products and add them to your cart."
+                        HorizontalTextAlignment="Center"
+                        TextColor="Gray"/>
+
+                </VerticalStackLayout>
+
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="models:CartItem">
+
+                    <Border
+                        Margin="0,5"
+                        Padding="12"
+                        BackgroundColor="White"
+                        Stroke="{StaticResource Border}"
+                        StrokeShape="RoundRectangle 16">
+
+                        <Grid
+                            ColumnDefinitions="90,*,Auto"
+                            RowDefinitions="Auto,Auto,Auto">
+
+                            <!-- Product Image -->
+
+                            <Image
+                                Grid.RowSpan="3"
+                                HeightRequest="80"
+                                Source="{Binding Product.Image}"
+                                WidthRequest="80"/>
+
+                            <!-- Name -->
+
+                            <Label
+                                Grid.Column="1"
+                                FontSize="16"
+                                FontAttributes="Bold"
+                                Text="{Binding Product.Name}"/>
+
+                            <!-- Description -->
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                FontSize="13"
+                                Text="{Binding Product.Description}"
+                                TextColor="Gray"/>
+
+                            <!-- Price -->
+
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                Text="{Binding Product.Price,StringFormat='₹ {0:F0}'}"
+                                TextColor="{StaticResource Accent}"/>
+
+                            <!-- Quantity -->
+
+                            <Border
+                                Grid.Column="2"
+                                Padding="5"
+                                Stroke="{StaticResource Border}"
+                                StrokeShape="RoundRectangle 10">
+
+                                <HorizontalStackLayout Spacing="10">
+
+                                    <Button
+                                        WidthRequest="35"
+                                        HeightRequest="35"
+                                        Text="-"
+                                        FontSize="18"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=DecreaseCommand}"
+                                        CommandParameter="{Binding .}"/>
+
+                                    <Label
+                                        VerticalOptions="Center"
+                                        Text="{Binding Quantity}"
+                                        FontAttributes="Bold"/>
+
+                                    <Button
+                                        WidthRequest="35"
+                                        HeightRequest="35"
+                                        Text="+"
+                                        FontSize="18"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=IncreaseCommand}"
+                                        CommandParameter="{Binding .}"/>
+
+                                </HorizontalStackLayout>
+
+                            </Border>
+
+                            <!-- Remove -->
+
+                            <ImageButton
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Margin="0,15,0,0"
+                                Source="delete.png"
+                                HeightRequest="24"
+                                BackgroundColor="Transparent"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=RemoveCommand}"
+                                CommandParameter="{Binding .}"/>
+
+                        </Grid>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+        <!-- Bottom Summary -->
+
+        <Border
+            Grid.Row="2"
+            BackgroundColor="White"
+            Padding="20"
+            Stroke="{StaticResource Border}"
+            StrokeShape="RoundRectangle 20,20,0,0">
+
+            <VerticalStackLayout Spacing="15">
+
+                <Grid ColumnDefinitions="*,Auto">
+
+                    <Label
+                        Text="Grand Total"
+                        FontSize="18"
+                        FontAttributes="Bold"/>
+
+                    <Label
+                        Grid.Column="1"
+                        FontSize="24"
+                        FontAttributes="Bold"
+                        Text="{Binding GrandTotal,StringFormat='₹ {0:F0}'}"
+                        TextColor="{StaticResource Accent}"/>
+
+                </Grid>
+
+                <Button
+                    HeightRequest="55"
+                    Text="Proceed To Checkout"
+                    FontAttributes="Bold"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="White"
+                    CornerRadius="15"
+                    Command="{Binding CheckoutCommand}"/>
+
+            </VerticalStackLayout>
+
+        </Border>
+
+    </Grid>
+
 </ContentPage>

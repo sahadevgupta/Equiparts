@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    x:Class="Equiparts.Views.CategoriesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
+    xmlns:models="clr-namespace:Equiparts.Models"
+    x:DataType="viewModels:CategoriesViewModel"
+    Shell.NavBarIsVisible="False"
+    BackgroundColor="{StaticResource PageBackground}">
+
+    <Grid RowDefinitions="Auto,Auto,*">
+
+        <!-- Header -->
+
+        <Grid
+            Padding="20,20,20,15"
+            BackgroundColor="{StaticResource Primary}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Source="logo.png"
+                HeightRequest="42"/>
+
+            <Label
+                Grid.Column="1"
+                Margin="15,0"
+                VerticalOptions="Center"
+                Text="Categories"
+                FontSize="24"
+                FontAttributes="Bold"
+                TextColor="White"/>
+
+            <Image
+                Grid.Column="2"
+                Source="search.png"
+                HeightRequest="24"/>
+        </Grid>
+
+        <!-- Search -->
+
+        <Border
+            Grid.Row="1"
+            Margin="15"
+            Padding="12"
+            Stroke="{StaticResource Border}"
+            BackgroundColor="White"
+            StrokeShape="RoundRectangle 12">
+
+            <Grid ColumnDefinitions="30,*">
+
+                <Image
+                    Source="search.png"
+                    HeightRequest="18"/>
+
+                <Entry
+                    Grid.Column="1"
+                    Placeholder="Search Categories"/>
+
+            </Grid>
+
+        </Border>
+
+        <!-- Two Panel -->
+
+        <Grid
+            Grid.Row="2"
+            Margin="10"
+            ColumnDefinitions="140,*">
+
+            <!-- LEFT -->
+
+            <Border
+                BackgroundColor="White"
+                Stroke="{StaticResource Border}"
+                StrokeShape="RoundRectangle 16">
+
+                <CollectionView
+                    ItemsSource="{Binding Categories}"
+                    SelectionMode="Single"
+                    SelectedItem="{Binding SelectedCategory}">
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate
+                            x:DataType="models:Category">
+
+                            <Grid
+                                Padding="12"
+                                RowDefinitions="Auto">
+
+                                <Border
+                                    BackgroundColor="#F7F8FA"
+                                    Stroke="{StaticResource Border}"
+                                    StrokeShape="RoundRectangle 12">
+
+                                    <VerticalStackLayout
+                                        Padding="10"
+                                        Spacing="8">
+
+                                        <Image
+                                            HeightRequest="50"
+                                            Source="{Binding Image}"/>
+
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="13"
+                                            HorizontalTextAlignment="Center"
+                                            Text="{Binding Name}"/>
+
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                            </Grid>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </Border>
+
+            <!-- RIGHT -->
+
+            <Border
+                Grid.Column="1"
+                Margin="10,0,0,0"
+                BackgroundColor="White"
+                Stroke="{StaticResource Border}"
+                StrokeShape="RoundRectangle 16">
+
+                <CollectionView
+                    Margin="10"
+                    ItemsSource="{Binding SubCategories}">
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate
+                            x:DataType="models:SubCategory">
+
+                            <Border
+                                Margin="0,5"
+                                Padding="12"
+                                Stroke="{StaticResource Border}"
+                                StrokeShape="RoundRectangle 12">
+
+                                <Grid
+                                    ColumnDefinitions="60,*,Auto">
+
+                                    <Image
+                                        HeightRequest="42"
+                                        Source="{Binding Image}"
+                                        WidthRequest="42"/>
+
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Margin="12,0">
+
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="16"
+                                            Text="{Binding Name}"/>
+
+                                        <Label
+                                            FontSize="12"
+                                            Text="View Products"
+                                            TextColor="Gray"/>
+
+                                    </VerticalStackLayout>
+
+                                    <Image
+                                        Grid.Column="2"
+                                        Source="arrow_right.png"
+                                        HeightRequest="18"
+                                        VerticalOptions="Center"/>
+
+                                    <Grid.GestureRecognizers>
+
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CategoriesViewModel}}, Path=OpenSubCategoryCommand}"
+                                            CommandParameter="{Binding .}"/>
+
+                                    </Grid.GestureRecognizers>
+
+                                </Grid>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </Border>
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
