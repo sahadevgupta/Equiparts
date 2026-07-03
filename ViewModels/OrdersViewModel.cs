@@ -8,30 +8,66 @@ namespace Equiparts.ViewModels;
 
 public partial class OrdersViewModel : BaseViewModel
 {
-    readonly ProductService _service;
+    private readonly IOrderService _orderService;
 
     public ObservableCollection<Order> Orders { get; } = [];
 
-    public OrdersViewModel(ProductService service)
+    public OrdersViewModel(IOrderService orderService)
     {
         Title = "Orders";
-        _service = service;
+
+        _orderService = orderService;
     }
 
     [RelayCommand]
-    async Task LoadAsync()
+    public async Task Load()
     {
+        if (IsBusy)
+            return;
+
+        IsBusy = true;
+
         Orders.Clear();
 
-        var orders = await _service.GetOrdersAsync();
+        var orders = await _orderService.GetOrdersAsync();
 
-        foreach (var order in orders)
+        foreach (var order in orders.OrderByDescending(x => x.Date))
             Orders.Add(order);
+
+        IsBusy = false;
     }
 
     [RelayCommand]
-    async Task OpenOrder(Order order)
+    async Task ViewOrder(Order order)
     {
-        // Navigate to order detail
+        if (order == null)
+            return;
+
+        // await Shell.Current.GoToAsync(
+        //     $"{nameof(OrderDetailsPage)}",
+        //     new Dictionary<string, object>
+        //     {
+        //         ["Order"] = order
+        //     });
+    }
+
+    [RelayCommand]
+    async Task CancelOrder(Order order)
+    {
+        if (order == null)
+            return;
+
+        bool confirm = await Shell.Current.DisplayAlertAsync(
+            "Cancel Order",
+            "Do you want to cancel this order?",
+            "Yes",
+            "No");
+
+        if (!confirm)
+            return;
+
+        await _orderService.CancelOrderAsync(order.OrderNo);
+
+        await Load();
     }
 }

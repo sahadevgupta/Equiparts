@@ -8,25 +8,230 @@
                 "Id": 101,
                 "CategoryId": 1,
                 "Name": "Genuine",
-                "Image": "genuine.png"
+                "Image": "genuine.png",
+                "Products": [
+                    {
+                        "Id": 1001,
+                        "Name": "Filters",
+                        "Image": "filters.png"
+                    },
+                    {
+                        "Id": 1002,
+                        "Name": "Gear Parts",
+                        "Image": "gear_parts.png"
+                    },
+                    {
+                        "Id": 1003,
+                        "Name": "Fabrication Parts",
+                        "Image": "fabrication.png"
+                    },
+                    {
+                        "Id": 1004,
+                        "Name": "Pumps",
+                        "Image": "pump.png"
+                    },
+                    {
+                        "Id": 1005,
+                        "Name": "Bearings",
+                        "Image": "bearing.png"
+                    },
+                    {
+                        "Id": 1006,
+                        "Name": "GET Parts",
+                        "Image": "get_parts.png"
+                    },
+                    {
+                        "Id": 1007,
+                        "Name": "Hoses",
+                        "Image": "hose.png"
+                    },
+                    {
+                        "Id": 1008,
+                        "Name": "Pins",
+                        "Image": "pin.png"
+                    },
+                    {
+                        "Id": 1009,
+                        "Name": "Cabin Parts",
+                        "Image": "cabin_parts.png"
+                    },
+                    {
+                        "Id": 1010,
+                        "Name": "Electrical Parts",
+                        "Image": "electrical_parts.png"
+                    },
+                    {
+                        "Id": 1011,
+                        "Name": "Engines",
+                        "Image": "engine.png"
+                    },
+                    {
+                        "Id": 1012,
+                        "Name": "Seal Kits",
+                        "Image": "seal_kit.png"
+                    },
+                    {
+                        "Id": 1013,
+                        "Name": "Mountings",
+                        "Image": "mounting.png"
+                    },
+                    {
+                        "Id": 1014,
+                        "Name": "Nuts & Bolts",
+                        "Image": "nuts_bolts.png"
+                    },
+                    {
+                        "Id": 1015,
+                        "Name": "Lubes & Greases",
+                        "Image": "lubricant.png"
+                    },
+                    {
+                        "Id": 1016,
+                        "Name": "Transmission Parts",
+                        "Image": "transmission.png"
+                    },
+                    {
+                        "Id": 1017,
+                        "Name": "Misc. Parts",
+                        "Image": "misc_parts.png"
+                    },
+                    {
+                        "Id": 1018,
+                        "Name": "Bronze Bushes",
+                        "Image": "bronze_bush.png"
+                    },
+                    {
+                        "Id": 1019,
+                        "Name": "Circlip",
+                        "Image": "circlip.png"
+                    },
+                    {
+                        "Id": 1020,
+                        "Name": "Shims & Washers",
+                        "Image": "shim_washer.png"
+                    },
+                    {
+                        "Id": 1021,
+                        "Name": "Wear Pads",
+                        "Image": "wear_pad.png"
+                    },
+                    {
+                        "Id": 1022,
+                        "Name": "Steel Bushes",
+                        "Image": "steel_bush.png"
+                    }
+                ]
             },
             {
                 "Id": 102,
                 "CategoryId": 1,
-                "Name": "Fabrication",
-                "Image": "fabrication.png"
+                "Name": "OEM",
+                "Image": "oem.png",
+                "Products": [
+                    {
+                        "Id": 1101,
+                        "Name": "Pricol",
+                        "Image": "pricol.png"
+                    },
+                    {
+                        "Id": 1102,
+                        "Name": "Gates",
+                        "Image": "gates.png"
+                    },
+                    {
+                        "Id": 1103,
+                        "Name": "Timken",
+                        "Image": "timken.png"
+                    },
+                    {
+                        "Id": 1104,
+                        "Name": "Corteco",
+                        "Image": "corteco.png"
+                    },
+                    {
+                        "Id": 1105,
+                        "Name": "Suprajit",
+                        "Image": "suprajit.png"
+                    },
+                    {
+                        "Id": 1106,
+                        "Name": "Bosch",
+                        "Image": "bosch.png"
+                    },
+                    {
+                        "Id": 1107,
+                        "Name": "Carlisle",
+                        "Image": "carlisle.png"
+                    },
+                    {
+                        "Id": 1108,
+                        "Name": "TelBros",
+                        "Image": "telbros.png"
+                    },
+                    {
+                        "Id": 1109,
+                        "Name": "Uno Minda",
+                        "Image": "uno_minda.png"
+                    },
+                    {
+                        "Id": 1110,
+                        "Name": "WIL",
+                        "Image": "wil.png"
+                    },
+                    {
+                        "Id": 1111,
+                        "Name": "MPS",
+                        "Image": "mps.png"
+                    },
+                    {
+                        "Id": 1112,
+                        "Name": "Wipro",
+                        "Image": "wipro.png"
+                    }
+                ]
             },
             {
                 "Id": 103,
                 "CategoryId": 1,
-                "Name": "Pin & Bushes",
-                "Image": "pin_bush.png"
-            },
-            {
-                "Id": 104,
-                "CategoryId": 1,
-                "Name": "Coming Soon",
-                "Image": "coming_soon.png"
+                "Name": "Aftermarket",
+                "Image": "aftermarket.png",
+                "Products": [
+                    {
+                        "Id": 1201,
+                        "Name": "Fabrication Parts",
+                        "Image": "fabrication.png"
+                    },
+                    {
+                        "Id": 1202,
+                        "Name": "Pins",
+                        "Image": "pin.png"
+                    },
+                    {
+                        "Id": 1203,
+                        "Name": "Bushings",
+                        "Image": "bush.png"
+                    },
+                    {
+                        "Id": 1204,
+                        "Name": "Pin Bush Kits",
+                        "Image": "pin_bush_kit.png"
+                    },
+                    {
+                        "Id": 1205,
+                        "Name": "Seal Kits",
+                        "Image": "seal_kit.png"
+                    },
+                    {
+                        "Id": 1206,
+                        "Name": "Casting Parts",
+                        "Image": "casting.png"
+                    },
+                    {
+                        "Id": 1207,
+                        "Name": "Lubricants",
+                        "Image": "lubricant.png"
+                    }
+                ]
             }
         ]
     },
@@ -39,43 +244,79 @@
                 "Id": 201,
                 "CategoryId": 2,
                 "Name": "Buckets",
-                "Image": "bucket.png"
+                "Image": "bucket.png",
+                "Products": []
             },
             {
                 "Id": 202,
                 "CategoryId": 2,
-                "Name": "Fabrication",
-                "Image": "fabrication.png"
+                "Name": "Fabrication Parts",
+                "Image": "fabrication.png",
+                "Products": []
             },
             {
                 "Id": 203,
                 "CategoryId": 2,
-                "Name": "Pin & Bushes",
-                "Image": "pin_bush.png"
+                "Name": "Pins",
+                "Image": "pin.png",
+                "Products": []
             },
             {
                 "Id": 204,
                 "CategoryId": 2,
-                "Name": "Stick Ends",
-                "Image": "stickend.png"
+                "Name": "Bushes",
+                "Image": "bush.png",
+                "Products": []
             },
             {
                 "Id": 205,
                 "CategoryId": 2,
-                "Name": "Lock Bushes",
-                "Image": "lock_bush.png"
+                "Name": "Stick Ends",
+                "Image": "stick_end.png",
+                "Products": []
             },
             {
                 "Id": 206,
                 "CategoryId": 2,
-                "Name": "Spacers",
-                "Image": "spacer.png"
+                "Name": "Lock Bushes",
+                "Image": "lock_bush.png",
+                "Products": []
             },
             {
                 "Id": 207,
                 "CategoryId": 2,
-                "Name": "Coming Soon",
-                "Image": "coming_soon.png"
+                "Name": "Spacers",
+                "Image": "spacer.png",
+                "Products": []
+            },
+            {
+                "Id": 208,
+                "CategoryId": 2,
+                "Name": "Track Bush",
+                "Image": "track_bush.png",
+                "Products": []
+            },
+            {
+                "Id": 209,
+                "CategoryId": 2,
+                "Name": "Track Pins",
+                "Image": "track_pin.png",
+                "Products": []
+            },
+            {
+                "Id": 210,
+                "CategoryId": 2,
+                "Name": "Master Pins",
+                "Image": "master_pin.png",
+                "Products": []
+            },
+            {
+                "Id": 211,
+                "CategoryId": 2,
+                "Name": "Complete Range of UnderCarriage & GET Parts",
+                "Image": "coming_soon.png",
+                "ComingSoon": true,
+                "Products": []
             }
         ]
     },
@@ -88,7 +329,8 @@
                 "Id": 301,
                 "CategoryId": 3,
                 "Name": "Chisels",
-                "Image": "chisel.png"
+                "Image": "chisel.png",
+                "Products": []
             }
         ]
     }

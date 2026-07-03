@@ -10,62 +10,29 @@
     BackgroundColor="{StaticResource PageBackground}"
     Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="Auto,*">
+    <Grid RowDefinitions="Auto,*"
+          Padding="0"
+          Margin="0">
 
         <!-- Header -->
-        <Grid
-            Padding="20,20,20,10"
-            BackgroundColor="{StaticResource Primary}">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <Image
-                HeightRequest="45"
-                Source="logo.png"
-                WidthRequest="45"/>
-
-            <VerticalStackLayout
-                Grid.Column="1"
-                Margin="15,0"
-                VerticalOptions="Center">
-
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="20"
-                    Text="Equiparts"
-                    TextColor="White"/>
-
-                <Label
-                    FontSize="13"
-                    Opacity="0.8"
-                    Text="Heavy Equipment Parts"
-                    TextColor="White"/>
-            </VerticalStackLayout>
-
-            <Image
-                Grid.Column="2"
-                HeightRequest="26"
-                Source="notification.png"
-                WidthRequest="26"/>
-        </Grid>
+        <Image Source="header_logo.png"
+               Margin="-2,0"
+               BackgroundColor="Red"/>
 
         <!-- Body -->
         <ScrollView Grid.Row="1">
 
             <VerticalStackLayout Padding="16"
-                    Spacing="20">
+                                 Spacing="20">
 
                 <!-- Search -->
 
-                <Border
-                    Padding="12"
-                    BackgroundColor="White"
-                    Stroke="{StaticResource Border}"
-                    StrokeShape="RoundRectangle 12">
+                <Border IsVisible="False"
+                        Padding="12"
+                        BackgroundColor="White"
+                        Stroke="{StaticResource Border}"
+                        StrokeShape="RoundRectangle 12">
 
                     <Grid ColumnDefinitions="30,*">
 
@@ -87,33 +54,34 @@
 
                 <Label
                     StyleClass="SectionTitle"
-                    Text="Categories"/>
+                    Text="Our Products Range"/>
 
                 <CollectionView
-                    HeightRequest="120"
                     ItemsSource="{Binding Categories}"
-                    ItemsLayout="HorizontalList"
                     SelectionMode="Single"
-                    SelectedItem="{Binding SelectedCategory}">
+                    SelectedItem="{Binding SelectedCategory}"
+                    HorizontalScrollBarVisibility="Never">
+
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Horizontal"
+                                           ItemSpacing="5"/>
+                    </CollectionView.ItemsLayout>
 
                     <CollectionView.ItemTemplate>
 
                         <DataTemplate x:DataType="models:Category">
 
                             <VerticalStackLayout
-                                Margin="5"
                                 HorizontalOptions="Center">
 
-                                <Border
-                                    Padding="15"
-                                    BackgroundColor="White"
-                                    Stroke="{StaticResource Border}"
-                                    StrokeShape="RoundRectangle 15">
+                                <Border Padding="5"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource Border}"
+                                        StrokeShape="RoundRectangle 15">
 
-                                    <Image
-                                        HeightRequest="55"
-                                        Source="{Binding Image}"
-                                        WidthRequest="55"/>
+                                    <Image HeightRequest="100"
+                                           WidthRequest="110"
+                                           Source="{Binding Image}"/>
 
                                 </Border>
 
@@ -135,37 +103,36 @@
 
                 <!-- Banner -->
 
-                <CarouselView HeightRequest="180">
+                <VerticalStackLayout Spacing="5">
 
-                    <CarouselView.ItemsSource>
+                    <Label
+                        StyleClass="SectionTitle"
+                        TextColor="Black"
+                        Text="Offers of the Day"/>
 
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>banner1.png</x:String>
-                            <x:String>banner2.png</x:String>
-                            <x:String>banner3.png</x:String>
-                        </x:Array>
+                    <CarouselView ItemsSource="{Binding Banners}"
+                                  IndicatorView="indicatorView"
+                                  Loop="True"
+                                  HeightRequest="200">
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
 
-                    </CarouselView.ItemsSource>
+                                <Border StrokeShape="RoundRectangle 8"
+                                        StrokeThickness="0">
+                                    <Image Aspect="Fill"
+                                           Source="{Binding Image}"/>
+                                </Border>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
 
-                    <CarouselView.ItemTemplate>
+                    </CarouselView>
 
-                        <DataTemplate>
+                    <IndicatorView x:Name="indicatorView"
+                                   IndicatorColor="LightGray"
+                                   SelectedIndicatorColor="DarkGray"
+                                   HorizontalOptions="Center"/>
 
-                            <Border
-                                Margin="0,0,0,10"
-                                StrokeShape="RoundRectangle 18">
-
-                                <Image
-                                    Aspect="AspectFill"
-                                    Source="{Binding}"/>
-
-                            </Border>
-
-                        </DataTemplate>
-
-                    </CarouselView.ItemTemplate>
-
-                </CarouselView>
+                </VerticalStackLayout>
 
                 <!-- Best Seller -->
 

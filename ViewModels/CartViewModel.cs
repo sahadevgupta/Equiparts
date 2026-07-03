@@ -1,20 +1,44 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Equiparts.Models;
+using Equiparts.Services;
 using System.Collections.ObjectModel;
 
 namespace Equiparts.ViewModels;
 
 public partial class CartViewModel : BaseViewModel
 {
+    private readonly ICartService _cartService;
+    private readonly IOrderService _orderService;
+
     public ObservableCollection<CartItem> Items { get; } = [];
 
-    public decimal GrandTotal => Items.Sum(x => x.Total);
+    public decimal GrandTotal => _cartService?.GetGrandTotal() ?? 0;
+
+    public CartViewModel(ICartService cartService, IOrderService orderService)
+    {
+        _cartService = cartService;
+        _orderService = orderService;
+
+        RefreshCart();
+
+        _cartService.CartChanged += RefreshCart;
+    }
+
+    private void RefreshCart()
+    {
+        Items.Clear();
+
+        foreach (var item in _cartService.Items)
+            Items.Add(item);
+
+        OnPropertyChanged(nameof(GrandTotal));
+    }
 
     [RelayCommand]
     void Increase(CartItem item)
     {
-        item.Quantity++;
+        _cartService.IncreaseQuantity(item.Product);
 
         OnPropertyChanged(nameof(GrandTotal));
     }
@@ -23,7 +47,10 @@ public partial class CartViewModel : BaseViewModel
     void Decrease(CartItem item)
     {
         if (item.Quantity > 1)
-            item.Quantity--;
+        {
+            _cartService.DecreaseQuantity(item.Product);
+        }
+
 
         OnPropertyChanged(nameof(GrandTotal));
     }
@@ -31,7 +58,7 @@ public partial class CartViewModel : BaseViewModel
     [RelayCommand]
     void Remove(CartItem item)
     {
-        Items.Remove(item);
+        _cartService.RemoveFromCart(item.Product);
 
         OnPropertyChanged(nameof(GrandTotal));
     }
@@ -39,6 +66,25 @@ public partial class CartViewModel : BaseViewModel
     [RelayCommand]
     async Task Checkout()
     {
-        // Navigate
+        if (!_cartService.Items.Any())
+        {
+            await Shell.Current.DisplayAlertAsync(
+                "Cart",
+                "Your cart is empty.",
+                "OK");
+
+            return;
+        }
+
+        await _orderService.PlaceOrderAsync(_cartService.Items.ToList());
+
+        _cartService.Clear();
+
+        await Shell.Current.DisplayAlertAsync(
+            "Success",
+            "Order placed successfully.",
+            "OK");
+
+        await Shell.Current.GoToAsync("//orders");
     }
 }

@@ -4,8 +4,10 @@
     x:Class="Equiparts.Views.CartPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:models="clr-namespace:Equiparts.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="viewModels:CartViewModel"
     BackgroundColor="{StaticResource PageBackground}"
     Shell.NavBarIsVisible="False">
@@ -13,10 +15,11 @@
     <Grid RowDefinitions="Auto,*,Auto">
 
         <!-- Header -->
-
-        <Grid
-            Padding="20,20,20,15"
-            BackgroundColor="{StaticResource Primary}">
+        <Image Source="header_logo"
+               Margin="-2,0"/>
+        <Grid IsVisible="false"
+              Padding="20,20,20,15"
+              BackgroundColor="{StaticResource Primary}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -41,7 +44,8 @@
             Grid.Row="1"
             Margin="15"
             ItemsSource="{Binding Items}"
-            SelectionMode="None">
+            SelectionMode="None"
+            VerticalScrollBarVisibility="Never">
 
             <CollectionView.EmptyView>
 
@@ -132,7 +136,8 @@
                                         WidthRequest="35"
                                         HeightRequest="35"
                                         Text="-"
-                                        FontSize="18"
+                                        FontSize="20"
+                                        Padding="0"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=DecreaseCommand}"
                                         CommandParameter="{Binding .}"/>
 
@@ -145,7 +150,8 @@
                                         WidthRequest="35"
                                         HeightRequest="35"
                                         Text="+"
-                                        FontSize="18"
+                                        FontSize="20"
+                                        Padding="0"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=IncreaseCommand}"
                                         CommandParameter="{Binding .}"/>
 
@@ -158,12 +164,17 @@
                             <ImageButton
                                 Grid.Row="2"
                                 Grid.Column="2"
-                                Margin="0,15,0,0"
-                                Source="delete.png"
                                 HeightRequest="24"
                                 BackgroundColor="Transparent"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=RemoveCommand}"
-                                CommandParameter="{Binding .}"/>
+                                CommandParameter="{Binding .}"
+                                HorizontalOptions="End">
+                                <ImageButton.Source>
+                                    <FontImageSource FontFamily="FontAwesome"
+                                                     Glyph="{x:Static fontresources:FontAwesomeIcons.Trash}"
+                                                     Color="Red"/>
+                                </ImageButton.Source>
+                            </ImageButton>
 
                         </Grid>
 
@@ -178,6 +189,7 @@
         <!-- Bottom Summary -->
 
         <Border
+            IsVisible="{Binding Items.Count,Converter={toolkit:IntToBoolConverter}}"
             Grid.Row="2"
             BackgroundColor="White"
             Padding="20"

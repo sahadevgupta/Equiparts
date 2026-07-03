@@ -1,15 +1,17 @@
+using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
-using System.Collections.ObjectModel;
 
 namespace Equiparts.ViewModels;
 
-public partial class HomeViewModel : BaseViewModel
+public partial class HomeViewModel(ICartService cartService,
+    IProductService productService) : BaseViewModel
 {
-    private readonly IProductService _service;
 
     public ObservableCollection<Category> Categories { get; } = [];
 
@@ -18,11 +20,10 @@ public partial class HomeViewModel : BaseViewModel
     [ObservableProperty]
     private Category? selectedCategory;
 
-    public HomeViewModel(IProductService service)
-    {
-        Title = "Home";
-        _service = service;
-    }
+
+    [ObservableProperty]
+    private ObservableCollection<Banner> _banners = [];
+
 
     [RelayCommand]
     public async Task LoadAsync()
@@ -32,16 +33,30 @@ public partial class HomeViewModel : BaseViewModel
 
         IsBusy = true;
 
+        await Task.Delay(50);
         Categories.Clear();
 
-        var categories = await _service.GetCategoriesAsync();
+
+        Banners = new ObservableCollection<Banner>
+        {
+            new Banner{ Image = "banner1.png"},
+            new Banner{ Image = "banner2.png"},
+            new Banner{ Image = "banner3.png"},
+            new Banner{ Image = "banner4.png"},
+            new Banner{ Image = "banner5.png"},
+            new Banner{ Image = "banner6.png"},
+            new Banner{ Image = "banner7.png"}
+        };
+
+
+        var categories = await productService.GetCategoriesAsync();
 
         foreach (var category in categories)
             Categories.Add(category);
 
         BestSellers.Clear();
 
-        var products = await _service.GetProductsAsync();
+        var products = await productService.GetProductsAsync();
 
         foreach (var product in products.Where(x => x.IsBestSeller))
             BestSellers.Add(product);
@@ -59,8 +74,16 @@ public partial class HomeViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    void AddToCart(Product product)
+    async Task AddToCart(Product product)
     {
-        // Implement later
+        if (product == null)
+            return;
+
+        cartService.AddToCart(product);
+
+        await Shell.Current.DisplayAlertAsync(
+            "Success",
+            $"{product.Name} added to cart.",
+            "OK");
     }
 }

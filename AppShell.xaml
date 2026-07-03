@@ -6,7 +6,8 @@
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     xmlns:views="clr-namespace:Equiparts.Views"
     Shell.NavBarIsVisible="False"
-    FlyoutBehavior="Disabled">
+    FlyoutBehavior="Disabled"
+    Shell.TabBarForegroundColor="{StaticResource Accent}">
 
     <TabBar>
         <Tab Title="Home">
@@ -15,7 +16,7 @@
                                  Glyph="{x:Static fontresources:FontAwesomeIcons.Home}"/>
             </Tab.Icon>
 
-            <ShellContent ContentTemplate="{DataTemplate views:MainPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate views:HomePage}"/>
         </Tab>
 
 
@@ -27,7 +28,7 @@
                                  Glyph="{x:Static fontresources:FontAwesomeIcons.ThLarge}"/>
             </Tab.Icon>
 
-            <ShellContent ContentTemplate="{DataTemplate views:ItemCategoriesPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate views:CategoriesPage}"/>
         </Tab>
 
         <Tab Title="Cart">
@@ -45,7 +46,8 @@
                                  Glyph="{x:Static fontresources:FontAwesomeIcons.Home}"/>
             </Tab.Icon>
 
-            <ShellContent ContentTemplate="{DataTemplate views:OrdersPage}"/>
+            <ShellContent ContentTemplate="{DataTemplate views:OrdersPage}"
+                    Route="orders"/>
         </Tab>
 
         <!-- <Tab Title="{x:Static resources:AppResources.MoreTab}">

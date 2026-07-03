@@ -4,8 +4,10 @@
     x:Class="Equiparts.Views.CategoriesPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:models="clr-namespace:Equiparts.Models"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="viewModels:CategoriesViewModel"
     Shell.NavBarIsVisible="False"
     BackgroundColor="{StaticResource PageBackground}">
@@ -14,9 +16,9 @@
 
         <!-- Header -->
 
-        <Grid
-            Padding="20,20,20,15"
-            BackgroundColor="{StaticResource Primary}">
+        <Grid IsVisible="False"
+              Padding="20,20,20,15"
+              BackgroundColor="{StaticResource Primary}">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -43,15 +45,18 @@
                 HeightRequest="24"/>
         </Grid>
 
+        <Image Source="header_logo"
+               Margin="-2,0"/>
+
         <!-- Search -->
 
-        <Border
-            Grid.Row="1"
-            Margin="15"
-            Padding="12"
-            Stroke="{StaticResource Border}"
-            BackgroundColor="White"
-            StrokeShape="RoundRectangle 12">
+        <Border IsVisible="false"
+                Grid.Row="1"
+                Margin="15"
+                Padding="12"
+                Stroke="{StaticResource Border}"
+                BackgroundColor="White"
+                StrokeShape="RoundRectangle 12">
 
             <Grid ColumnDefinitions="30,*">
 
@@ -76,57 +81,91 @@
 
             <!-- LEFT -->
 
-            <Border
+            <!-- <Border
                 BackgroundColor="White"
                 Stroke="{StaticResource Border}"
-                StrokeShape="RoundRectangle 16">
+                StrokeShape="RoundRectangle 16"> -->
 
-                <CollectionView
-                    ItemsSource="{Binding Categories}"
-                    SelectionMode="Single"
-                    SelectedItem="{Binding SelectedCategory}">
+            <CollectionView
+                VerticalScrollBarVisibility="Never"
+                ItemsSource="{Binding Categories}"
+                SelectionMode="None"
+                SelectedItem="{Binding SelectedCategory}"
+                x:Name="categories">
 
-                    <CollectionView.ItemTemplate>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical"
+                                       ItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
 
-                        <DataTemplate
-                            x:DataType="models:Category">
+                <CollectionView.ItemTemplate>
 
-                            <Grid
-                                Padding="12"
-                                RowDefinitions="Auto">
+                    <DataTemplate
+                        x:DataType="models:Category">
 
-                                <Border
-                                    BackgroundColor="#F7F8FA"
-                                    Stroke="{StaticResource Border}"
-                                    StrokeShape="RoundRectangle 12">
+                        <Border StrokeShape="RoundRectangle 12"
+                                BackgroundColor="White"
+                                Stroke="{StaticResource Border}">
 
-                                    <VerticalStackLayout
-                                        Padding="10"
-                                        Spacing="8">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.CategorySelectedCommand, Source={x:Reference categories}}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
 
-                                        <Image
-                                            HeightRequest="50"
-                                            Source="{Binding Image}"/>
+                            <Grid ColumnDefinitions="5,*"
+                                  RowDefinitions="Auto,Auto">
 
-                                        <Label
-                                            FontAttributes="Bold"
-                                            FontSize="13"
-                                            HorizontalTextAlignment="Center"
-                                            Text="{Binding Name}"/>
-
-                                    </VerticalStackLayout>
-
-                                </Border>
-
+                                <BoxView Grid.RowSpan="2">
+                                    <BoxView.Triggers>
+                                        <DataTrigger TargetType="BoxView"
+                                                     Binding="{Binding IsSelected}"
+                                                     Value="True">
+                                            <Setter Property="Color"
+                                                    Value="{StaticResource Accent}"/>
+                                        </DataTrigger>
+                                    </BoxView.Triggers>
+                                </BoxView>
+                                <Image Grid.Row="0"
+                                       Grid.Column="1"
+                                       HeightRequest="50"
+                                       Margin="0,5,0,0"
+                                       Source="{Binding Image}"/>
+                                <Label Grid.Row="1"
+                                       Grid.Column="1"
+                                       FontAttributes="Bold"
+                                       FontSize="13"
+                                       Padding="10"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding Name}"/>
                             </Grid>
 
-                        </DataTemplate>
+                            <!-- <VerticalStackLayout
+                                Padding="10"
+                                Spacing="8">
 
-                    </CollectionView.ItemTemplate>
+                                <Image
+                                    HeightRequest="50"
+                                    Source="{Binding Image}"/>
 
-                </CollectionView>
+                                <Label
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{Binding Name}"/>
 
-            </Border>
+                            </VerticalStackLayout> -->
+                        </Border>
+                        <!-- </Border> -->
+
+
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- </Border> -->
 
             <!-- RIGHT -->
 
@@ -139,6 +178,7 @@
 
                 <CollectionView
                     Margin="10"
+                    VerticalScrollBarVisibility="Never"
                     ItemsSource="{Binding SubCategories}">
 
                     <CollectionView.ItemTemplate>
@@ -152,46 +192,90 @@
                                 Stroke="{StaticResource Border}"
                                 StrokeShape="RoundRectangle 12">
 
-                                <Grid
-                                    ColumnDefinitions="60,*,Auto">
+                                <toolkit:Expander x:Name="expander">
+                                    <toolkit:Expander.Header>
+                                        <Grid
+                                            ColumnDefinitions="60,*,Auto">
 
-                                    <Image
-                                        HeightRequest="42"
-                                        Source="{Binding Image}"
-                                        WidthRequest="42"/>
+                                            <Image
+                                                HeightRequest="42"
+                                                Source="{Binding Image}"
+                                                WidthRequest="42"/>
 
-                                    <VerticalStackLayout
-                                        Grid.Column="1"
-                                        Margin="12,0">
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Margin="12,0">
 
-                                        <Label
-                                            FontAttributes="Bold"
-                                            FontSize="16"
-                                            Text="{Binding Name}"/>
+                                                <Label
+                                                    FontAttributes="Bold"
+                                                    FontSize="16"
+                                                    Text="{Binding Name}"/>
 
-                                        <Label
-                                            FontSize="12"
-                                            Text="View Products"
-                                            TextColor="Gray"/>
+                                                <Label
+                                                    FontSize="12"
+                                                    Text="View Products"
+                                                    TextColor="Gray"/>
 
-                                    </VerticalStackLayout>
+                                            </VerticalStackLayout>
 
-                                    <Image
-                                        Grid.Column="2"
-                                        Source="arrow_right.png"
-                                        HeightRequest="18"
-                                        VerticalOptions="Center"/>
+                                            <Image Margin="0,0,5,0"
+                                                   IsVisible="{Binding Products.Count,Converter={toolkit:IntToBoolConverter}}"
+                                                   Grid.Column="2"
+                                                   HeightRequest="18"
+                                                   VerticalOptions="Center">
+                                                <Image.Source>
+                                                    <FontImageSource FontFamily="FontAwesome"
+                                                                     Glyph="{x:Static fontresources:FontAwesomeIcons.ChevronRight}"
+                                                                     Size="24"
+                                                                     Color="Black"/>
+                                                </Image.Source>
+                                                <Image.Triggers>
+                                                    <DataTrigger TargetType="Image"
+                                                                 Binding="{Binding Source={x:Reference expander},Path=IsExpanded}"
+                                                                 Value="True">
+                                                        <Setter Property="Rotation"
+                                                                Value="90"/>
+                                                    </DataTrigger>
+                                                </Image.Triggers>
+                                            </Image>
 
-                                    <Grid.GestureRecognizers>
+                                            <!-- <Grid.GestureRecognizers>
 
                                         <TapGestureRecognizer
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CategoriesViewModel}}, Path=OpenSubCategoryCommand}"
                                             CommandParameter="{Binding .}"/>
 
-                                    </Grid.GestureRecognizers>
+                                    </Grid.GestureRecognizers> -->
 
-                                </Grid>
+                                        </Grid>
+                                    </toolkit:Expander.Header>
 
+                                    <VerticalStackLayout Margin="20,5,0,0"
+                                                         Spacing="4"
+                                                         BindableLayout.ItemsSource="{Binding Products}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Product">
+                                                <HorizontalStackLayout Spacing="8">
+                                                    <Border StrokeShape="Ellipse 20"
+                                                            HeightRequest="40"
+                                                            WidthRequest="40">
+
+
+                                                        <Image Source="{Binding Image}"
+                                                               Aspect="Fill"/>
+                                                    </Border>
+
+                                                    <Label Text="{Binding Name}"
+                                                           Style="{StaticResource TitleStyle}"
+                                                           FontSize="Small"/>
+                                                </HorizontalStackLayout>
+
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </VerticalStackLayout>
+
+
+                                </toolkit:Expander>
                             </Border>
 
                         </DataTemplate>

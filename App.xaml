@@ -5,42 +5,10 @@
              x:Class="Equiparts.App">
     <Application.Resources>
         <ResourceDictionary>
-
-            <!-- Colors -->
-            <Color x:Key="PrimaryColor">#0B2A4A</Color>
-            <Color x:Key="SecondaryColor">#0E3A66</Color>
-            <Color x:Key="AccentColor">#F47C20</Color>
-            <Color x:Key="PageBackground">#F4F4F4</Color>
-            <Color x:Key="TextDark">#1A1A1A</Color>
-            <Color x:Key="White">#FFFFFF</Color>
-
-            <!-- Page -->
-            <Style TargetType="ContentPage">
-                <Setter Property="BackgroundColor" Value="{StaticResource PageBackground}" />
-            </Style>
-
-            <!-- Label -->
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="{StaticResource TextDark}" />
-            </Style>
-
-            <!-- ✅ Border Card Style -->
-            <Style TargetType="Border">
-                <Setter Property="Stroke" Value="#DDDDDD" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="BackgroundColor" Value="White" />
-                <Setter Property="StrokeShape">
-                    <RoundRectangle CornerRadius="10"/>
-                </Setter>
-
-                <Setter Property="Shadow">
-                    <Shadow Brush="#22000000"
-                        Offset="2,2"
-                        Radius="5"
-                        Opacity="0.3"/>
-                </Setter>
-            </Style>
-
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

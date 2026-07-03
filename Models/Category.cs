@@ -1,6 +1,8 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace Equiparts.Models;
 
-public class Category
+public partial class Category : ObservableObject
 {
     public int Id { get; set; }
 
@@ -9,4 +11,7 @@ public class Category
     public string Image { get; set; }
 
     public List<SubCategory> SubCategories { get; set; } = [];
+
+    [ObservableProperty]
+    private bool _isSelected;
 }
