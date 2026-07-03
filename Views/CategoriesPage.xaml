@@ -194,8 +194,8 @@
 
                                 <toolkit:Expander x:Name="expander">
                                     <toolkit:Expander.Header>
-                                        <Grid
-                                            ColumnDefinitions="60,*,Auto">
+                                        <Grid RowDefinitions="Auto,Auto"
+                                              ColumnDefinitions="60,*,Auto">
 
                                             <Image
                                                 HeightRequest="42"
@@ -222,7 +222,8 @@
                                                    IsVisible="{Binding Products.Count,Converter={toolkit:IntToBoolConverter}}"
                                                    Grid.Column="2"
                                                    HeightRequest="18"
-                                                   VerticalOptions="Center">
+                                                   VerticalOptions="Center"
+                                                   x:Name="arrowIcon">
                                                 <Image.Source>
                                                     <FontImageSource FontFamily="FontAwesome"
                                                                      Glyph="{x:Static fontresources:FontAwesomeIcons.ChevronRight}"
@@ -247,6 +248,27 @@
 
                                     </Grid.GestureRecognizers> -->
 
+                                            <BoxView Grid.Row="1"
+                                                     x:Name="bottomBorder"
+                                                     HeightRequest="1"
+                                                     Margin="0,5,0,0"
+                                                     IsVisible="False"
+                                                     Grid.ColumnSpan="3"
+                                                     Color="Silver">
+                                                <BoxView.Triggers>
+                                                    <MultiTrigger TargetType="BoxView">
+                                                        <MultiTrigger.Conditions>
+                                                            <BindingCondition Binding="{Binding Source={x:Reference expander},Path=IsExpanded}"
+                                                                              Value="True"/>
+                                                            <BindingCondition Binding="{Binding Products.Count,Converter={toolkit:IntToBoolConverter}}"
+                                                                              Value="True"/>
+                                                        </MultiTrigger.Conditions>
+                                                        <Setter Property="IsVisible"
+                                                                Value="True"/>
+                                                    </MultiTrigger>
+                                                </BoxView.Triggers>
+                                            </BoxView>
+
                                         </Grid>
                                     </toolkit:Expander.Header>
 
@@ -255,21 +277,25 @@
                                                          BindableLayout.ItemsSource="{Binding Products}">
                                         <BindableLayout.ItemTemplate>
                                             <DataTemplate x:DataType="models:Product">
-                                                <HorizontalStackLayout Spacing="8">
-                                                    <Border StrokeShape="Ellipse 20"
-                                                            HeightRequest="40"
-                                                            WidthRequest="40">
+                                                <Grid RowDefinitions="Auto,1"
+                                                      RowSpacing="4">
+                                                    <HorizontalStackLayout Spacing="8">
+                                                        <Border StrokeShape="Ellipse 20"
+                                                                HeightRequest="40"
+                                                                WidthRequest="40">
 
 
-                                                        <Image Source="{Binding Image}"
-                                                               Aspect="Fill"/>
-                                                    </Border>
-
-                                                    <Label Text="{Binding Name}"
-                                                           Style="{StaticResource TitleStyle}"
-                                                           FontSize="Small"/>
-                                                </HorizontalStackLayout>
-
+                                                            <Image Source="{Binding Image}"
+                                                                   Aspect="Fill"/>
+                                                        </Border>
+                                                        <Label Text="{Binding Name}"
+                                                               Style="{StaticResource TitleStyle}"
+                                                               FontSize="Small"/>
+                                                    </HorizontalStackLayout>
+                                                    <BoxView Grid.Row="1"
+                                                             Margin="-30,0"
+                                                             Color="Silver"/>
+                                                </Grid>
                                             </DataTemplate>
                                         </BindableLayout.ItemTemplate>
                                     </VerticalStackLayout>
