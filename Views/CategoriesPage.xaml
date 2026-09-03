@@ -81,11 +81,6 @@
 
             <!-- LEFT -->
 
-            <!-- <Border
-                BackgroundColor="White"
-                Stroke="{StaticResource Border}"
-                StrokeShape="RoundRectangle 16"> -->
-
             <CollectionView
                 VerticalScrollBarVisibility="Never"
                 ItemsSource="{Binding Categories}"
@@ -139,33 +134,13 @@
                                        Text="{Binding Name}"/>
                             </Grid>
 
-                            <!-- <VerticalStackLayout
-                                Padding="10"
-                                Spacing="8">
-
-                                <Image
-                                    HeightRequest="50"
-                                    Source="{Binding Image}"/>
-
-                                <Label
-                                    FontAttributes="Bold"
-                                    FontSize="13"
-                                    HorizontalTextAlignment="Center"
-                                    Text="{Binding Name}"/>
-
-                            </VerticalStackLayout> -->
                         </Border>
-                        <!-- </Border> -->
-
-
 
                     </DataTemplate>
 
                 </CollectionView.ItemTemplate>
 
             </CollectionView>
-
-            <!-- </Border> -->
 
             <!-- RIGHT -->
 
@@ -240,14 +215,6 @@
                                                 </Image.Triggers>
                                             </Image>
 
-                                            <!-- <Grid.GestureRecognizers>
-
-                                        <TapGestureRecognizer
-                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CategoriesViewModel}}, Path=OpenSubCategoryCommand}"
-                                            CommandParameter="{Binding .}"/>
-
-                                    </Grid.GestureRecognizers> -->
-
                                             <BoxView Grid.Row="1"
                                                      x:Name="bottomBorder"
                                                      HeightRequest="1"
@@ -299,8 +266,6 @@
                                             </DataTemplate>
                                         </BindableLayout.ItemTemplate>
                                     </VerticalStackLayout>
-
-
                                 </toolkit:Expander>
                             </Border>
 

@@ -43,11 +43,11 @@
         <Tab Title="Orders">
             <Tab.Icon>
                 <FontImageSource FontFamily="FontAwesome"
-                                 Glyph="{x:Static fontresources:FontAwesomeIcons.Home}"/>
+                                 Glyph="{x:Static fontresources:FontAwesomeIcons.DiceD6}"/>
             </Tab.Icon>
 
             <ShellContent ContentTemplate="{DataTemplate views:OrdersPage}"
-                    Route="orders"/>
+                          Route="orders"/>
         </Tab>
 
         <!-- <Tab Title="{x:Static resources:AppResources.MoreTab}">

@@ -103,7 +103,7 @@
 
                 <!-- Banner -->
 
-                <VerticalStackLayout Spacing="5">
+                <VerticalStackLayout Spacing="8">
 
                     <Label
                         StyleClass="SectionTitle"
