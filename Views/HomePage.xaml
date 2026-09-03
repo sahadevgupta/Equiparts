@@ -1,229 +1,232 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage
+<views:BasePage
     x:Class="Equiparts.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:models="clr-namespace:Equiparts.Models"
+    xmlns:views="clr-namespace:Equiparts.Views"
     x:DataType="viewModels:HomeViewModel"
     BackgroundColor="{StaticResource PageBackground}"
     Shell.NavBarIsVisible="False">
 
-    <Grid RowDefinitions="Auto,*"
-          Padding="0"
-          Margin="0">
+    <views:BasePage.PageContent>
+        <Grid RowDefinitions="Auto,*"
+              Padding="0"
+              Margin="0">
 
-        <!-- Header -->
+            <!-- Header -->
 
-        <Image Source="header_logo.png"
-               Margin="-2,0"
-               BackgroundColor="Red"/>
+            <Image Source="header_logo.png"
+                   Margin="-2,0"
+                   BackgroundColor="Red"/>
 
-        <!-- Body -->
-        <ScrollView Grid.Row="1">
+            <!-- Body -->
+            <ScrollView Grid.Row="1">
 
-            <VerticalStackLayout Padding="16"
-                                 Spacing="20">
+                <VerticalStackLayout Padding="16"
+                                     Spacing="20">
 
-                <!-- Search -->
+                    <!-- Search -->
 
-                <Border IsVisible="False"
-                        Padding="12"
-                        BackgroundColor="White"
-                        Stroke="{StaticResource Border}"
-                        StrokeShape="RoundRectangle 12">
+                    <Border IsVisible="False"
+                            Padding="12"
+                            BackgroundColor="White"
+                            Stroke="{StaticResource Border}"
+                            StrokeShape="RoundRectangle 12">
 
-                    <Grid ColumnDefinitions="30,*">
+                        <Grid ColumnDefinitions="30,*">
 
-                        <Image
-                            HeightRequest="20"
-                            Source="search.png"
-                            WidthRequest="20"/>
+                            <Image
+                                HeightRequest="20"
+                                Source="search.png"
+                                WidthRequest="20"/>
 
-                        <Entry
-                            Grid.Column="1"
-                            Placeholder="Search products..."
-                            PlaceholderColor="Gray"/>
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="Search products..."
+                                PlaceholderColor="Gray"/>
 
-                    </Grid>
+                        </Grid>
 
-                </Border>
+                    </Border>
 
-                <!-- Categories -->
-
-                <Label
-                    StyleClass="SectionTitle"
-                    Text="Our Products Range"/>
-
-                <CollectionView
-                    ItemsSource="{Binding Categories}"
-                    SelectionMode="Single"
-                    SelectedItem="{Binding SelectedCategory}"
-                    HorizontalScrollBarVisibility="Never">
-
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Horizontal"
-                                           ItemSpacing="5"/>
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.ItemTemplate>
-
-                        <DataTemplate x:DataType="models:Category">
-
-                            <VerticalStackLayout
-                                HorizontalOptions="Center">
-
-                                <Border Padding="5"
-                                        BackgroundColor="White"
-                                        Stroke="{StaticResource Border}"
-                                        StrokeShape="RoundRectangle 15">
-
-                                    <Image HeightRequest="100"
-                                           WidthRequest="110"
-                                           Source="{Binding Image}"/>
-
-                                </Border>
-
-                                <Label
-                                    Margin="0,8,0,0"
-                                    FontAttributes="Bold"
-                                    FontSize="13"
-                                    HorizontalTextAlignment="Center"
-                                    Text="{Binding Name}"
-                                    WidthRequest="95"/>
-
-                            </VerticalStackLayout>
-
-                        </DataTemplate>
-
-                    </CollectionView.ItemTemplate>
-
-                </CollectionView>
-
-                <!-- Banner -->
-
-                <VerticalStackLayout Spacing="8">
+                    <!-- Categories -->
 
                     <Label
                         StyleClass="SectionTitle"
-                        TextColor="Black"
-                        Text="Offers of the Day"/>
+                        Text="Our Products Range"/>
 
-                    <CarouselView ItemsSource="{Binding Banners}"
-                                  IndicatorView="indicatorView"
-                                  Loop="True"
-                                  HeightRequest="200">
-                        <CarouselView.ItemTemplate>
-                            <DataTemplate>
+                    <CollectionView
+                        ItemsSource="{Binding Categories}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedCategory}"
+                        HorizontalScrollBarVisibility="Never">
 
-                                <Border StrokeShape="RoundRectangle 8"
-                                        StrokeThickness="0">
-                                    <Image Aspect="Fill"
-                                           Source="{Binding Image}"/>
-                                </Border>
-                            </DataTemplate>
-                        </CarouselView.ItemTemplate>
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal"
+                                               ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
 
-                    </CarouselView>
+                        <CollectionView.ItemTemplate>
 
-                    <IndicatorView x:Name="indicatorView"
-                                   IndicatorColor="LightGray"
-                                   SelectedIndicatorColor="DarkGray"
-                                   HorizontalOptions="Center"/>
+                            <DataTemplate x:DataType="models:Category">
 
-                </VerticalStackLayout>
+                                <VerticalStackLayout
+                                    HorizontalOptions="Center">
 
-                <!-- Best Seller -->
+                                    <Border Padding="5"
+                                            BackgroundColor="White"
+                                            Stroke="{StaticResource Border}"
+                                            StrokeShape="RoundRectangle 15">
 
-                <Grid ColumnDefinitions="*,Auto">
+                                        <Image HeightRequest="100"
+                                               WidthRequest="110"
+                                               Source="{Binding Image}"/>
 
-                    <Label
-                        StyleClass="SectionTitle"
-                        Text="Best Sellers"/>
-
-                    <Label
-                        Grid.Column="1"
-                        FontAttributes="Bold"
-                        Text="View All"
-                        TextColor="{StaticResource Accent}"/>
-
-                </Grid>
-
-                <CollectionView
-                    ItemsSource="{Binding BestSellers}"
-                    SelectionMode="None">
-
-                    <CollectionView.ItemsLayout>
-
-                        <GridItemsLayout
-                            Orientation="Vertical"
-                            Span="2"/>
-
-                    </CollectionView.ItemsLayout>
-
-                    <CollectionView.ItemTemplate>
-
-                        <DataTemplate x:DataType="models:Product">
-
-                            <Border
-                                Margin="5"
-                                Padding="10"
-                                BackgroundColor="White"
-                                Stroke="{StaticResource Border}"
-                                StrokeShape="RoundRectangle 18">
-
-                                <VerticalStackLayout>
-
-                                    <Image
-                                        Aspect="AspectFit"
-                                        HeightRequest="120"
-                                        Source="{Binding Image}"/>
+                                    </Border>
 
                                     <Label
-                                        Margin="0,10,0,0"
+                                        Margin="0,8,0,0"
                                         FontAttributes="Bold"
-                                        FontSize="15"
-                                        LineBreakMode="TailTruncation"
-                                        Text="{Binding Name}"/>
-
-                                    <Label
-                                        FontSize="12"
-                                        LineBreakMode="TailTruncation"
-                                        MaxLines="2"
-                                        Opacity="0.7"
-                                        Text="{Binding Description}"/>
-
-                                    <Label
-                                        FontAttributes="Bold"
-                                        FontSize="18"
-                                        Text="{Binding Price,StringFormat='₹ {0:F0}'}"
-                                        TextColor="{StaticResource Accent}"/>
-
-                                    <Button
-                                        Margin="0,10,0,0"
-                                        BackgroundColor="{StaticResource Accent}"
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=AddToCartCommand}"
-                                        CommandParameter="{Binding .}"
-                                        CornerRadius="12"
-                                        HeightRequest="40"
-                                        Text="Add To Cart"
-                                        TextColor="White"/>
+                                        FontSize="13"
+                                        HorizontalTextAlignment="Center"
+                                        Text="{Binding Name}"
+                                        WidthRequest="95"/>
 
                                 </VerticalStackLayout>
 
-                            </Border>
+                            </DataTemplate>
 
-                        </DataTemplate>
+                        </CollectionView.ItemTemplate>
 
-                    </CollectionView.ItemTemplate>
+                    </CollectionView>
 
-                </CollectionView>
+                    <!-- Banner -->
 
-            </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="8">
 
-        </ScrollView>
+                        <Label
+                            StyleClass="SectionTitle"
+                            TextColor="Black"
+                            Text="Offers of the Day"/>
 
-    </Grid>
+                        <CarouselView ItemsSource="{Binding Banners}"
+                                      IndicatorView="indicatorView"
+                                      Loop="True"
+                                      HeightRequest="200">
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate>
 
-</ContentPage>
+                                    <Border StrokeShape="RoundRectangle 8"
+                                            StrokeThickness="0">
+                                        <Image Aspect="Fill"
+                                               Source="{Binding Image}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+
+                        </CarouselView>
+
+                        <IndicatorView x:Name="indicatorView"
+                                       IndicatorColor="LightGray"
+                                       SelectedIndicatorColor="DarkGray"
+                                       HorizontalOptions="Center"/>
+
+                    </VerticalStackLayout>
+
+                    <!-- Best Seller -->
+
+                    <Grid ColumnDefinitions="*,Auto">
+
+                        <Label
+                            StyleClass="SectionTitle"
+                            Text="Best Sellers"/>
+
+                        <Label
+                            Grid.Column="1"
+                            FontAttributes="Bold"
+                            Text="View All"
+                            TextColor="{StaticResource Accent}"/>
+
+                    </Grid>
+
+                    <CollectionView
+                        ItemsSource="{Binding BestSellers}"
+                        SelectionMode="None">
+
+                        <CollectionView.ItemsLayout>
+
+                            <GridItemsLayout
+                                Orientation="Vertical"
+                                Span="2"/>
+
+                        </CollectionView.ItemsLayout>
+
+                        <CollectionView.ItemTemplate>
+
+                            <DataTemplate x:DataType="models:Product">
+
+                                <Border
+                                    Margin="5"
+                                    Padding="10"
+                                    BackgroundColor="White"
+                                    Stroke="{StaticResource Border}"
+                                    StrokeShape="RoundRectangle 18">
+
+                                    <VerticalStackLayout>
+
+                                        <Image
+                                            Aspect="AspectFit"
+                                            HeightRequest="120"
+                                            Source="{Binding Image}"/>
+
+                                        <Label
+                                            Margin="0,10,0,0"
+                                            FontAttributes="Bold"
+                                            FontSize="15"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding Name}"/>
+
+                                        <Label
+                                            FontSize="12"
+                                            LineBreakMode="TailTruncation"
+                                            MaxLines="2"
+                                            Opacity="0.7"
+                                            Text="{Binding Description}"/>
+
+                                        <Label
+                                            FontAttributes="Bold"
+                                            FontSize="18"
+                                            Text="{Binding Price,StringFormat='₹ {0:F0}'}"
+                                            TextColor="{StaticResource Accent}"/>
+
+                                        <Button
+                                            Margin="0,10,0,0"
+                                            BackgroundColor="{StaticResource Accent}"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=AddToCartCommand}"
+                                            CommandParameter="{Binding .}"
+                                            CornerRadius="12"
+                                            HeightRequest="40"
+                                            Text="Add To Cart"
+                                            TextColor="White"/>
+
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                            </DataTemplate>
+
+                        </CollectionView.ItemTemplate>
+
+                    </CollectionView>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+        </Grid>
+    </views:BasePage.PageContent>
+
+</views:BasePage>

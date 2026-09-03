@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentView
+    x:Class="Equiparts.Controls.OfflineBannerView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+    IsVisible="False">
+
+    <Border BackgroundColor="#D93025"
+            StrokeThickness="0"
+            Padding="0,6">
+
+        <HorizontalStackLayout HorizontalOptions="Center"
+                                Spacing="8">
+
+            <Label Text="{x:Static fontresources:FontAwesomeIcons.ExclamationTriangle}"
+                   FontFamily="FontAwesome"
+                   TextColor="White"
+                   FontSize="13"
+                   VerticalOptions="Center"/>
+
+            <Label Text="No internet connection"
+                   TextColor="White"
+                   FontSize="13"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"/>
+
+        </HorizontalStackLayout>
+
+    </Border>
+
+</ContentView>

@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Maui;
+using Equiparts.Extensions;
 using Equiparts.Interfaces;
-using Equiparts.Services;
-using Equiparts.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Equiparts
@@ -20,20 +20,15 @@ namespace Equiparts
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 
                     fonts.AddFont("fa-solid-900.ttf", "FontAwesome");
-                });
+                })
+                .RegisterAppServices()
+                .RegisterViewModels()
+                .RegisterViews()
+                .RegisterRefitClients();
 
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
-
-            builder.Services.AddTransient<HomeViewModel>()
-                            .AddTransient<CategoriesViewModel>()
-                            .AddTransient<CartViewModel>()
-                            .AddTransient<OrdersViewModel>();
-
-            builder.Services.AddSingleton<ICartService, CartService>();
-            builder.Services.AddSingleton<IProductService, ProductService>();
-            builder.Services.AddSingleton<IOrderService, OrderService>();
 
             builder.ConfigureMauiHandlers(handlers =>
             {
@@ -43,7 +38,13 @@ namespace Equiparts
 #endif
             });
 
-            return builder.Build();
+            var app = builder.Build();
+
+            // Warm up the connectivity service immediately so the offline banner and
+            // token-refresh gating are accurate from the very first screen.
+            app.Services.GetRequiredService<IConnectivityService>();
+
+            return app;
         }
     }
 }

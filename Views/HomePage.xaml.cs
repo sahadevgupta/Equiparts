@@ -2,7 +2,7 @@ using Equiparts.ViewModels;
 
 namespace Equiparts.Views;
 
-public partial class HomePage : ContentPage
+public partial class HomePage : BasePage
 {
 	private readonly HomeViewModel _viewModel;
 

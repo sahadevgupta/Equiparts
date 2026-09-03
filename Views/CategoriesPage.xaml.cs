@@ -2,7 +2,7 @@ using Equiparts.ViewModels;
 
 namespace Equiparts.Views;
 
-public partial class CategoriesPage : ContentPage
+public partial class CategoriesPage : BasePage
 {
     private readonly CategoriesViewModel _viewModel;
 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<views:BasePage
+    x:Class="Equiparts.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
+    xmlns:views="clr-namespace:Equiparts.Views"
+    x:DataType="viewModels:LoginViewModel"
+    BackgroundColor="{StaticResource PageBackground}"
+    Shell.NavBarIsVisible="False">
+
+    <views:BasePage.PageContent>
+        <ScrollView>
+            <VerticalStackLayout Padding="30,80,30,30" Spacing="16">
+
+                <Image Source="header_logo"
+                       HeightRequest="60"
+                       Margin="0,0,0,20"
+                       HorizontalOptions="Center"/>
+
+                <Label Text="Sign in to your account"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TitleText}"
+                       HorizontalOptions="Center"/>
+
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       IsVisible="{Binding HasError}"
+                       HorizontalOptions="Center"/>
+
+                <Entry Placeholder="Email"
+                       Keyboard="Email"
+                       Text="{Binding Email}"/>
+
+                <Entry Placeholder="Password"
+                       IsPassword="True"
+                       Text="{Binding Password}"/>
+
+                <Button Text="Login"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"/>
+
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                    IsVisible="{Binding IsBusy}"
+                                    Color="{StaticResource Accent}"
+                                    HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </views:BasePage.PageContent>
+
+</views:BasePage>
