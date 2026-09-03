@@ -9,7 +9,22 @@
     FlyoutBehavior="Disabled"
     Shell.TabBarForegroundColor="{StaticResource Accent}">
 
-    <TabBar>
+    <!-- ROUTE: loading - Initial loading/splash screen -->
+    <ShellContent
+        Title="Loading"
+        ContentTemplate="{DataTemplate views:InitialLoadingActivityIndicator}"
+        Route="loading"
+        Shell.NavBarIsVisible="False"
+        Shell.TabBarIsVisible="False"/>
+
+    <!-- ROUTE: login - User authentication -->
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="LoginPage"
+        Shell.TabBarIsVisible="False"/>
+
+    <TabBar Route="app">
         <Tab Title="Home">
             <Tab.Icon>
                 <FontImageSource FontFamily="FontAwesome"

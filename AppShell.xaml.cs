@@ -7,16 +7,16 @@ namespace Equiparts
     {
         private readonly ITokenService _tokenService;
 
-        public AppShell(ITokenService tokenService)
+        public AppShell()
         {
             InitializeComponent();
 
-            _tokenService = tokenService;
-            _tokenService.SessionExpired += OnSessionExpired;
+            //_tokenService = tokenService;
+            // _tokenService.SessionExpired += OnSessionExpired;
 
-            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
+            // Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
-            Loaded += OnLoaded;
+            // Loaded += OnLoaded;
         }
 
         private async void OnLoaded(object? sender, EventArgs e)

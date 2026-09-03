@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui;
 using Equiparts.Handlers;
 using Equiparts.Interfaces;
 using Equiparts.Services;
@@ -8,6 +9,9 @@ public static class AppServiceInitializer
 {
     public static MauiAppBuilder RegisterAppServices(this MauiAppBuilder builder)
     {
+        builder.Services.AddTransient<AuthHandler>()
+                        .AddTransient<INavigationService, NavigationService>();
+
         builder.Services.AddSingleton<ICartService, CartService>()
                         .AddSingleton<IProductService, ProductService>()
                         .AddSingleton<IOrderService, OrderService>();
@@ -17,9 +21,11 @@ public static class AppServiceInitializer
                         .AddSingleton<IConnectivityService, ConnectivityService>()
                         .AddSingleton<ITokenService, TokenService>()
                         .AddSingleton<ICurrentUserService, CurrentUserService>()
-                        .AddSingleton<IAuthenticationService, AuthenticationService>();
+                        .AddSingleton<IAuthenticationService, AuthenticationService>()
+                        .AddSingleton<IAppLifeCycleCoordinator, AppLifeCycleCoordinator>();
 
-        builder.Services.AddTransient<AuthHandler>();
+        builder.Services.AddSingleton(sp =>
+            new Lazy<IAppLifeCycleCoordinator>(() => sp.GetRequiredService<IAppLifeCycleCoordinator>()));
 
         return builder;
     }
