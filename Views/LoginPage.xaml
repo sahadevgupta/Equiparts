@@ -6,49 +6,287 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:views="clr-namespace:Equiparts.Views"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     x:DataType="viewModels:LoginViewModel"
     BackgroundColor="{StaticResource PageBackground}"
     Shell.NavBarIsVisible="False">
 
     <views:BasePage.PageContent>
         <ScrollView>
-            <VerticalStackLayout Padding="30,80,30,30" Spacing="16">
+            <Grid>
 
-                <Image Source="header_logo"
-                       HeightRequest="60"
-                       Margin="0,0,0,20"
-                       HorizontalOptions="Center"/>
+                <!-- White card: sits behind the header curve, holds all of the form content -->
+                <Border BackgroundColor="{StaticResource CardBackground}"
+                        Stroke="Transparent"
+                        Margin="20,90,20,30"
+                        VerticalOptions="Start"
+                        Padding="24,160,24,28">
 
-                <Label Text="Sign in to your account"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="{StaticResource TitleText}"
-                       HorizontalOptions="Center"/>
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="28,28,28,28"/>
+                    </Border.StrokeShape>
 
-                <Label Text="{Binding ErrorMessage}"
-                       TextColor="Red"
-                       IsVisible="{Binding HasError}"
-                       HorizontalOptions="Center"/>
+                    <Border.Shadow>
+                        <Shadow Brush="#22000000"
+                                Offset="0,6"
+                                Radius="16"
+                                Opacity="0.15"/>
+                    </Border.Shadow>
 
-                <Entry Placeholder="Email"
-                       Keyboard="Email"
-                       Text="{Binding Email}"/>
+                    <VerticalStackLayout Spacing="16">
 
-                <Entry Placeholder="Password"
-                       IsPassword="True"
-                       Text="{Binding Password}"/>
+                        <Label Text="Welcome back!"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TitleText}"
+                               HorizontalOptions="Center"/>
 
-                <Button Text="Login"
-                        Command="{Binding LoginCommand}"
-                        BackgroundColor="{StaticResource Primary}"
-                        TextColor="White"/>
+                        <Label Text="Sign in to continue to your account"
+                               FontSize="14"
+                               TextColor="{StaticResource BodyText}"
+                               HorizontalOptions="Center"
+                               Margin="0,0,0,4"/>
 
-                <ActivityIndicator IsRunning="{Binding IsBusy}"
-                                    IsVisible="{Binding IsBusy}"
-                                    Color="{StaticResource Accent}"
-                                    HorizontalOptions="Center"/>
+                        <Label Text="{Binding ErrorMessage}"
+                               TextColor="Red"
+                               FontSize="13"
+                               IsVisible="{Binding HasError}"
+                               HorizontalOptions="Center"/>
 
-            </VerticalStackLayout>
+                        <!-- Email -->
+                        <Border Stroke="{StaticResource Border}"
+                                StrokeThickness="1"
+                                BackgroundColor="White"
+                                HeightRequest="56">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14"/>
+                            </Border.StrokeShape>
+
+                            <Grid ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="12"
+                                  Padding="16,0">
+
+                                <Label Grid.Column="0"
+                                       Text="{x:Static fontresources:FontAwesomeIcons.Envelope}"
+                                       FontFamily="FontAwesome"
+                                       FontSize="18"
+                                       TextColor="{StaticResource BodyText}"
+                                       VerticalOptions="Center"/>
+
+                                <Entry Grid.Column="1"
+                                       Placeholder="Email"
+                                       Keyboard="Email"
+                                       Text="{Binding Email}"
+                                       BackgroundColor="Transparent"
+                                       VerticalOptions="Center"
+                                       Focused="OnFieldFocused"
+                                       Unfocused="OnFieldUnfocused"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Password -->
+                        <Border Stroke="{StaticResource Border}"
+                                StrokeThickness="1"
+                                BackgroundColor="White"
+                                HeightRequest="56">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14"/>
+                            </Border.StrokeShape>
+
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  ColumnSpacing="12"
+                                  Padding="16,0">
+
+                                <Label Grid.Column="0"
+                                       Text="{x:Static fontresources:FontAwesomeIcons.Lock}"
+                                       FontFamily="FontAwesome"
+                                       FontSize="18"
+                                       TextColor="{StaticResource BodyText}"
+                                       VerticalOptions="Center"/>
+
+                                <Entry Grid.Column="1"
+                                       Placeholder="Password"
+                                       IsPassword="{Binding IsPasswordHidden}"
+                                       Text="{Binding Password}"
+                                       BackgroundColor="Transparent"
+                                       VerticalOptions="Center"
+                                       Focused="OnFieldFocused"
+                                       Unfocused="OnFieldUnfocused"/>
+
+                                <Label Grid.Column="2"
+                                       Text="{Binding PasswordToggleIcon}"
+                                       FontFamily="FontAwesome"
+                                       FontSize="18"
+                                       TextColor="{StaticResource BodyText}"
+                                       VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding TogglePasswordVisibilityCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </Border>
+
+                        <Label Text="Forgot password?"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource LinkColor}"
+                               HorizontalOptions="End">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+
+                        <!-- Login button -->
+                        <Border BackgroundColor="{StaticResource Primary}"
+                                Stroke="Transparent"
+                                HeightRequest="54"
+                                Margin="0,4,0,0">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14"/>
+                            </Border.StrokeShape>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LoginCommand}"/>
+                            </Border.GestureRecognizers>
+
+                            <Grid>
+                                <Label Text="Login"
+                                       TextColor="White"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"/>
+
+                                <Border WidthRequest="34"
+                                        HeightRequest="34"
+                                        BackgroundColor="White"
+                                        Stroke="Transparent"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"
+                                        Margin="0,0,10,0">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="17"/>
+                                    </Border.StrokeShape>
+
+                                    <Label Text="{x:Static fontresources:FontAwesomeIcons.ArrowRight}"
+                                           FontFamily="FontAwesome"
+                                           FontSize="14"
+                                           TextColor="{StaticResource Primary}"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                           IsVisible="{Binding IsBusy}"
+                                           Color="{StaticResource Accent}"
+                                           HorizontalOptions="Center"/>
+
+                        <!-- OR divider -->
+                        <Grid ColumnDefinitions="*,Auto,*"
+                              ColumnSpacing="12"
+                              Margin="0,4">
+                            <BoxView Grid.Column="0"
+                                     HeightRequest="1"
+                                     Color="{StaticResource Divider}"
+                                     VerticalOptions="Center"/>
+
+                            <Label Grid.Column="1"
+                                   Text="OR"
+                                   FontSize="13"
+                                   TextColor="{StaticResource BodyText}"/>
+
+                            <BoxView Grid.Column="2"
+                                     HeightRequest="1"
+                                     Color="{StaticResource Divider}"
+                                     VerticalOptions="Center"/>
+                        </Grid>
+
+                        <!-- Biometrics -->
+                        <Border Stroke="{StaticResource Border}"
+                                StrokeThickness="1"
+                                BackgroundColor="White"
+                                HeightRequest="54">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="14"/>
+                            </Border.StrokeShape>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LoginWithBiometricsCommand}"/>
+                            </Border.GestureRecognizers>
+
+                            <HorizontalStackLayout HorizontalOptions="Center"
+                                                    VerticalOptions="Center"
+                                                    Spacing="10">
+                                <Label Text="{x:Static fontresources:FontAwesomeIcons.Fingerprint}"
+                                       FontFamily="FontAwesome"
+                                       FontSize="18"
+                                       TextColor="{StaticResource LinkColor}"
+                                       VerticalOptions="Center"/>
+
+                                <Label Text="Login with biometrics"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       TextColor="{StaticResource TitleText}"
+                                       VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+                        </Border>
+
+                        <HorizontalStackLayout HorizontalOptions="Center"
+                                                Spacing="4"
+                                                Margin="0,10,0,0">
+                            <Label Text="New to Equiparts Groups?"
+                                   FontSize="14"
+                                   TextColor="{StaticResource BodyText}"/>
+
+                            <Label Text="Contact Support"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   TextColor="{StaticResource LinkColor}">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ContactSupportCommand}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Curved navy header, drawn on top so its wavy bottom edge carves into the card -->
+                <GraphicsView x:Name="HeaderGraphics"
+                              HeightRequest="240"
+                              VerticalOptions="Start"
+                              InputTransparent="True"/>
+
+                <!-- Logo badge, straddling the header/card boundary -->
+                <Border WidthRequest="96"
+                        HeightRequest="96"
+                        Stroke="White"
+                        StrokeThickness="4"
+                        BackgroundColor="{StaticResource PrimaryDark}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"
+                        Margin="0,135,0,0"
+                        InputTransparent="True">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="48"/>
+                    </Border.StrokeShape>
+
+                    <Label HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontAttributes="Bold,Italic"
+                           FontSize="34">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="E" TextColor="White"/>
+                                <Span Text="P" TextColor="{StaticResource Accent}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Border>
+
+            </Grid>
         </ScrollView>
     </views:BasePage.PageContent>
 

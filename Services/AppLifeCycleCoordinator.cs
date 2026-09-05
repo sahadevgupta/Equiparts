@@ -61,7 +61,7 @@ namespace Equiparts.Services
             var hasSession = await _tokenService.HasStoredSessionAsync();
             if (hasSession)
             {
-                await Shell.Current.GoToAsync("//app/Home");
+                await Shell.Current.GoToAsync("//app/home");
             }
             else
             {

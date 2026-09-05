@@ -25,7 +25,8 @@
         Shell.TabBarIsVisible="False"/>
 
     <TabBar Route="app">
-        <Tab Title="Home">
+        <Tab Title="Home"
+             Route="home">
             <Tab.Icon>
                 <FontImageSource FontFamily="FontAwesome"
                                  Glyph="{x:Static fontresources:FontAwesomeIcons.Home}"/>

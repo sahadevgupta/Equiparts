@@ -34,6 +34,9 @@
 
     <!-- Success -->
     <Color x:Key="Success">#2DB84D</Color>
+
+    <!-- Link / focus accent (login screen field focus, links, biometrics icon) -->
+    <Color x:Key="LinkColor">#5C6BC0</Color>
     <Color x:Key="PrimaryColor">#0B2A4A</Color>
     <Color x:Key="SecondaryColor">#0E3A66</Color>
     <Color x:Key="AccentColor">#F47C20</Color>
