@@ -8,13 +8,21 @@ public interface ICartService
 
     event Action? CartChanged;
 
-    void AddToCart(Product product);
+    Task<IEnumerable<Category>> GetCartAsync(CancellationToken cancellationToken = default);
 
-    void RemoveFromCart(Product product);
+    Task<bool> AddToCart(int productId, int quantity, CancellationToken cancellationToken = default);
+
+    Task<bool> UpdateCartItemAsync(int cartId, int quantity, CancellationToken cancellationToken = default);
+
+    Task<bool> RemoveFromCartAsync(int cartId, CancellationToken cancellationToken = default);
+
+    Task<bool> ClearCartAsync(CancellationToken cancellationToken = default);
 
     void IncreaseQuantity(Product product);
 
     void DecreaseQuantity(Product product);
+
+    void RemoveFromCart(Product product);
 
     void Clear();
 

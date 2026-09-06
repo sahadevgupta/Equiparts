@@ -1,62 +1,80 @@
-using System.Text.Json;
+using Equiparts.Configuration.Mapper;
+using Equiparts.Interfaces;
 using Equiparts.Models;
+using Equiparts.Models.Orders;
+using Microsoft.Extensions.Logging;
+using Refit;
 
 namespace Equiparts.Services;
 
-public class OrderService : IOrderService
+public class OrderService(IOrderApi orderApi,
+    IConnectivityService connectivityService,
+    ILogger<OrderService> logger) : IOrderService
 {
-    private readonly List<Order> _orders = [];
-
     public async Task<List<Order>> GetOrdersAsync()
     {
-        if (_orders.Any())
-            return _orders;
+        try
+        {
+            await connectivityService.CheckInternetAccessAsync();
+            var response = await orderApi.GetOrdersAsync();
 
-        using var stream = await FileSystem.OpenAppPackageFileAsync("orders.json");
+            if (response is not { Success: true, Data: not null })
+                return [];
 
-        using var reader = new StreamReader(stream);
-
-        var json = await reader.ReadToEndAsync();
-
-        var orders = JsonSerializer.Deserialize<List<Order>>(json)!;
-
-        _orders.AddRange(orders);
-
-        return _orders;
+            return BackendToAppModelMapper.GetOrders(response.Data.Items);
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to fetch orders ({StatusCode}).", apiEx.StatusCode);
+            return [];
+        }
     }
 
     public async Task<Order?> GetOrderAsync(string orderNo)
     {
-        await GetOrdersAsync();
+        var orders = await GetOrdersAsync();
 
-        return _orders.FirstOrDefault(x => x.OrderNo == orderNo);
+        return orders.FirstOrDefault(x => x.OrderNo == orderNo);
     }
 
     public async Task PlaceOrderAsync(List<CartItem> cartItems)
     {
-        await GetOrdersAsync();
-
-        var order = new Order
+        try
         {
-            OrderNo = $"EQ{DateTime.Now:yyyyMMddHHmmss}",
-            Date = DateTime.Now,
-            Status = "Processing",
-            Items = cartItems,
-            Total = cartItems.Sum(x => x.Total)
-        };
+            await connectivityService.CheckInternetAccessAsync();
 
-        _orders.Insert(0, order);
+            var request = new CreateOrderRequest
+            {
+                Items = [.. cartItems.Select(x => new OrderItemRequest
+                {
+                    ProductId = x.Product.Id,
+                    Quantity = x.Quantity
+                })]
+            };
 
-        // Later this will call REST API
+            await orderApi.CreateOrderAsync(request);
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to place order ({StatusCode}).", apiEx.StatusCode);
+        }
     }
 
     public async Task CancelOrderAsync(string orderNo)
     {
-        await GetOrdersAsync();
+        try
+        {
+            var order = await GetOrderAsync(orderNo);
 
-        var order = _orders.FirstOrDefault(x => x.OrderNo == orderNo);
+            if (order is null)
+                return;
 
-        if (order != null)
-            order.Status = "Cancelled";
+            await connectivityService.CheckInternetAccessAsync();
+            await orderApi.CancelOrderAsync(order.Id);
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to cancel order ({StatusCode}).", apiEx.StatusCode);
+        }
     }
 }

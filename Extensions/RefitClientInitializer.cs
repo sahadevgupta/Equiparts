@@ -21,9 +21,19 @@ public static class RefitClientInitializer
         builder.Services.AddRefitGeneratedClient<IAuthApi>()
             .ConfigureHttpClient(c => c.BaseAddress = baseAddress);
 
+        builder.Services.AddRefitGeneratedClient<ICatalogApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = baseAddress);
+
         // Authenticated - AuthHandler attaches the bearer token and handles 401/refresh/retry.
-        // Register future authenticated APIs (orders, catalog, etc.) the same way.
-        builder.Services.AddRefitGeneratedClient<IUserApi>()
+        builder.Services.AddRefitGeneratedClient<IProfileApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = baseAddress)
+            .AddHttpMessageHandler<AuthHandler>();
+
+        builder.Services.AddRefitGeneratedClient<IOrderApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = baseAddress)
+            .AddHttpMessageHandler<AuthHandler>();
+
+        builder.Services.AddRefitGeneratedClient<ICartApi>()
             .ConfigureHttpClient(c => c.BaseAddress = baseAddress)
             .AddHttpMessageHandler<AuthHandler>();
 

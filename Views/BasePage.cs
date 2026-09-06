@@ -1,4 +1,5 @@
 using Equiparts.Controls;
+using Equiparts.ViewModels;
 
 namespace Equiparts.Views;
 
@@ -46,5 +47,14 @@ public abstract class BasePage : ContentPage
     {
         if (bindable is BasePage basePage && newValue is View newContent)
             basePage._pageContentHost.Content = newContent;
+    }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+        if (BindingContext is BaseViewModel viewModel && (args.NavigationType is NavigationType.Push or NavigationType.Replace))
+        {
+            viewModel.LoadDataOnNavigatedTo();
+        }
     }
 }

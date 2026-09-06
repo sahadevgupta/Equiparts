@@ -39,13 +39,13 @@ public partial class HomeViewModel(ICartService cartService,
 
         Banners = new ObservableCollection<Banner>
         {
-            new Banner{ Image = "banner1.png"},
-            new Banner{ Image = "banner2.png"},
-            new Banner{ Image = "banner3.png"},
-            new Banner{ Image = "banner4.png"},
-            new Banner{ Image = "banner5.png"},
-            new Banner{ Image = "banner6.png"},
-            new Banner{ Image = "banner7.png"}
+            new Banner{ ImageUrl = "banner1.png"},
+            new Banner{ ImageUrl = "banner2.png"},
+            new Banner{ ImageUrl = "banner3.png"},
+            new Banner{ ImageUrl = "banner4.png"},
+            new Banner{ ImageUrl = "banner5.png"},
+            new Banner{ ImageUrl = "banner6.png"},
+            new Banner{ ImageUrl = "banner7.png"}
         };
 
 
@@ -79,7 +79,7 @@ public partial class HomeViewModel(ICartService cartService,
         if (product == null)
             return;
 
-        cartService.AddToCart(product);
+        cartService.AddToCart(product.Id, 1);
 
         await Shell.Current.DisplayAlertAsync(
             "Success",

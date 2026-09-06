@@ -1,10 +1,8 @@
 using System.Text.Json.Serialization;
 
-namespace Equiparts.Models.Auth;
+namespace Equiparts.Models.Profile;
 
-// Example payload for an authenticated endpoint - proves the AuthHandler/token-refresh
-// pipeline end-to-end. Replace with real authenticated API models as they are added.
-public class UserProfileResponse
+public class ProfileResponse
 {
     [JsonPropertyName("userId")]
     public int UserId { get; set; }
@@ -14,6 +12,9 @@ public class UserProfileResponse
 
     [JsonPropertyName("email")]
     public string Email { get; set; } = string.Empty;
+
+    [JsonPropertyName("phoneNumber")]
+    public string? PhoneNumber { get; set; }
 
     [JsonPropertyName("accountType")]
     public string AccountType { get; set; } = string.Empty;

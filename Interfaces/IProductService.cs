@@ -4,7 +4,7 @@ namespace Equiparts.Interfaces;
 
 public interface IProductService
 {
-    Task<List<Category>> GetCategoriesAsync();
-    Task<List<Order>> GetOrdersAsync();
-    Task<List<Product>> GetProductsAsync();
+    Task<IEnumerable<Category>> GetCategoriesAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Product>> GetProductsAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<Banner>> GetBannersAsync(CancellationToken cancellationToken = default);
 }

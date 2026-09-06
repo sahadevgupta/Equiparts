@@ -9,4 +9,6 @@ public partial class BaseViewModel : ObservableObject
 
     [ObservableProperty]
     string title = string.Empty;
+
+    public virtual void LoadDataOnNavigatedTo() { }
 }

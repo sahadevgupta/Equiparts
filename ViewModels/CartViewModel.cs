@@ -20,9 +20,21 @@ public partial class CartViewModel : BaseViewModel
         _cartService = cartService;
         _orderService = orderService;
 
-        RefreshCart();
+        //RefreshCart();
 
-        _cartService.CartChanged += RefreshCart;
+        //_cartService.CartChanged += RefreshCart;
+    }
+
+    private async Task InitializeDataAsync()
+    {
+        try
+        {
+            await _cartService.GetCartAsync();
+        }
+        catch (Exception ex)
+        {
+
+        }
     }
 
     private void RefreshCart()
@@ -87,4 +99,13 @@ public partial class CartViewModel : BaseViewModel
 
         await Shell.Current.GoToAsync("//orders");
     }
+
+    #region [ Override Methods ]
+
+    public override void LoadDataOnNavigatedTo()
+    {
+        InitializeDataAsync();
+    }
+
+    #endregion
 }

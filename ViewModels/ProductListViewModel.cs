@@ -29,7 +29,7 @@ public partial class ProductListViewModel : BaseViewModel
 
         var products = await _service.GetProductsAsync();
 
-        foreach (var product in products.Where(x => x.SubCategoryId == subCategory.Id))
+        foreach (var product in products.Where(x => x.SubCategoryId == subCategory.CategoryId))
             Products.Add(product);
     }
 

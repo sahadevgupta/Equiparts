@@ -2,6 +2,8 @@ namespace Equiparts.Models;
 
 public class Order
 {
+    public int Id { get; set; }
+
     public string OrderNo { get; set; } = string.Empty;
 
     public DateTime Date { get; set; }
@@ -10,5 +12,5 @@ public class Order
 
     public string Status { get; set; } = string.Empty;
 
-    public List<CartItem> Items { get; set; } = [];
+    public List<OrderItem> Items { get; set; } = [];
 }

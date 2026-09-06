@@ -1,8 +1,13 @@
+using System.Net;
+using Equiparts.Interfaces;
 using Equiparts.Models;
+using Microsoft.Extensions.Logging;
+using Refit;
 
 namespace Equiparts.Services;
 
-public class CartService : ICartService
+public class CartService(ICartApi cartApi,
+    ILogger<CartService> logger) : ICartService
 {
     private readonly List<CartItem> _items = [];
 
@@ -10,37 +15,133 @@ public class CartService : ICartService
 
     public event Action? CartChanged;
 
-    public void AddToCart(Product product)
+    public async Task<IEnumerable<Category>> GetCartAsync(CancellationToken cancellationToken = default)
     {
-        var existing = _items.FirstOrDefault(x => x.Product.Id == product.Id);
-
-        if (existing != null)
+        try
         {
-            existing.Quantity++;
+            //await connectivityService.CheckInternetAccessAsync();
+            var response = await cartApi.GetCartAsync(cancellationToken);
+            return Enumerable.Empty<Category>();
         }
-        else
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
-            _items.Add(new CartItem
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
+            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
+                ? "Invalid email or password."
+                : "Login failed. Please try again.";
+            return Enumerable.Empty<Category>();
+        }
+    }
+
+    public async Task<bool> AddToCart(int productId, int quantity, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            //await connectivityService.CheckInternetAccessAsync();
+            var response = await cartApi.AddCartItemAsync(new Models.Cart.AddCartItemRequest { ProductId = productId, Quantity = quantity }, cancellationToken);
+
+            var existing = _items.FirstOrDefault(x => x.Product.Id == productId);
+
+            if (existing != null)
             {
-                Product = product,
-                Quantity = 1
-            });
+                existing.Quantity++;
+            }
+            else
+            {
+                _items.Add(new CartItem
+                {
+                    Product = existing?.Product ?? new(),
+                    Quantity = 1
+                });
+            }
+
+            CartChanged?.Invoke();
+            return true;
         }
-
-        CartChanged?.Invoke();
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
+            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
+                ? "Invalid email or password."
+                : "Login failed. Please try again.";
+            return false;
+        }
     }
 
-    public void RemoveFromCart(Product product)
+    public async Task<bool> UpdateCartItemAsync(int cartId, int quantity, CancellationToken cancellationToken = default)
     {
-        var item = _items.FirstOrDefault(x => x.Product.Id == product.Id);
-
-        if (item == null)
-            return;
-
-        _items.Remove(item);
-
-        CartChanged?.Invoke();
+        try
+        {
+            //await connectivityService.CheckInternetAccessAsync();
+            var response = await cartApi.UpdateCartItemAsync(cartId, new Models.Cart.UpdateCartItemRequest { Quantity = quantity }, cancellationToken);
+            return true;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
+            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
+                ? "Invalid email or password."
+                : "Login failed. Please try again.";
+            return false;
+        }
     }
+
+    public async Task<bool> RemoveFromCartAsync(int cartId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            //await connectivityService.CheckInternetAccessAsync();
+            var response = await cartApi.RemoveCartItemAsync(cartId, cancellationToken);
+            return true;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
+            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
+                ? "Invalid email or password."
+                : "Login failed. Please try again.";
+            return false;
+        }
+    }
+
+    public async Task<bool> ClearCartAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            //await connectivityService.CheckInternetAccessAsync();
+            var response = await cartApi.ClearCartAsync(cancellationToken);
+            return true;
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
+            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
+                ? "Invalid email or password."
+                : "Login failed. Please try again.";
+            return false;
+        }
+    }
+
 
     public void IncreaseQuantity(Product product)
     {
@@ -69,6 +170,25 @@ public class CartService : ICartService
         CartChanged?.Invoke();
     }
 
+    public void RemoveFromCart(Product product)
+    {
+        var item = _items.FirstOrDefault(x => x.Product.Id == product.Id);
+
+        if (item == null)
+            return;
+
+        _items.Remove(item);
+
+        CartChanged?.Invoke();
+    }
+
+    public void Clear()
+    {
+        _items.Clear();
+
+        CartChanged?.Invoke();
+    }
+
     public decimal GetGrandTotal()
     {
         return _items.Sum(x => x.Total);
@@ -79,10 +199,4 @@ public class CartService : ICartService
         return _items.Sum(x => x.Quantity);
     }
 
-    public void Clear()
-    {
-        _items.Clear();
-
-        CartChanged?.Invoke();
-    }
 }
