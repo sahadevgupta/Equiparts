@@ -120,8 +120,7 @@
                                     <Border StrokeShape="RoundRectangle 8"
                                             StrokeThickness="0">
                                         <ffimageloading:CachedImage Source="{Binding ImageUrl}"
-                                                                    CacheType="All"
-                                                                    LoadingPlaceholder=""/>
+                                                                    Aspect="Fill"/>
                                     </Border>
                                 </DataTemplate>
                             </CarouselView.ItemTemplate>
@@ -150,6 +149,9 @@
                             TextColor="{StaticResource Accent}"/>
 
                     </Grid>
+
+                    <Label Text="{Binding BestSellers.Count}"
+                           FontSize="36"/>
 
                     <CollectionView
                         ItemsSource="{Binding BestSellers}"

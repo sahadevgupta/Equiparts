@@ -45,7 +45,7 @@ public class ProductService(ICatalogApi catalogApi,
         {
             await connectivityService.CheckInternetAccessAsync();
             var response = await catalogApi.GetProductsAsync(cancellationToken: cancellationToken);
-            return Enumerable.Empty<Product>();
+            return BackendToAppModelMapper.GetCategories(response.Data);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {

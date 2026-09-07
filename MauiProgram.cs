@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using Equiparts.Controls;
 using Equiparts.Extensions;
 using Equiparts.Interfaces;
 using FFImageLoading.Maui;
@@ -37,6 +38,7 @@ namespace Equiparts
 #if ANDROID
                 handlers.AddHandler(typeof(Shell), typeof(Equiparts.Platforms.Android.Handlers.CustomShellRenderer));
 #endif
+                handlers.AddHandler<BorderlessEntry, Equiparts.Platforms.Handlers.PlainEntryHandler>();
             });
 
             var app = builder.Build();

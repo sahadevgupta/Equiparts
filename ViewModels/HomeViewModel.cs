@@ -13,9 +13,11 @@ public partial class HomeViewModel(ICartService cartService,
     IProductService productService) : BaseViewModel
 {
 
-    public ObservableCollection<Category> Categories { get; } = [];
+    [ObservableProperty]
+    private ObservableCollection<Category>? _categories;
 
-    public ObservableCollection<Product> BestSellers { get; } = [];
+    [ObservableProperty]
+    private ObservableCollection<Product>? _bestSellers;
 
     [ObservableProperty]
     private Category? selectedCategory;
@@ -33,35 +35,35 @@ public partial class HomeViewModel(ICartService cartService,
 
         IsBusy = true;
 
-        await Task.Delay(50);
-        Categories.Clear();
 
-
-        Banners = new ObservableCollection<Banner>
+        try
         {
-            new Banner{ ImageUrl = "banner1.png"},
-            new Banner{ ImageUrl = "banner2.png"},
-            new Banner{ ImageUrl = "banner3.png"},
-            new Banner{ ImageUrl = "banner4.png"},
-            new Banner{ ImageUrl = "banner5.png"},
-            new Banner{ ImageUrl = "banner6.png"},
-            new Banner{ ImageUrl = "banner7.png"}
-        };
+            var categoryTask = productService.GetCategoriesAsync();
+            var bannerTask = productService.GetBannersAsync();
+            var productTask = productService.GetProductsAsync();
 
+            await Task.WhenAll(categoryTask, bannerTask, productTask);
 
-        var categories = await productService.GetCategoriesAsync();
+            var categories = await categoryTask;
+            var banners = await bannerTask;
+            var products = await productTask;
 
-        foreach (var category in categories)
-            Categories.Add(category);
-
-        BestSellers.Clear();
-
-        var products = await productService.GetProductsAsync();
-
-        foreach (var product in products.Where(x => x.IsBestSeller))
-            BestSellers.Add(product);
-
-        IsBusy = false;
+            await MainThread.InvokeOnMainThreadAsync(() =>
+            {
+                Categories = new ObservableCollection<Category>(categories);
+                Banners = new ObservableCollection<Banner>(banners);
+                BestSellers = new ObservableCollection<Product>(products);
+            });
+        }
+        catch (Exception ex)
+        {
+            // Log exception
+            // App.Logger?.LogError(ex, "Failed to load product data");
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]

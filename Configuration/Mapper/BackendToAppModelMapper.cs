@@ -45,6 +45,15 @@ public static class BackendToAppModelMapper
         return categoryResponses.Select(converter.Convert).ToList();
     }
 
+    public static List<Category> GetProducts(List<ProductResponse>? productResponses)
+    {
+        if (productResponses is null)
+            return [];
+
+        var converter = new CategoryResponseToCategoryConverter();
+        return productResponses.Select(converter.Convert).ToList();
+    }
+
     public static Order? GetOrder(OrderResponse? orderResponse)
     {
         if (orderResponse is null)

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 410 356" width="100%">
+<title>EP Logo - Centered Sequential Stroke Reveal</title>
+<defs>
+<!-- Dynamic Glow Filters -->
+<filter height="160%" id="glow-white" width="160%" x="-30%" y="-30%">
+<feGaussianBlur result="blur" stdDeviation="3.5"></feGaussianBlur>
+<feMerge>
+<feMergeNode in="blur"></feMergeNode>
+<feMergeNode in="SourceGraphic"></feMergeNode>
+</feMerge>
+</filter>
+<filter height="160%" id="glow-orange" width="160%" x="-30%" y="-30%">
+<feGaussianBlur result="blur" stdDeviation="4.5"></feGaussianBlur>
+<feColorMatrix in="blur" result="coloredBlur" type="matrix" values="
+        1 0 0 0 0
+        0 0.4 0 0 0
+        0 0 0.1 0 0
+        0 0 0 1.2 0"></feColorMatrix>
+<feMerge>
+<feMergeNode in="coloredBlur"></feMergeNode>
+<feMergeNode in="SourceGraphic"></feMergeNode>
+</feMerge>
+</filter>
+<!-- Linear Shimmer Gradient -->
+<linearGradient id="shimmer" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity="0"></stop>
+<stop offset="50%" stop-color="#ffffff" stop-opacity="0.75"></stop>
+<stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+</linearGradient>
+<!-- Clip 1: Letter E - Top Slanted Bar (Sweeps L to R) -->
+<clipPath id="clip-e-top">
+<rect height="356" width="0" x="0" y="0">
+<animate attributeName="width" calcMode="spline" dur="3.8s" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1" keyTimes="0; 0.05; 0.28; 0.82; 0.94; 1" repeatCount="indefinite" values="0; 0; 320; 320; 0; 0"></animate>
+</rect>
+</clipPath>
+<!-- Clip 2: Letter E - Lower Body and Stem (Cascades Top to Bottom) -->
+<clipPath id="clip-e-body">
+<rect height="0" width="240" x="0" y="70">
+<animate attributeName="height" calcMode="spline" dur="3.8s" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1" keyTimes="0; 0.25; 0.52; 0.82; 0.94; 1" repeatCount="indefinite" values="0; 0; 260; 260; 0; 0"></animate>
+</rect>
+</clipPath>
+<!-- Clip 3: Letter P - Brand Orange (Dynamic Sweep) -->
+<clipPath id="clip-p-full">
+<rect height="260" width="0" x="145" y="70">
+<animate attributeName="width" calcMode="spline" dur="3.8s" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1" keyTimes="0; 0.48; 0.75; 0.82; 0.94; 1" repeatCount="indefinite" values="0; 0; 255; 255; 0; 0"></animate>
+</rect>
+</clipPath>
+<!-- Clip for Entire Logo Shimmer Sweep -->
+<clipPath id="clip-all-logo">
+<g transform="translate(0.000000, 356.000000) scale(0.100000, -0.100000)">
+<path d="M2600 2793 c0 -8 -79 -101 -200 -232 -52 -58 -105 -115 -116 -128 l-21 -23 -727 0 c-670 0 -726 1 -726 17 0 9 22 86 49 172 27 86 52 166 56 179 l6 22 840 0 c461 0 839 -3 839 -7z"></path>
+<path d="M2090 2231 c0 -7 -73 -94 -110 -131 -3 -3 -27 -32 -55 -65 -27 -33 -75 -87 -105 -120 l-55 -60 -349 -5 -350 -5 -21 -60 c-12 -33 -25 -72 -29 -87 l-6 -28 430 0 c476 0 447 4 416 -63 -14 -30 -91 -274 -103 -324 l-5 -23 -623 0 c-342 0 -635 -2 -651 -5 -65 -12 -64 -4 14 237 40 123 79 237 87 253 7 17 23 62 35 100 12 39 26 79 30 90 5 11 27 79 49 150 23 72 44 136 46 143 3 9 148 12 680 12 404 0 675 -4 675 -9z"></path>
+<path d="M3664 2220 c108 -54 139 -146 98 -286 -18 -61 -68 -204 -115 -330 -53 -143 -133 -236 -255 -296 l-67 -33 -474 -5 c-408 -4 -475 -7 -482 -20 -9 -19 -46 -137 -100 -320 -23 -80 -46 -148 -52 -151 -13 -9 -447 -12 -447 -3 0 10 50 174 72 234 37 101 95 274 128 380 18 58 47 142 63 188 l30 82 571 0 572 0 27 28 c15 15 27 32 27 36 0 4 7 23 16 41 8 18 14 46 12 62 l-3 28 -583 3 -583 2 12 22 c15 27 59 166 59 185 0 7 11 36 25 63 14 27 25 54 25 59 0 5 4 21 10 36 l10 26 677 -3 678 -3 49 -25z"></path>
+</g>
+</clipPath>
+</defs>
+<!-- Deep Brand Navy Canvas Background -->
+<rect fill="#081a34" height="100%" width="100%"></rect>
+<!-- Ambient Radial Glow Centered Under Logo -->
+<radialGradient cx="50%" cy="50%" id="ambient-glow" r="50%">
+<stop offset="0%" stop-color="#f15a24" stop-opacity="0.14"></stop>
+<stop offset="65%" stop-color="#081a34" stop-opacity="0"></stop>
+</radialGradient>
+<circle cx="215" cy="180" fill="url(#ambient-glow)" r="160"></circle>
+<!-- Subtle Ghost Wireframe Guide (Aesthetic Precision Blueprint) -->
+<g opacity="0.08" stroke="none" transform="translate(0.000000, 356.000000) scale(0.100000, -0.100000)">
+<path d="M2600 2793 c0 -8 -79 -101 -200 -232 -52 -58 -105 -115 -116 -128 l-21 -23 -727 0 c-670 0 -726 1 -726 17 0 9 22 86 49 172 27 86 52 166 56 179 l6 22 840 0 c461 0 839 -3 839 -7z" fill="#ffffff"></path>
+<path d="M2090 2231 c0 -7 -73 -94 -110 -131 -3 -3 -27 -32 -55 -65 -27 -33 -75 -87 -105 -120 l-55 -60 -349 -5 -350 -5 -21 -60 c-12 -33 -25 -72 -29 -87 l-6 -28 430 0 c476 0 447 4 416 -63 -14 -30 -91 -274 -103 -324 l-5 -23 -623 0 c-342 0 -635 -2 -651 -5 -65 -12 -64 -4 14 237 40 123 79 237 87 253 7 17 23 62 35 100 12 39 26 79 30 90 5 11 27 79 49 150 23 72 44 136 46 143 3 9 148 12 680 12 404 0 675 -4 675 -9z" fill="#ffffff"></path>
+<path d="M3664 2220 c108 -54 139 -146 98 -286 -18 -61 -68 -204 -115 -330 -53 -143 -133 -236 -255 -296 l-67 -33 -474 -5 c-408 -4 -475 -7 -482 -20 -9 -19 -46 -137 -100 -320 -23 -80 -46 -148 -52 -151 -13 -9 -447 -12 -447 -3 0 10 50 174 72 234 37 101 95 274 128 380 18 58 47 142 63 188 l30 82 571 0 572 0 27 28 c15 15 27 32 27 36 0 4 7 23 16 41 8 18 14 46 12 62 l-3 28 -583 3 -583 2 12 22 c15 27 59 166 59 185 0 7 11 36 25 63 14 27 25 54 25 59 0 5 4 21 10 36 l10 26 677 -3 678 -3 49 -25z" fill="#f15a24"></path>
+</g>
+<!-- STROKE 1: Top Slanted Bar of E (White #ffffff) -->
+<g clip-path="url(#clip-e-top)">
+<g stroke="none" transform="translate(0.000000, 356.000000) scale(0.100000, -0.100000)">
+<path d="M2600 2793 c0 -8 -79 -101 -200 -232 -52 -58 -105 -115 -116 -128 l-21 -23 -727 0 c-670 0 -726 1 -726 17 0 9 22 86 49 172 27 86 52 166 56 179 l6 22 840 0 c461 0 839 -3 839 -7z" fill="#ffffff" filter="url(#glow-white)"></path>
+</g>
+</g>
+<!-- STROKE 2: Lower Body & Middle Bar of E (White #ffffff) -->
+<g clip-path="url(#clip-e-body)">
+<g stroke="none" transform="translate(0.000000, 356.000000) scale(0.100000, -0.100000)">
+<path d="M2090 2231 c0 -7 -73 -94 -110 -131 -3 -3 -27 -32 -55 -65 -27 -33 -75 -87 -105 -120 l-55 -60 -349 -5 -350 -5 -21 -60 c-12 -33 -25 -72 -29 -87 l-6 -28 430 0 c476 0 447 4 416 -63 -14 -30 -91 -274 -103 -324 l-5 -23 -623 0 c-342 0 -635 -2 -651 -5 -65 -12 -64 -4 14 237 40 123 79 237 87 253 7 17 23 62 35 100 12 39 26 79 30 90 5 11 27 79 49 150 23 72 44 136 46 143 3 9 148 12 680 12 404 0 675 -4 675 -9z" fill="#ffffff" filter="url(#glow-white)"></path>
+</g>
+</g>
+<!-- STROKE 3: Letter P in Authentic Extracted Orange (#f15a24) -->
+<g clip-path="url(#clip-p-full)">
+<g stroke="none" transform="translate(0.000000, 356.000000) scale(0.100000, -0.100000)">
+<path d="M3664 2220 c108 -54 139 -146 98 -286 -18 -61 -68 -204 -115 -330 -53 -143 -133 -236 -255 -296 l-67 -33 -474 -5 c-408 -4 -475 -7 -482 -20 -9 -19 -46 -137 -100 -320 -23 -80 -46 -148 -52 -151 -13 -9 -447 -12 -447 -3 0 10 50 174 72 234 37 101 95 274 128 380 18 58 47 142 63 188 l30 82 571 0 572 0 27 28 c15 15 27 32 27 36 0 4 7 23 16 41 8 18 14 46 12 62 l-3 28 -583 3 -583 2 12 22 c15 27 59 166 59 185 0 7 11 36 25 63 14 27 25 54 25 59 0 5 4 21 10 36 l10 26 677 -3 678 -3 49 -25z" fill="#f15a24" filter="url(#glow-orange)"></path>
+</g>
+</g>
+<!-- Pulse Bloom Upon Stroke Assembly (0.75 - 0.88s) -->
+<g opacity="0">
+<animate attributeName="opacity" calcMode="spline" dur="3.8s" keySplines="0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1; 0.4 0 0.2 1" keyTimes="0; 0.74; 0.79; 0.88; 1" repeatCount="indefinite" values="0; 0; 0.7; 0; 0"></animate>
+<g stroke="none" transform="translate(0.000000, 356.000000) scale(0.100000, -0.100000)">
+<path d="M2600 2793 c0 -8 -79 -101 -200 -232 -52 -58 -105 -115 -116 -128 l-21 -23 -727 0 c-670 0 -726 1 -726 17 0 9 22 86 49 172 27 86 52 166 56 179 l6 22 840 0 c461 0 839 -3 839 -7z" fill="#ffffff" filter="url(#glow-white)"></path>
+<path d="M2090 2231 c0 -7 -73 -94 -110 -131 -3 -3 -27 -32 -55 -65 -27 -33 -75 -87 -105 -120 l-55 -60 -349 -5 -350 -5 -21 -60 c-12 -33 -25 -72 -29 -87 l-6 -28 430 0 c476 0 447 4 416 -63 -14 -30 -91 -274 -103 -324 l-5 -23 -623 0 c-342 0 -635 -2 -651 -5 -65 -12 -64 -4 14 237 40 123 79 237 87 253 7 17 23 62 35 100 12 39 26 79 30 90 5 11 27 79 49 150 23 72 44 136 46 143 3 9 148 12 680 12 404 0 675 -4 675 -9z" fill="#ffffff" filter="url(#glow-white)"></path>
+<path d="M3664 2220 c108 -54 139 -146 98 -286 -18 -61 -68 -204 -115 -330 -53 -143 -133 -236 -255 -296 l-67 -33 -474 -5 c-408 -4 -475 -7 -482 -20 -9 -19 -46 -137 -100 -320 -23 -80 -46 -148 -52 -151 -13 -9 -447 -12 -447 -3 0 10 50 174 72 234 37 101 95 274 128 380 18 58 47 142 63 188 l30 82 571 0 572 0 27 28 c15 15 27 32 27 36 0 4 7 23 16 41 8 18 14 46 12 62 l-3 28 -583 3 -583 2 12 22 c15 27 59 166 59 185 0 7 11 36 25 63 14 27 25 54 25 59 0 5 4 21 10 36 l10 26 677 -3 678 -3 49 -25z" fill="#ff7d45" filter="url(#glow-orange)"></path>
+</g>
+</g>
+<!-- Specular Shimmer Sweep Across Assembled Glyphs -->
+<g clip-path="url(#clip-all-logo)" opacity="0">
+<animate attributeName="opacity" dur="3.8s" keyTimes="0; 0.76; 0.78; 0.86; 1" repeatCount="indefinite" values="0; 0; 0.7; 0; 0"></animate>
+<rect fill="url(#shimmer)" height="356" transform="skewX(-22)" width="80" x="-100" y="0">
+<animate attributeName="x" dur="3.8s" keyTimes="0; 0.75; 0.86; 1" repeatCount="indefinite" values="-100; -100; 450; 450"></animate>
+</rect>
+</g>
+</svg>

@@ -8,6 +8,7 @@ namespace Equiparts.ViewModels;
 public partial class LoginViewModel : BaseViewModel
 {
     private readonly IAuthenticationService _authenticationService;
+    private readonly ILoadingPopupService _loadingPopupService;
 
     [ObservableProperty]
     private string _email = string.Empty;
@@ -31,10 +32,12 @@ public partial class LoginViewModel : BaseViewModel
 
     partial void OnIsPasswordHiddenChanged(bool value) => OnPropertyChanged(nameof(PasswordToggleIcon));
 
-    public LoginViewModel(IAuthenticationService authenticationService)
+    public LoginViewModel(IAuthenticationService authenticationService,
+        ILoadingPopupService loadingPopupService)
     {
         Title = "Sign In";
         _authenticationService = authenticationService;
+        _loadingPopupService = loadingPopupService;
     }
 
     [RelayCommand]
@@ -65,26 +68,30 @@ public partial class LoginViewModel : BaseViewModel
 
         IsBusy = true;
 
-        try
+        using (_loadingPopupService.Show())
         {
-            var (success, error) = await _authenticationService.LoginAsync(Email.Trim(), Password);
-
-            if (!success)
+            try
             {
-                ErrorMessage = error ?? "Login failed. Please try again.";
-                return;
+                var (success, error) = await _authenticationService.LoginAsync(Email.Trim(), Password);
+
+                if (!success)
+                {
+                    ErrorMessage = error ?? "Login failed. Please try again.";
+                    return;
+                }
+
+                Password = string.Empty;
+
+                // LoginPage was pushed on top of whatever page was showing (via AppShell's
+                // "/LoginPage" global-route navigation), so pop back to it rather than
+                // resetting the whole Shell stack.
+                await Shell.Current.GoToAsync("//app/home");
             }
-
-            Password = string.Empty;
-
-            // LoginPage was pushed on top of whatever page was showing (via AppShell's
-            // "/LoginPage" global-route navigation), so pop back to it rather than
-            // resetting the whole Shell stack.
-            await Shell.Current.GoToAsync("..");
+            finally
+            {
+                IsBusy = false;
+            }
         }
-        finally
-        {
-            IsBusy = false;
-        }
+
     }
 }

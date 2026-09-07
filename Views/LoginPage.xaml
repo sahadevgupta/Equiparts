@@ -4,6 +4,8 @@
     x:Class="Equiparts.Views.LoginPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Equiparts.Controls"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:views="clr-namespace:Equiparts.Views"
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
@@ -54,10 +56,22 @@
                                HorizontalOptions="Center"/>
 
                         <!-- Email -->
+                        <controls:ExtendedEntry  Text="{Binding Email}"
+                                                 LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Envelope}"
+                                                 LeadingIconType="Font"
+                                                 PlaceholderText="Enter email"/>
+
+                        <!-- Password -->
+                        <controls:ExtendedEntry  Text="{Binding Password}"
+                                                 LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Lock}"
+                                                 LeadingIconType="Font"
+                                                 PlaceholderText="Enter password"
+                                                 IsPassword="True"/>
                         <Border Stroke="{StaticResource Border}"
                                 StrokeThickness="1"
                                 BackgroundColor="White"
-                                HeightRequest="56">
+                                HeightRequest="56"
+                                IsVisible="False">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="14"/>
                             </Border.StrokeShape>
@@ -88,7 +102,8 @@
                         <Border Stroke="{StaticResource Border}"
                                 StrokeThickness="1"
                                 BackgroundColor="White"
-                                HeightRequest="56">
+                                HeightRequest="56"
+                                IsVisible="False">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="14"/>
                             </Border.StrokeShape>
@@ -217,8 +232,8 @@
                             </Border.GestureRecognizers>
 
                             <HorizontalStackLayout HorizontalOptions="Center"
-                                                    VerticalOptions="Center"
-                                                    Spacing="10">
+                                                   VerticalOptions="Center"
+                                                   Spacing="10">
                                 <Label Text="{x:Static fontresources:FontAwesomeIcons.Fingerprint}"
                                        FontFamily="FontAwesome"
                                        FontSize="18"
@@ -234,8 +249,8 @@
                         </Border>
 
                         <HorizontalStackLayout HorizontalOptions="Center"
-                                                Spacing="4"
-                                                Margin="0,10,0,0">
+                                               Spacing="4"
+                                               Margin="0,10,0,0">
                             <Label Text="New to Equiparts Groups?"
                                    FontSize="14"
                                    TextColor="{StaticResource BodyText}"/>
@@ -268,12 +283,13 @@
                         HorizontalOptions="Center"
                         VerticalOptions="Start"
                         Margin="0,135,0,0"
-                        InputTransparent="True">
+                        InputTransparent="True"
+                        Padding="3">
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="48"/>
                     </Border.StrokeShape>
 
-                    <Label HorizontalOptions="Center"
+                    <!-- <Label HorizontalOptions="Center"
                            VerticalOptions="Center"
                            FontAttributes="Bold,Italic"
                            FontSize="34">
@@ -283,7 +299,10 @@
                                 <Span Text="P" TextColor="{StaticResource Accent}"/>
                             </FormattedString>
                         </Label.FormattedText>
-                    </Label>
+                    </Label> -->
+
+                    <Image Source="ep_logo"/>
+                    <!-- <ffimageloading:SvgCachedImage Source="ep_logo_animated"/> -->
                 </Border>
 
             </Grid>

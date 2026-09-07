@@ -25,6 +25,20 @@ public static class AppServiceInitializer
                         .AddSingleton<IAuthenticationService, AuthenticationService>()
                         .AddSingleton<IAppLifeCycleCoordinator, AppLifeCycleCoordinator>();
 
+        // The native overlay behind the loading popup is platform-specific (it's added
+        // directly to the platform window root - see Platforms/*/Services/
+        // NativeLoadingOverlay.cs) so only one implementation is ever registered per build.
+#if ANDROID
+        builder.Services.AddSingleton<INativeLoadingOverlay, Equiparts.Platforms.Android.Services.NativeLoadingOverlay>();
+#elif IOS
+        builder.Services.AddSingleton<INativeLoadingOverlay, Equiparts.Platforms.iOS.Services.NativeLoadingOverlay>();
+#elif MACCATALYST
+        builder.Services.AddSingleton<INativeLoadingOverlay, Equiparts.Platforms.MacCatalyst.Services.NativeLoadingOverlay>();
+#elif WINDOWS
+        builder.Services.AddSingleton<INativeLoadingOverlay, Equiparts.Platforms.Windows.Services.NativeLoadingOverlay>();
+#endif
+        builder.Services.AddSingleton<ILoadingPopupService, LoadingPopupService>();
+
         builder.Services.AddSingleton(sp =>
             new Lazy<IAppLifeCycleCoordinator>(() => sp.GetRequiredService<IAppLifeCycleCoordinator>()));
 
