@@ -3,9 +3,37 @@
 <views:BasePage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 x:Class="Equiparts.Views.InitialLoadingActivityIndicator"
-                xmlns:views="clr-namespace:Equiparts.Views">
+                xmlns:views="clr-namespace:Equiparts.Views"
+                BackgroundColor="#081F3E">
 
-    <ActivityIndicator IsRunning="True"
+    <views:BasePage.PageContent>
+        <Grid BackgroundColor="#081F3E">
+            <Grid WidthRequest="208"
+                  HeightRequest="208"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center">
+
+                <GraphicsView x:Name="OuterRingGraphics"
+                              WidthRequest="208"
+                              HeightRequest="208"
+                              InputTransparent="True"/>
+
+                <GraphicsView x:Name="InnerRingGraphics"
+                              WidthRequest="208"
+                              HeightRequest="208"
+                              InputTransparent="True"/>
+
+                <!-- Same navy background as the page, so only the EP mark itself
+                     (not the square image bounds) reads inside the rings. -->
+                <Image x:Name="LogoImage"
+                       Source="ep_icon.png"
+                       WidthRequest="104"
+                       HeightRequest="104"
+                       Aspect="AspectFit"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center"
+                       InputTransparent="True"/>
+            </Grid>
+        </Grid>
+    </views:BasePage.PageContent>
 </views:BasePage>

@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using Equiparts.Extensions;
 using Equiparts.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
+using FFImageLoading.Maui;
 using Microsoft.Extensions.Logging;
 
 namespace Equiparts
@@ -14,6 +14,7 @@ namespace Equiparts
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseFFImageLoading()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
