@@ -105,6 +105,7 @@ public sealed class TokenService : ITokenService
     private async Task<string?> PerformRefreshAsync(CancellationToken cancellationToken)
     {
         var refreshToken = await GetStoredRefreshTokenAsync();
+        var accessToken = await GetStoredAccessTokenAsync();
 
         if (string.IsNullOrEmpty(refreshToken))
         {
@@ -116,7 +117,7 @@ public sealed class TokenService : ITokenService
 
         try
         {
-            var response = await _authApi.RefreshTokenAsync(new RefreshTokenRequest { RefreshToken = refreshToken }, cancellationToken);
+            var response = await _authApi.RefreshTokenAsync(new RefreshTokenRequest { AccessToken = accessToken, RefreshToken = refreshToken }, cancellationToken);
 
             if (response is { Success: true, Data: not null })
             {

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<views:BasePage
+    x:Class="Equiparts.Views.ProductDetailPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
+    xmlns:models="clr-namespace:Equiparts.Models"
+    xmlns:views="clr-namespace:Equiparts.Views"
+    x:DataType="viewModels:ProductDetailViewModel"
+    Shell.NavBarIsVisible="True"
+    BackgroundColor="{StaticResource PageBackground}"
+    Title="{Binding Product.Name,FallbackValue='Product Details'}">
+
+    <views:BasePage.PageContent>
+        <Grid RowDefinitions="Auto,*">
+
+            <!-- Header -->
+            <!-- <Grid Padding="15,15,15,10"
+                  ColumnDefinitions="Auto,*">
+
+                <ImageButton
+                    BackgroundColor="Transparent"
+                    Command="{Binding GoBackCommand}">
+
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="FontAwesome"
+                                         Glyph="{x:Static fontresources:FontAwesomeIcons.ArrowLeft}"
+                                         Size="20"
+                                         Color="{StaticResource TitleText}"/>
+                    </ImageButton.Source>
+
+                </ImageButton>
+
+                <Label
+                    Grid.Column="1"
+                    Margin="12,0,0,0"
+                    VerticalOptions="Center"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    LineBreakMode="TailTruncation"
+                    Text="{Binding Product.Name,FallbackValue='Product Details'}"/>
+
+            </Grid> -->
+
+            <!-- Not found / error state -->
+            <VerticalStackLayout
+                Grid.Row="1"
+                IsVisible="{Binding HasError}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Spacing="12">
+
+                <Label
+                    Text="Product not found"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"/>
+
+                <Label
+                    Text="We couldn't load this product's details."
+                    TextColor="Gray"
+                    HorizontalTextAlignment="Center"/>
+
+                <Button
+                    Text="Go Back"
+                    WidthRequest="140"
+                    Command="{Binding GoBackCommand}"/>
+
+            </VerticalStackLayout>
+
+            <!-- Details -->
+            <ScrollView
+                Grid.Row="1"
+                IsVisible="{Binding HasError,Converter={toolkit:InvertedBoolConverter}}">
+
+                <VerticalStackLayout
+                    Padding="15"
+                    Spacing="16"
+                    BindingContext="{Binding Product}"
+                    x:DataType="models:Product">
+
+                    <!-- Image -->
+                    <Border
+                        Padding="0"
+                        HeightRequest="260"
+                        BackgroundColor="White"
+                        Stroke="{StaticResource Border}"
+                        StrokeShape="RoundRectangle 18">
+
+                        <ffimageloading:CachedImage
+                            Aspect="AspectFit"
+                            Source="{Binding Image,FallbackValue='backhoe_loader',TargetNullValue='backhoe_loader'}"/>
+
+                    </Border>
+
+                    <!-- Category / Brand -->
+                    <HorizontalStackLayout
+                        Spacing="8"
+                        IsVisible="{Binding CategoryName,Converter={toolkit:IsStringNotNullOrEmptyConverter}}">
+
+                        <Label
+                            FontSize="13"
+                            TextColor="Gray"
+                            Text="{Binding CategoryName}"/>
+
+                        <Label
+                            FontSize="13"
+                            TextColor="Gray"
+                            Text="{Binding BrandName}"
+                            IsVisible="{Binding BrandName,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"/>
+
+                    </HorizontalStackLayout>
+
+                    <!-- Name -->
+                    <Label
+                        FontSize="22"
+                        FontAttributes="Bold"
+                        Text="{Binding Name}"/>
+
+                    <!-- Rating -->
+                    <HorizontalStackLayout
+                        Spacing="6"
+                        IsVisible="{Binding ReviewCount,Converter={toolkit:IntToBoolConverter}}">
+
+                        <Label
+                            FontAttributes="Bold"
+                            Text="{Binding AverageRating,StringFormat='★ {0:F1}'}"
+                            TextColor="{StaticResource Accent}"/>
+
+                        <Label
+                            VerticalOptions="Center"
+                            TextColor="Gray"
+                            Text="{Binding ReviewCount,StringFormat='({0} reviews)'}"/>
+
+                    </HorizontalStackLayout>
+
+                    <!-- Price -->
+                    <HorizontalStackLayout Spacing="10">
+
+                        <Label
+                            FontSize="26"
+                            FontAttributes="Bold"
+                            Text="{Binding Price,StringFormat='₹ {0:F0}'}"
+                            TextColor="{StaticResource Accent}"/>
+
+                        <Label
+                            VerticalOptions="Center"
+                            FontSize="16"
+                            TextDecorations="Strikethrough"
+                            TextColor="Gray"
+                            IsVisible="{Binding HasDiscount}"
+                            Text="{Binding Mrp,StringFormat='₹ {0:F0}'}"/>
+
+                        <Label
+                            VerticalOptions="Center"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource Success}"
+                            IsVisible="{Binding HasDiscount}"
+                            Text="{Binding DiscountPercent,StringFormat='{0:F0}% off'}"/>
+
+                    </HorizontalStackLayout>
+
+                    <!-- Stock status -->
+                    <Border
+                        HorizontalOptions="Start"
+                        Padding="10,5"
+                        BackgroundColor="#E9F8EC"
+                        StrokeShape="RoundRectangle 25"
+                        IsVisible="{Binding StockStatus,Converter={toolkit:IsStringNotNullOrEmptyConverter}}">
+
+                        <Label
+                            Text="{Binding StockStatus}"
+                            TextColor="{StaticResource Success}"
+                            FontAttributes="Bold"
+                            FontSize="12"/>
+
+                    </Border>
+
+                    <BoxView HeightRequest="1"
+                             Color="{StaticResource Border}"/>
+
+                    <!-- Description -->
+                    <Label
+                        StyleClass="SectionTitle"
+                        Text="Description"
+                        IsVisible="{Binding Description,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"/>
+
+                    <Label
+                        FontSize="14"
+                        Opacity="0.8"
+                        Text="{Binding Description}"
+                        IsVisible="{Binding Description,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"/>
+
+                    <!-- SKU / Part Number -->
+                    <VerticalStackLayout Spacing="4">
+
+                        <Label
+                            FontSize="12"
+                            TextColor="Gray"
+                            IsVisible="{Binding Sku,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
+                            Text="{Binding Sku,StringFormat='SKU: {0}'}"/>
+
+                        <Label
+                            FontSize="12"
+                            TextColor="Gray"
+                            IsVisible="{Binding PartNumber,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
+                            Text="{Binding PartNumber,StringFormat='Part No: {0}'}"/>
+
+                    </VerticalStackLayout>
+
+                    <Button
+                        Margin="0,10,0,0"
+                        HeightRequest="52"
+                        Text="Add To Cart"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="White"
+                        CornerRadius="14"
+                        Command="{Binding BindingContext.AddToCartCommand, Source={RelativeSource AncestorType={x:Type views:ProductDetailPage}}}"/>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+        </Grid>
+    </views:BasePage.PageContent>
+
+</views:BasePage>

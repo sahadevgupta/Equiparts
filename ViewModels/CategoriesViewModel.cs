@@ -1,19 +1,25 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Equiparts.Configuration;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
+using Equiparts.Views;
 using System.Collections.ObjectModel;
+using Xamarin.Google.Crypto.Tink.Shaded.Protobuf;
 
 namespace Equiparts.ViewModels;
 
 public partial class CategoriesViewModel : BaseViewModel
 {
     readonly IProductService _service;
+    readonly INavigationService _navigationService;
 
-    public ObservableCollection<Category> Categories { get; } = [];
+    [ObservableProperty]
+    private ObservableCollection<Category> _categories = [];
 
-    public ObservableCollection<SubCategory> SubCategories { get; } = [];
+    [ObservableProperty]
+    private ObservableCollection<SubCategory> _subCategories = [];
 
     [ObservableProperty]
     Category? selectedCategory;
@@ -23,10 +29,11 @@ public partial class CategoriesViewModel : BaseViewModel
         LoadSubCategories(value);
     }
 
-    public CategoriesViewModel(IProductService service)
+    public CategoriesViewModel(IProductService service, INavigationService navigationService)
     {
         Title = "Categories";
         _service = service;
+        _navigationService = navigationService;
     }
 
     [RelayCommand]
@@ -34,13 +41,18 @@ public partial class CategoriesViewModel : BaseViewModel
     {
         Categories.Clear();
 
-        var categories = await _service.GetCategoriesAsync();
+        if (AppConfiguration.Categories != null)
+        {
+            Categories = new ObservableCollection<Category>(AppConfiguration.Categories);
+        }
+        else
+        {
+            var categories = await _service.GetCategoriesAsync();
 
-        foreach (var category in categories)
-            Categories.Add(category);
-
+            foreach (var category in categories)
+                Categories.Add(category);
+        }
         Categories.First().IsSelected = true;
-
         SelectedCategory = Categories.FirstOrDefault();
     }
 
@@ -74,6 +86,13 @@ public partial class CategoriesViewModel : BaseViewModel
     [RelayCommand]
     async Task OpenSubCategory(SubCategory subCategory)
     {
-        // Navigate to product listing
+        if (subCategory == null)
+            return;
+
+        await _navigationService.NaviagteAsync<ProductPage>(parameters: new Dictionary<string, object>
+        {
+            ["CategoryId"] = subCategory.CategoryId,
+            ["Title"] = subCategory.Name ?? "Products"
+        });
     }
 }

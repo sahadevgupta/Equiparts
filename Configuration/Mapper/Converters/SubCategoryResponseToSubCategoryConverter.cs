@@ -15,7 +15,8 @@ public class SubCategoryResponseToSubCategoryConverter : ConverterBase<SubCatego
             Slug = source.Slug,
             DisplayOrder = source.DisplayOrder,
             IsFeatured = source.IsFeatured,
-            Children = source.SubCategories
+            Children = source.SubCategories,
+            ImageUrl = source.ImageUrl
         };
     }
 }

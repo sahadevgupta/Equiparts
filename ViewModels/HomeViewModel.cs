@@ -2,15 +2,18 @@ using System.Collections.ObjectModel;
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-
+using Equiparts.Configuration;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
+using Equiparts.Views;
 
 namespace Equiparts.ViewModels;
 
 public partial class HomeViewModel(ICartService cartService,
-    IProductService productService) : BaseViewModel
+    IProductService productService,
+    ILoadingPopupService loadingPopupService,
+    INavigationService navigationService) : BaseViewModel
 {
 
     [ObservableProperty]
@@ -26,6 +29,9 @@ public partial class HomeViewModel(ICartService cartService,
     [ObservableProperty]
     private ObservableCollection<Banner> _banners = [];
 
+    [ObservableProperty]
+    private bool _isRefreshing;
+
 
     [RelayCommand]
     public async Task LoadAsync()
@@ -38,22 +44,26 @@ public partial class HomeViewModel(ICartService cartService,
 
         try
         {
-            var categoryTask = productService.GetCategoriesAsync();
-            var bannerTask = productService.GetBannersAsync();
-            var productTask = productService.GetProductsAsync();
-
-            await Task.WhenAll(categoryTask, bannerTask, productTask);
-
-            var categories = await categoryTask;
-            var banners = await bannerTask;
-            var products = await productTask;
-
-            await MainThread.InvokeOnMainThreadAsync(() =>
+            using (loadingPopupService.Show())
             {
-                Categories = new ObservableCollection<Category>(categories);
-                Banners = new ObservableCollection<Banner>(banners);
-                BestSellers = new ObservableCollection<Product>(products);
-            });
+                var categoryTask = productService.GetCategoriesAsync();
+                var bannerTask = productService.GetBannersAsync();
+                var productTask = productService.GetProductsAsync();
+
+                await Task.WhenAll(categoryTask, bannerTask, productTask);
+
+                var categories = await categoryTask;
+                var banners = await bannerTask;
+                var products = await productTask;
+
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    AppConfiguration.Categories = categories;
+                    Categories = new ObservableCollection<Category>(categories);
+                    Banners = new ObservableCollection<Banner>(banners);
+                    BestSellers = new ObservableCollection<Product>(products.Take(4));
+                });
+            }
         }
         catch (Exception ex)
         {
@@ -72,7 +82,19 @@ public partial class HomeViewModel(ICartService cartService,
         if (product == null)
             return;
 
-        // Navigate later
+        await navigationService.NaviagteAsync<ProductDetailPage>(parameters: new Dictionary<string, object>
+        {
+            ["Product"] = product
+        });
+    }
+
+    [RelayCommand]
+    async Task ViewAllProducts()
+    {
+        await navigationService.NaviagteAsync<ProductPage>(parameters: new Dictionary<string, object>
+        {
+            ["Title"] = "All Products"
+        });
     }
 
     [RelayCommand]
@@ -81,11 +103,26 @@ public partial class HomeViewModel(ICartService cartService,
         if (product == null)
             return;
 
-        cartService.AddToCart(product.Id, 1);
+        await cartService.AddToCart(product.Id, 1);
 
         await Shell.Current.DisplayAlertAsync(
             "Success",
             $"{product.Name} added to cart.",
             "OK");
+    }
+
+    [RelayCommand]
+    async Task Refresh()
+    {
+        IsRefreshing = true;
+
+        try
+        {
+            await LoadAsync();
+        }
+        finally
+        {
+            IsRefreshing = false;
+        }
     }
 }

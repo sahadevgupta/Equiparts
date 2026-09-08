@@ -16,6 +16,7 @@ public class CategoryResponseToCategoryConverter : ConverterBase<CategoryRespons
             Slug = source.Slug,
             DisplayOrder = source.DisplayOrder,
             IsFeatured = source.IsFeatured,
+            ImageUrl = source.ImageUrl,
             SubCategories = source.SubCategories.Select(_subCategoryConverter.Convert).ToList()
         };
     }

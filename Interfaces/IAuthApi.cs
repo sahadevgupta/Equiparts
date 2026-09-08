@@ -10,6 +10,6 @@ public interface IAuthApi
     [Post("/api/auth/login")]
     Task<ApiResult<LoginResponse>> LoginAsync([Body] LoginRequest request, CancellationToken cancellationToken = default);
 
-    [Post("/api/auth/refresh-token")]
+    [Post("/api/auth/refresh")]
     Task<ApiResult<LoginResponse>> RefreshTokenAsync([Body] RefreshTokenRequest request, CancellationToken cancellationToken = default);
 }

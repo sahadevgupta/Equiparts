@@ -10,5 +10,6 @@ public partial class SubCategory : ObservableObject
     public string? Slug { get; set; }
     public int DisplayOrder { get; set; }
     public bool IsFeatured { get; set; }
+    public string? ImageUrl { get; set; }
     public List<object>? Children { get; set; }
 }

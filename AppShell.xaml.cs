@@ -16,6 +16,11 @@ namespace Equiparts
 
             // Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
 
+            // Pushed on top of the current tab rather than being a tab themselves,
+            // so they need an explicit route registration for Shell.GoToAsync to find them.
+            Routing.RegisterRoute(nameof(ProductPage), typeof(ProductPage));
+            Routing.RegisterRoute(nameof(ProductDetailPage), typeof(ProductDetailPage));
+
             // Loaded += OnLoaded;
         }
 

@@ -22,5 +22,8 @@ namespace Equiparts.Models.Catalog
 
         [JsonPropertyName("isFeatured")]
         public bool IsFeatured { get; set; }
+
+        [JsonPropertyName("imageUrl")]
+        public string? ImageUrl { get; set; }
     }
 }

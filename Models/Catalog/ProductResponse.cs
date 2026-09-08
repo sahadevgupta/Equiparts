@@ -54,4 +54,7 @@ public class ProductResponse
 
     [JsonPropertyName("tierName")]
     public string? TierName { get; set; }
+
+    [JsonPropertyName("primaryImageUrl")]
+    public string? PrimaryImageUrl { get; set; }
 }
