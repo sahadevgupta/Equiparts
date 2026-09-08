@@ -62,6 +62,21 @@ public partial class ProductViewModel : BaseViewModel, IQueryAttributable
     }
 
     [RelayCommand]
+    async Task BulkOrder()
+    {
+        await Shell.Current.DisplayAlertAsync(
+            "Bulk Order / RFQ",
+            "Our sales team will reach out to help with your bulk order or request for quotation.",
+            "OK");
+    }
+
+    [RelayCommand]
+    async Task GoBack()
+    {
+        await _navigationService.GoBackAsync();
+    }
+
+    [RelayCommand]
     async Task Load()
     {
         if (IsBusy)
@@ -212,7 +227,7 @@ public partial class ProductViewModel : BaseViewModel, IQueryAttributable
     [RelayCommand]
     async Task AddToCart(Product product)
     {
-        if (product is null)
+        if (product is null || !product.CanAddToCart)
             return;
 
         await _cartService.AddToCart(product.Id, 1);

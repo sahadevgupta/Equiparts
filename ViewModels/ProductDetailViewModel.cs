@@ -45,7 +45,7 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
     [RelayCommand]
     async Task AddToCart()
     {
-        if (Product is null)
+        if (Product is null || !Product.CanAddToCart)
             return;
 
         await _cartService.AddToCart(Product.Id, 1);
@@ -53,6 +53,18 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
         await Shell.Current.DisplayAlertAsync(
             "Success",
             $"{Product.Name} added to cart.",
+            "OK");
+    }
+
+    [RelayCommand]
+    async Task Enquire()
+    {
+        if (Product is null)
+            return;
+
+        await Shell.Current.DisplayAlertAsync(
+            "Enquiry Sent",
+            $"Our team will get back to you with a quote for {Product.Name} shortly.",
             "OK");
     }
 

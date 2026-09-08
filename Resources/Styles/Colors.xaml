@@ -34,6 +34,19 @@
 
     <!-- Success -->
     <Color x:Key="Success">#2DB84D</Color>
+    <Color x:Key="SuccessBackground">#E9F8EC</Color>
+
+    <!-- Warning (out of stock / attention) -->
+    <Color x:Key="Warning">#D9822B</Color>
+    <Color x:Key="WarningBackground">#FBEDDC</Color>
+
+    <!-- Danger (low stock) -->
+    <Color x:Key="Danger">#D64545</Color>
+    <Color x:Key="DangerBackground">#FBE7E7</Color>
+
+    <!-- Chip / tag -->
+    <Color x:Key="ChipBackground">#EEF0F3</Color>
+    <Color x:Key="ChipText">#4B5563</Color>
 
     <!-- Link / focus accent (login screen field focus, links, biometrics icon) -->
     <Color x:Key="LinkColor">#5C6BC0</Color>
@@ -45,4 +58,5 @@
     <Color x:Key="White">#FFFFFF</Color>
     <Color x:Key="Black">Black</Color>
     <Color x:Key="LightGray">#E0E0E0</Color>
+    <Color x:Key="NavyBlue">#13233D</Color>
 </ResourceDictionary>

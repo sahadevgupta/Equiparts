@@ -19,10 +19,12 @@ public class ProductResponseToProductConverter : ConverterBase<ProductResponse, 
             IsBestSeller = source.IsFeatured,
             Image = source.PrimaryImageUrl,
             StockStatus = source.StockStatus,
+            SalesStatus = source.SalesStatus,
             AverageRating = source.AverageRating,
             ReviewCount = source.ReviewCount,
             CategoryName = source.CategoryName,
-            BrandName = source.BrandName
+            BrandName = source.BrandName,
+            TierName = source.TierName
         };
     }
 }
