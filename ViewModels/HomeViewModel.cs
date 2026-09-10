@@ -13,7 +13,8 @@ namespace Equiparts.ViewModels;
 public partial class HomeViewModel(ICartService cartService,
     IProductService productService,
     ILoadingPopupService loadingPopupService,
-    INavigationService navigationService) : BaseViewModel
+    INavigationService navigationService,
+    IDialogService dialogService) : BaseViewModel
 {
 
     [ObservableProperty]
@@ -116,12 +117,9 @@ public partial class HomeViewModel(ICartService cartService,
         if (product == null)
             return;
 
-        await cartService.AddToCart(product.Id, 1);
+        await cartService.AddToCartAsync(product.Id, 1);
 
-        await Shell.Current.DisplayAlertAsync(
-            "Success",
-            $"{product.Name} added to cart.",
-            "OK");
+        dialogService.ShowToast($"{product.Name} added to cart.");
     }
 
     [RelayCommand]

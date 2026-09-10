@@ -1,220 +1,220 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary
-        xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-        <!-- Page -->
+    <!-- Page -->
 
-        <Style TargetType="ContentPage"
-               ApplyToDerivedTypes="True">
-                <Setter Property="BackgroundColor"
-                        Value="{StaticResource PageBackground}"/>
-        </Style>
+    <Style TargetType="ContentPage"
+           ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource PageBackground}"/>
+    </Style>
 
-        <Style TargetType="Shell"
-               ApplyToDerivedTypes="True">
-                <Setter Property="BackgroundColor"
-                        Value="{StaticResource NavyBlue}"/>
-                <Setter Property="ForegroundColor"
-                        Value="White"/>
-                <Setter Property="TitleColor"
-                        Value="White"/>
-        </Style>
+    <Style TargetType="Shell"
+           ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource NavyBlue}"/>
+        <Setter Property="ForegroundColor"
+                Value="White"/>
+        <Setter Property="TitleColor"
+                Value="White"/>
+    </Style>
 
-        <!-- Title -->
+    <!-- Title -->
 
-        <Style TargetType="Label"
-               Class="Title">
+    <Style TargetType="Label"
+           Class="Title">
 
-                <Setter Property="FontSize"
-                        Value="24"/>
+        <Setter Property="FontSize"
+                Value="24"/>
 
-                <Setter Property="FontFamily"
-                        Value="PoppinsBold"/>
+        <Setter Property="FontFamily"
+                Value="PoppinsBold"/>
 
-                <Setter Property="TextColor"
-                        Value="{StaticResource TitleText}"/>
-        </Style>
+        <Setter Property="TextColor"
+                Value="{StaticResource TitleText}"/>
+    </Style>
 
-        <!-- Section -->
+    <!-- Section -->
 
-        <Style TargetType="Label"
-               Class="SectionTitle">
+    <Style TargetType="Label"
+           Class="SectionTitle">
 
-                <Setter Property="FontSize"
-                        Value="20"/>
+        <Setter Property="FontSize"
+                Value="20"/>
 
-                <Setter Property="FontFamily"
-                        Value="OpenSansSemibold"/>
+        <Setter Property="FontFamily"
+                Value="OpenSansSemibold"/>
 
-                <Setter Property="TextColor"
-                        Value="{StaticResource TitleText}"/>
-        </Style>
+        <Setter Property="TextColor"
+                Value="{StaticResource TitleText}"/>
+    </Style>
 
-        <!-- Body -->
+    <!-- Body -->
 
-        <Style TargetType="Label"
-               Class="Body">
+    <Style TargetType="Label"
+           Class="Body">
 
-                <Setter Property="FontSize"
-                        Value="15"/>
+        <Setter Property="FontSize"
+                Value="15"/>
 
-                <Setter Property="FontFamily"
-                        Value="PoppinsRegular"/>
+        <Setter Property="FontFamily"
+                Value="PoppinsRegular"/>
 
-                <Setter Property="TextColor"
-                        Value="{StaticResource BodyText}"/>
-        </Style>
+        <Setter Property="TextColor"
+                Value="{StaticResource BodyText}"/>
+    </Style>
 
-        <!-- Price -->
+    <!-- Price -->
 
-        <Style TargetType="Label"
-               Class="Price">
+    <Style TargetType="Label"
+           Class="Price">
 
-                <Setter Property="FontSize"
-                        Value="20"/>
+        <Setter Property="FontSize"
+                Value="20"/>
 
-                <Setter Property="FontFamily"
-                        Value="PoppinsBold"/>
+        <Setter Property="FontFamily"
+                Value="PoppinsBold"/>
 
-                <Setter Property="TextColor"
-                        Value="{StaticResource PriceText}"/>
-        </Style>
+        <Setter Property="TextColor"
+                Value="{StaticResource PriceText}"/>
+    </Style>
 
-        <!-- Primary Button -->
+    <!-- Primary Button -->
 
-        <Style TargetType="Button">
+    <Style TargetType="Button">
 
-                <Setter Property="BackgroundColor"
-                        Value="{StaticResource Accent}"/>
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource Accent}"/>
 
-                <Setter Property="CornerRadius"
-                        Value="12"/>
+        <Setter Property="CornerRadius"
+                Value="12"/>
 
-                <Setter Property="HeightRequest"
-                        Value="48"/>
+        <Setter Property="HeightRequest"
+                Value="48"/>
 
-                <Setter Property="TextColor"
-                        Value="White"/>
+        <Setter Property="TextColor"
+                Value="White"/>
 
-                <Setter Property="FontFamily"
-                        Value="OpenSansSemibold"/>
-        </Style>
+        <Setter Property="FontFamily"
+                Value="OpenSansSemibold"/>
+    </Style>
 
-        <!-- Card -->
+    <!-- Card -->
 
-        <Style TargetType="Border"
-               Class="Card">
+    <Style TargetType="Border"
+           Class="Card">
 
-                <Setter Property="BackgroundColor"
-                        Value="{StaticResource CardBackground}"/>
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource CardBackground}"/>
 
-                <Setter Property="Stroke"
-                        Value="{StaticResource Border}"/>
+        <Setter Property="Stroke"
+                Value="{StaticResource Border}"/>
 
-                <Setter Property="StrokeThickness"
-                        Value="1"/>
+        <Setter Property="StrokeThickness"
+                Value="1"/>
 
-                <Setter Property="StrokeShape">
+        <Setter Property="StrokeShape">
 
-                        <Setter.Value>
+            <Setter.Value>
 
-                                <RoundRectangle CornerRadius="16"/>
+                <RoundRectangle CornerRadius="16"/>
 
-                        </Setter.Value>
+            </Setter.Value>
 
-                </Setter>
+        </Setter>
 
-                <Setter Property="Padding"
-                        Value="12"/>
+        <Setter Property="Padding"
+                Value="12"/>
 
-                <Setter Property="Margin"
-                        Value="8,4"/>
-        </Style>
+        <Setter Property="Margin"
+                Value="8,4"/>
+    </Style>
 
-        <!-- Referenced by Controls/ExtendedEntry.xaml but never defined - missing keys
+    <!-- Referenced by Controls/ExtendedEntry.xaml but never defined - missing keys
              threw XamlParseException on first construction and crashed the app on
              startup. Added to match existing usage: title/support/error labels and the
              field entry's own text/placeholder styling. -->
-        <Style TargetType="Label"
-               x:Key="TitleStyleBlackBold">
-                <Setter Property="FontSize"
-                        Value="14"/>
-                <Setter Property="FontFamily"
-                        Value="OpenSansSemibold"/>
-                <Setter Property="TextColor"
-                        Value="{StaticResource TitleText}"/>
-        </Style>
+    <Style TargetType="Label"
+           x:Key="TitleStyleBlackBold">
+        <Setter Property="FontSize"
+                Value="14"/>
+        <Setter Property="FontFamily"
+                Value="OpenSansSemibold"/>
+        <Setter Property="TextColor"
+                Value="{StaticResource TitleText}"/>
+    </Style>
 
-        <Style TargetType="Label"
-               x:Key="SupportLabelStyleBlackRegular">
-                <Setter Property="FontSize"
-                        Value="12"/>
-                <Setter Property="FontFamily"
-                        Value="OpenSansRegular"/>
-                <Setter Property="TextColor"
-                        Value="{StaticResource BodyText}"/>
-        </Style>
+    <Style TargetType="Label"
+           x:Key="SupportLabelStyleBlackRegular">
+        <Setter Property="FontSize"
+                Value="12"/>
+        <Setter Property="FontFamily"
+                Value="OpenSansRegular"/>
+        <Setter Property="TextColor"
+                Value="{StaticResource BodyText}"/>
+    </Style>
 
-        <Style TargetType="Label"
-               x:Key="ErrorStyleBlackRegular">
-                <Setter Property="FontSize"
-                        Value="12"/>
-                <Setter Property="FontFamily"
-                        Value="OpenSansRegular"/>
-                <Setter Property="TextColor"
-                        Value="Red"/>
-        </Style>
+    <Style TargetType="Label"
+           x:Key="ErrorStyleBlackRegular">
+        <Setter Property="FontSize"
+                Value="12"/>
+        <Setter Property="FontFamily"
+                Value="OpenSansRegular"/>
+        <Setter Property="TextColor"
+                Value="Red"/>
+    </Style>
 
-        <Style TargetType="Entry"
-               x:Key="FieldEntryStyleGreyRegular">
-                <Setter Property="FontSize"
-                        Value="15"/>
-                <Setter Property="FontFamily"
-                        Value="OpenSansRegular"/>
-                <Setter Property="TextColor"
-                        Value="{StaticResource TextDark}"/>
-                <Setter Property="PlaceholderColor"
-                        Value="Gray"/>
-        </Style>
+    <Style TargetType="Entry"
+           x:Key="FieldEntryStyleGreyRegular">
+        <Setter Property="FontSize"
+                Value="15"/>
+        <Setter Property="FontFamily"
+                Value="OpenSansRegular"/>
+        <Setter Property="TextColor"
+                Value="{StaticResource TextDark}"/>
+        <Setter Property="PlaceholderColor"
+                Value="Gray"/>
+    </Style>
 
-        <Style TargetType="Label"
-               x:Key="TitleStyle">
-                <Setter Property="FontSize"
-                        Value="20"/>
-                <Setter Property="VerticalOptions"
-                        Value="Center"/>
-                <Setter Property="FontFamily"
-                        Value="OpenSansSemibold"/>
-        </Style>
+    <Style TargetType="Label"
+           x:Key="TitleStyle">
+        <Setter Property="FontSize"
+                Value="20"/>
+        <Setter Property="VerticalOptions"
+                Value="Center"/>
+        <Setter Property="FontFamily"
+                Value="OpenSansSemibold"/>
+    </Style>
 
-        <!-- Page -->
+    <!-- Page -->
 
-        <!-- Label -->
-        <Style TargetType="Label">
-                <Setter Property="TextColor"
-                        Value="{StaticResource TextDark}"/>
-        </Style>
+    <!-- Label -->
+    <Style TargetType="Label">
+        <Setter Property="TextColor"
+                Value="{StaticResource TextDark}"/>
+    </Style>
 
-        <!-- ✅ Border Card Style -->
-        <Style TargetType="Border">
-                <Setter Property="Stroke"
-                        Value="#DDDDDD"/>
-                <Setter Property="StrokeThickness"
-                        Value="1"/>
-                <Setter Property="BackgroundColor"
-                        Value="White"/>
-                <Setter Property="StrokeShape">
-                        <RoundRectangle CornerRadius="10"/>
-                </Setter>
+    <!-- ✅ Border Card Style -->
+    <Style TargetType="Border">
+        <Setter Property="Stroke"
+                Value="#DDDDDD"/>
+        <Setter Property="StrokeThickness"
+                Value="1"/>
+        <Setter Property="BackgroundColor"
+                Value="White"/>
+        <Setter Property="StrokeShape">
+            <RoundRectangle CornerRadius="10"/>
+        </Setter>
 
-                <Setter Property="Shadow">
-                        <Shadow Brush="#22000000"
-                                Offset="2,2"
-                                Radius="5"
-                                Opacity="0.3"/>
-                </Setter>
-        </Style>
+        <Setter Property="Shadow">
+            <Shadow Brush="#22000000"
+                    Offset="2,2"
+                    Radius="5"
+                    Opacity="0.3"/>
+        </Setter>
+    </Style>
 
 
 </ResourceDictionary>

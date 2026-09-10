@@ -13,169 +13,170 @@
     BackgroundColor="{StaticResource PageBackground}">
 
     <views:BasePage.PageContent>
-    <Grid RowDefinitions="Auto,*">
+        <Grid RowDefinitions="Auto,*">
 
-        <!-- Header -->
-        <Image Source="header_logo"
-               Margin="-2,0"/>
-        <Grid IsVisible="false"
-              Padding="20,20,20,15"
-              BackgroundColor="{StaticResource Primary}">
+            <!-- Header -->
+            <Image Source="header_logo"
+                   Margin="-2,0"/>
+            <Grid IsVisible="false"
+                  Padding="20,20,20,15"
+                  BackgroundColor="{StaticResource Primary}">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <Label
-                Text="My Orders"
-                FontSize="26"
-                FontAttributes="Bold"
-                TextColor="White"/>
+                <Label
+                    Text="My Orders"
+                    FontSize="26"
+                    FontAttributes="Bold"
+                    TextColor="White"/>
 
-            <Image
-                Grid.Column="1"
-                Source="orders.png"
-                HeightRequest="28"/>
+                <Image
+                    Grid.Column="1"
+                    Source="orders.png"
+                    HeightRequest="28"/>
+            </Grid>
+
+            <!-- Orders -->
+
+            <CollectionView
+                Grid.Row="1"
+                Margin="15"
+                ItemsSource="{Binding Orders}"
+                SelectionMode="None"
+                VerticalScrollBarVisibility="Never">
+
+                <CollectionView.EmptyView>
+
+                    <VerticalStackLayout
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                        Spacing="15">
+
+                        <Label
+                            FontFamily="FontAwesome"
+                            Text="{x:Static fontresources:FontAwesomeIcons.Receipt}"
+                            FontSize="80"
+                            TextColor="{StaticResource ChipText}"
+                            HorizontalOptions="Center"/>
+
+                        <Label
+                            Text="No Orders Yet"
+                            FontSize="22"
+                            HorizontalTextAlignment="Center"
+                            FontAttributes="Bold"/>
+
+                        <Label
+                            Text="Your placed orders will appear here."
+                            HorizontalTextAlignment="Center"
+                            TextColor="Gray"/>
+
+                    </VerticalStackLayout>
+
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate
+                        x:DataType="models:Order">
+
+                        <Border
+                            Margin="0,6"
+                            Padding="15"
+                            BackgroundColor="White"
+                            Stroke="{StaticResource Border}"
+                            StrokeShape="RoundRectangle 16">
+
+                            <VerticalStackLayout
+                                Spacing="12">
+
+                                <!-- Top -->
+
+                                <Grid ColumnDefinitions="*,Auto">
+
+                                    <VerticalStackLayout>
+
+                                        <Label
+                                            FontSize="17"
+                                            FontAttributes="Bold"
+                                            Text="{Binding OrderNo}"/>
+
+                                        <Label
+                                            FontSize="13"
+                                            Text="{Binding Date,StringFormat='{0:dd MMM yyyy}'}"
+                                            TextColor="Gray"/>
+
+                                    </VerticalStackLayout>
+
+                                    <!-- Status Badge -->
+
+                                    <Border
+                                        Grid.Column="1"
+                                        Padding="10,5"
+                                        BackgroundColor="#E9F8EC"
+                                        StrokeShape="RoundRectangle 25">
+
+                                        <Label
+                                            Text="{Binding Status}"
+                                            TextColor="#2DB84D"
+                                            VerticalTextAlignment="Center"
+                                            FontAttributes="Bold"
+                                            FontSize="12"/>
+
+                                    </Border>
+
+                                </Grid>
+
+                                <BoxView
+                                    HeightRequest="1"
+                                    Color="#EEEEEE"/>
+
+                                <!-- Bottom -->
+
+                                <Grid
+                                    ColumnDefinitions="*,Auto">
+
+                                    <VerticalStackLayout>
+
+                                        <Label
+                                            Text="Grand Total"
+                                            FontSize="13"
+                                            TextColor="Gray"/>
+
+                                        <Label
+                                            FontSize="20"
+                                            FontAttributes="Bold"
+                                            Text="{Binding Total,StringFormat='₹ {0:F0}'}"
+                                            TextColor="{StaticResource Accent}"/>
+
+                                    </VerticalStackLayout>
+
+                                    <Button
+                                        Grid.Column="1"
+                                        WidthRequest="120"
+                                        HeightRequest="42"
+                                        Text="View Details"
+                                        BackgroundColor="{StaticResource Accent}"
+                                        TextColor="White"
+                                        CornerRadius="10"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:OrdersViewModel}}, Path=ViewOrderCommand}"
+                                        CommandParameter="{Binding .}"/>
+
+                                </Grid>
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
         </Grid>
-
-        <!-- Orders -->
-
-        <CollectionView
-            Grid.Row="1"
-            Margin="15"
-            ItemsSource="{Binding Orders}"
-            SelectionMode="None"
-            VerticalScrollBarVisibility="Never">
-
-            <CollectionView.EmptyView>
-
-                <VerticalStackLayout
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                    Spacing="15">
-
-                    <Label
-                        FontFamily="FontAwesome"
-                        Text="{x:Static fontresources:FontAwesomeIcons.Receipt}"
-                        FontSize="80"
-                        TextColor="{StaticResource ChipText}"
-                        HorizontalOptions="Center"/>
-
-                    <Label
-                        Text="No Orders Yet"
-                        FontSize="22"
-                        FontAttributes="Bold"/>
-
-                    <Label
-                        Text="Your placed orders will appear here."
-                        HorizontalTextAlignment="Center"
-                        TextColor="Gray"/>
-
-                </VerticalStackLayout>
-
-            </CollectionView.EmptyView>
-
-            <CollectionView.ItemTemplate>
-
-                <DataTemplate
-                    x:DataType="models:Order">
-
-                    <Border
-                        Margin="0,6"
-                        Padding="15"
-                        BackgroundColor="White"
-                        Stroke="{StaticResource Border}"
-                        StrokeShape="RoundRectangle 16">
-
-                        <VerticalStackLayout
-                            Spacing="12">
-
-                            <!-- Top -->
-
-                            <Grid ColumnDefinitions="*,Auto">
-
-                                <VerticalStackLayout>
-
-                                    <Label
-                                        FontSize="17"
-                                        FontAttributes="Bold"
-                                        Text="{Binding OrderNo}"/>
-
-                                    <Label
-                                        FontSize="13"
-                                        Text="{Binding Date,StringFormat='{0:dd MMM yyyy}'}"
-                                        TextColor="Gray"/>
-
-                                </VerticalStackLayout>
-
-                                <!-- Status Badge -->
-
-                                <Border
-                                    Grid.Column="1"
-                                    Padding="10,5"
-                                    BackgroundColor="#E9F8EC"
-                                    StrokeShape="RoundRectangle 25">
-
-                                    <Label
-                                        Text="{Binding Status}"
-                                        TextColor="#2DB84D"
-                                        VerticalTextAlignment="Center"
-                                        FontAttributes="Bold"
-                                        FontSize="12"/>
-
-                                </Border>
-
-                            </Grid>
-
-                            <BoxView
-                                HeightRequest="1"
-                                Color="#EEEEEE"/>
-
-                            <!-- Bottom -->
-
-                            <Grid
-                                ColumnDefinitions="*,Auto">
-
-                                <VerticalStackLayout>
-
-                                    <Label
-                                        Text="Grand Total"
-                                        FontSize="13"
-                                        TextColor="Gray"/>
-
-                                    <Label
-                                        FontSize="20"
-                                        FontAttributes="Bold"
-                                        Text="{Binding Total,StringFormat='₹ {0:F0}'}"
-                                        TextColor="{StaticResource Accent}"/>
-
-                                </VerticalStackLayout>
-
-                                <Button
-                                    Grid.Column="1"
-                                    WidthRequest="120"
-                                    HeightRequest="42"
-                                    Text="View Details"
-                                    BackgroundColor="{StaticResource Accent}"
-                                    TextColor="White"
-                                    CornerRadius="10"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:OrdersViewModel}}, Path=ViewOrderCommand}"
-                                    CommandParameter="{Binding .}"/>
-
-                            </Grid>
-
-                        </VerticalStackLayout>
-
-                    </Border>
-
-                </DataTemplate>
-
-            </CollectionView.ItemTemplate>
-
-        </CollectionView>
-
-    </Grid>
     </views:BasePage.PageContent>
 
 </views:BasePage>

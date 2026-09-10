@@ -1,31 +1,31 @@
-using System.Net;
 using Equiparts.Configuration.Mapper;
 using Equiparts.Interfaces;
 using Equiparts.Models;
+using Equiparts.Models.Auth;
+using Equiparts.Models.Cart;
 using Microsoft.Extensions.Logging;
 using Refit;
 
 namespace Equiparts.Services;
 
 public class CartService(ICartApi cartApi,
+    IConnectivityService connectivityService,
     ILogger<CartService> logger) : ICartService
 {
-    private readonly List<CartItem> _items = [];
+    public CartSummary? Cart { get; private set; }
 
-    public IReadOnlyCollection<CartItem> Items => _items;
+    public IReadOnlyCollection<CartItem> Items => Cart?.Items ?? [];
 
     public event Action? CartChanged;
 
-    public async Task<IEnumerable<Category>> GetCartAsync(CancellationToken cancellationToken = default)
+    public async Task<CartSummary?> GetCartAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            //await connectivityService.CheckInternetAccessAsync();
+            await connectivityService.CheckInternetAccessAsync(cancellationToken);
             var response = await cartApi.GetCartAsync(cancellationToken);
-            if (response is not { Success: true, Data: not null })
-                return Enumerable.Empty<Category>();
-
-            return BackendToAppModelMapper.GetCategories(response.Data);
+            ApplyCartResponse(response);
+            return Cart;
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -33,36 +33,79 @@ public class CartService(ICartApi cartApi,
         }
         catch (ApiException apiEx)
         {
-            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
-            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
-                ? "Invalid email or password."
-                : "Login failed. Please try again.";
-            return Enumerable.Empty<Category>();
+            logger.LogWarning(apiEx, "Failed to fetch cart ({StatusCode}).", apiEx.StatusCode);
+            return null;
         }
     }
 
-    public async Task<bool> AddToCart(int productId, int quantity, CancellationToken cancellationToken = default)
+    public async Task<bool> AddToCartAsync(int productId, int quantity, CancellationToken cancellationToken = default)
     {
         try
         {
-            //await connectivityService.CheckInternetAccessAsync();
-            var response = await cartApi.AddCartItemAsync(new Models.Cart.AddCartItemRequest { ProductId = productId, Quantity = quantity }, cancellationToken);
+            await connectivityService.CheckInternetAccessAsync(cancellationToken);
+            var response = await cartApi.AddCartItemAsync(new AddCartItemRequest { ProductId = productId, Quantity = quantity }, cancellationToken);
+            return ApplyCartResponse(response);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to add item to cart ({StatusCode}).", apiEx.StatusCode);
+            return false;
+        }
+    }
 
-            var existing = _items.FirstOrDefault(x => x.Product.Id == productId);
+    public async Task<bool> UpdateCartItemAsync(int cartItemId, int quantity, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await connectivityService.CheckInternetAccessAsync(cancellationToken);
+            var response = await cartApi.UpdateCartItemAsync(cartItemId, new UpdateCartItemRequest { Quantity = quantity }, cancellationToken);
+            return ApplyCartResponse(response);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to update cart item ({StatusCode}).", apiEx.StatusCode);
+            return false;
+        }
+    }
 
-            if (existing != null)
-            {
-                existing.Quantity++;
-            }
-            else
-            {
-                _items.Add(new CartItem
-                {
-                    Product = existing?.Product ?? new(),
-                    Quantity = 1
-                });
-            }
+    public async Task<bool> RemoveFromCartAsync(int cartItemId, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await connectivityService.CheckInternetAccessAsync(cancellationToken);
+            var response = await cartApi.RemoveCartItemAsync(cartItemId, cancellationToken);
+            return ApplyCartResponse(response);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to remove cart item ({StatusCode}).", apiEx.StatusCode);
+            return false;
+        }
+    }
 
+    public async Task<bool> ClearCartAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await connectivityService.CheckInternetAccessAsync(cancellationToken);
+            var response = await cartApi.ClearCartAsync(cancellationToken);
+
+            if (response is not { Success: true })
+                return false;
+
+            Cart = null;
             CartChanged?.Invoke();
             return true;
         }
@@ -72,135 +115,28 @@ public class CartService(ICartApi cartApi,
         }
         catch (ApiException apiEx)
         {
-            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
-            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
-                ? "Invalid email or password."
-                : "Login failed. Please try again.";
+            logger.LogWarning(apiEx, "Failed to clear cart ({StatusCode}).", apiEx.StatusCode);
             return false;
         }
-    }
-
-    public async Task<bool> UpdateCartItemAsync(int cartId, int quantity, CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            //await connectivityService.CheckInternetAccessAsync();
-            var response = await cartApi.UpdateCartItemAsync(cartId, new Models.Cart.UpdateCartItemRequest { Quantity = quantity }, cancellationToken);
-            return true;
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            throw;
-        }
-        catch (ApiException apiEx)
-        {
-            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
-            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
-                ? "Invalid email or password."
-                : "Login failed. Please try again.";
-            return false;
-        }
-    }
-
-    public async Task<bool> RemoveFromCartAsync(int cartId, CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            //await connectivityService.CheckInternetAccessAsync();
-            var response = await cartApi.RemoveCartItemAsync(cartId, cancellationToken);
-            return true;
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            throw;
-        }
-        catch (ApiException apiEx)
-        {
-            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
-            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
-                ? "Invalid email or password."
-                : "Login failed. Please try again.";
-            return false;
-        }
-    }
-
-    public async Task<bool> ClearCartAsync(CancellationToken cancellationToken = default)
-    {
-        try
-        {
-            //await connectivityService.CheckInternetAccessAsync();
-            var response = await cartApi.ClearCartAsync(cancellationToken);
-            return true;
-        }
-        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
-        {
-            throw;
-        }
-        catch (ApiException apiEx)
-        {
-            logger.LogWarning(apiEx, "Login rejected by server ({StatusCode}).", apiEx.StatusCode);
-            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized
-                ? "Invalid email or password."
-                : "Login failed. Please try again.";
-            return false;
-        }
-    }
-
-
-    public void IncreaseQuantity(Product product)
-    {
-        var item = _items.FirstOrDefault(x => x.Product.Id == product.Id);
-
-        if (item == null)
-            return;
-
-        item.Quantity++;
-
-        CartChanged?.Invoke();
-    }
-
-    public void DecreaseQuantity(Product product)
-    {
-        var item = _items.FirstOrDefault(x => x.Product.Id == product.Id);
-
-        if (item == null)
-            return;
-
-        if (item.Quantity > 1)
-            item.Quantity--;
-        else
-            _items.Remove(item);
-
-        CartChanged?.Invoke();
-    }
-
-    public void RemoveFromCart(Product product)
-    {
-        var item = _items.FirstOrDefault(x => x.Product.Id == product.Id);
-
-        if (item == null)
-            return;
-
-        _items.Remove(item);
-
-        CartChanged?.Invoke();
-    }
-
-    public void Clear()
-    {
-        _items.Clear();
-
-        CartChanged?.Invoke();
     }
 
     public decimal GetGrandTotal()
     {
-        return _items.Sum(x => x.Total);
+        return Cart?.GrandTotal ?? 0;
     }
 
     public int GetCartCount()
     {
-        return _items.Sum(x => x.Quantity);
+        return Cart?.TotalItems ?? 0;
     }
 
+    private bool ApplyCartResponse(ApiResult<CartResponse>? response)
+    {
+        if (response is not { Success: true, Data: not null })
+            return false;
+
+        Cart = BackendToAppModelMapper.GetCartSummary(response.Data);
+        CartChanged?.Invoke();
+        return true;
+    }
 }

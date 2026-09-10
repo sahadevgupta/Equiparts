@@ -10,6 +10,7 @@ public partial class ProfileViewModel : BaseViewModel
     private readonly IProfileService _profileService;
     private readonly ICurrentUserService _currentUserService;
     private readonly IAuthenticationService _authenticationService;
+    private readonly IDialogService _dialogService;
 
     [ObservableProperty]
     string initials = string.Empty;
@@ -38,13 +39,15 @@ public partial class ProfileViewModel : BaseViewModel
     public ProfileViewModel(
         IProfileService profileService,
         ICurrentUserService currentUserService,
-        IAuthenticationService authenticationService)
+        IAuthenticationService authenticationService,
+        IDialogService dialogService)
     {
         Title = "Profile";
 
         _profileService = profileService;
         _currentUserService = currentUserService;
         _authenticationService = authenticationService;
+        _dialogService = dialogService;
 
         ApplyCurrentUser();
     }
@@ -100,32 +103,31 @@ public partial class ProfileViewModel : BaseViewModel
     }
 
     [RelayCommand]
-    async Task GoToOrders() => await Shell.Current.GoToAsync("//orders");
+    async Task GoToOrders() => await Shell.Current.GoToAsync(nameof(OrdersPage));
 
     [RelayCommand]
     async Task GoToAddresses() =>
-        await Shell.Current.DisplayAlertAsync("Delivery Addresses", "Address management is coming soon.", "OK");
+        await _dialogService.ShowAlertAsync("Address management is coming soon.");
 
     [RelayCommand]
     async Task GoToWishlist() =>
-        await Shell.Current.DisplayAlertAsync("Saved Items", "Your wishlist is coming soon.", "OK");
+        await _dialogService.ShowAlertAsync("Your wishlist is coming soon.");
 
     [RelayCommand]
     async Task GoToChangePassword() => await Shell.Current.GoToAsync(nameof(ChangePasswordPage));
 
     [RelayCommand]
     async Task GoToHelp() =>
-        await Shell.Current.DisplayAlertAsync("Help & Support", "Support contact details are coming soon.", "OK");
+        await _dialogService.ShowAlertAsync("Support contact details are coming soon.");
 
     [RelayCommand]
     async Task GoToTerms() =>
-        await Shell.Current.DisplayAlertAsync("Terms & Privacy", "Policies and user agreements are coming soon.", "OK");
+        await _dialogService.ShowAlertAsync("Policies and user agreements are coming soon.");
 
     [RelayCommand]
     async Task Logout()
     {
-        bool confirm = await Shell.Current.DisplayAlertAsync(
-            "Log Out",
+        bool confirm = await _dialogService.ShowConfirmAsync(
             "Are you sure you want to log out?",
             "Yes",
             "No");

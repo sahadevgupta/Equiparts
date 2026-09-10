@@ -13,38 +13,102 @@
     BackgroundColor="{StaticResource PageBackground}"
     Shell.NavBarIsVisible="False">
 
+    <views:BasePage.Resources>
+
+        <!-- Flat cards for this page: the app-wide default Border style (Styles.xaml)
+             adds a drop shadow, which reads wrong for the tight per-item breakdown
+             chips and the circular stepper buttons used here. -->
+        <Style TargetType="Border">
+            <Setter Property="Shadow"
+                    Value="{x:Null}"/>
+        </Style>
+
+        <Style x:Key="StepperButtonStyle"
+               TargetType="Button">
+            <Setter Property="WidthRequest"
+                    Value="34"/>
+            <Setter Property="HeightRequest"
+                    Value="34"/>
+            <Setter Property="CornerRadius"
+                    Value="17"/>
+            <Setter Property="Padding"
+                    Value="0"/>
+            <Setter Property="FontFamily"
+                    Value="FontAwesome"/>
+            <Setter Property="FontSize"
+                    Value="14"/>
+        </Style>
+
+    </views:BasePage.Resources>
+
     <views:BasePage.PageContent>
         <Grid RowDefinitions="Auto,*,Auto">
 
             <!-- Header -->
-            <Image Source="header_logo"
-                   Margin="-2,0"/>
-            <Grid IsVisible="false"
-                  Padding="20,20,20,15"
-                  BackgroundColor="{StaticResource Primary}">
+            <Grid ColumnDefinitions="*,Auto"
+                  Padding="16,8"
+                  BackgroundColor="{StaticResource NavyBlue}">
+                <VerticalStackLayout
+                    Spacing="4">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                    <HorizontalStackLayout Spacing="8">
 
-                <Label
-                    Text="My Cart"
-                    FontSize="26"
-                    FontAttributes="Bold"
-                    TextColor="White"/>
+                        <Label
+                            Text="My Cart"
+                            FontSize="24"
+                            FontFamily="OpenSansSemibold"
+                            TextColor="White"/>
 
-                <Image
+                        <Label
+                            Text="{Binding ItemCountLabel,StringFormat='({0})'}"
+                            FontSize="17"
+                            TextColor="White"
+                            VerticalOptions="End"/>
+
+                    </HorizontalStackLayout>
+
+                    <Label
+                        Text="Review your items before checkout"
+                        FontSize="14"
+                        TextColor="White"/>
+
+                </VerticalStackLayout>
+
+                <VerticalStackLayout
                     Grid.Column="1"
-                    Source="cart.png"
-                    HeightRequest="28"/>
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    Spacing="0"
+                    IsVisible="{Binding Items.Count,Converter={toolkit:IntToBoolConverter}}">
+
+                    <VerticalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ClearCartCommand}"/>
+                    </VerticalStackLayout.GestureRecognizers>
+
+                    <Label
+                        FontFamily="FontAwesome"
+                        Text="{x:Static fontresources:FontAwesomeIcons.Trash}"
+                        FontSize="16"
+                        TextColor="White"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"/>
+
+                    <Label
+                        Text="Clear Cart"
+                        FontSize="13"
+                        FontFamily="OpenSansSemibold"
+                        TextColor="White"
+                        VerticalOptions="Center"/>
+
+                </VerticalStackLayout>
+
             </Grid>
 
             <!-- Cart Items -->
 
             <CollectionView
                 Grid.Row="1"
-                Margin="15"
+                Margin="15,0,15,15"
                 ItemsSource="{Binding Items}"
                 SelectionMode="None"
                 VerticalScrollBarVisibility="Never">
@@ -54,7 +118,8 @@
                     <VerticalStackLayout
                         VerticalOptions="Center"
                         HorizontalOptions="Center"
-                        Spacing="15">
+                        Spacing="15"
+                        IsVisible="{Binding IsListEmpty}">
 
                         <Label
                             FontFamily="FontAwesome"
@@ -83,106 +148,199 @@
                     <DataTemplate x:DataType="models:CartItem">
 
                         <Border
-                            Margin="0,5"
-                            Padding="12"
-                            BackgroundColor="White"
+                            Margin="0,0,0,14"
+                            Padding="14"
+                            BackgroundColor="{StaticResource CardBackground}"
                             Stroke="{StaticResource Border}"
                             StrokeShape="RoundRectangle 16">
 
-                            <Grid
-                                ColumnDefinitions="90,*,Auto"
-                                RowDefinitions="Auto,Auto,Auto">
+                            <VerticalStackLayout Spacing="14">
 
-                                <!-- Product Image -->
+                                <Grid
+                                    ColumnDefinitions="80,*,Auto"
+                                    ColumnSpacing="12">
 
-                                <Image
-                                    Grid.RowSpan="3"
-                                    HeightRequest="80"
-                                    Source="{Binding Product.Image}"
-                                    WidthRequest="80"/>
+                                    <!-- Product Image -->
 
-                                <!-- Name -->
+                                    <Border
+                                        HeightRequest="80"
+                                        WidthRequest="80"
+                                        Padding="0"
+                                        Stroke="{StaticResource Border}"
+                                        StrokeShape="RoundRectangle 12"
+                                        HorizontalOptions="Start"
+                                        VerticalOptions="Start">
 
-                                <Label
-                                    Grid.Column="1"
-                                    FontSize="16"
-                                    FontAttributes="Bold"
-                                    Text="{Binding Product.Name}"/>
+                                        <Image
+                                            Aspect="AspectFill"
+                                            Source="{Binding ImageUrl}"/>
 
-                                <!-- Description -->
+                                    </Border>
 
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    FontSize="13"
-                                    Text="{Binding Product.Description}"
-                                    TextColor="Gray"/>
+                                    <!-- Name / Part number -->
 
-                                <!-- Price -->
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="4"
+                                        VerticalOptions="Start">
 
-                                <Label
-                                    Grid.Row="2"
-                                    Grid.Column="1"
-                                    FontSize="18"
-                                    FontAttributes="Bold"
-                                    Text="{Binding Product.Price,StringFormat='₹ {0:F0}'}"
-                                    TextColor="{StaticResource Accent}"/>
+                                        <Label
+                                            FontSize="16"
+                                            FontFamily="OpenSansSemibold"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding Name}"
+                                            TextColor="{StaticResource TitleText}"/>
 
-                                <!-- Quantity -->
+                                        <Label
+                                            FontSize="13"
+                                            Text="{Binding PartNumber,StringFormat='Part No. {0}'}"
+                                            TextColor="{StaticResource BodyText}"/>
 
-                                <Border
-                                    Grid.Column="2"
-                                    Padding="5"
-                                    Stroke="{StaticResource Border}"
-                                    StrokeShape="RoundRectangle 10">
+                                    </VerticalStackLayout>
 
-                                    <HorizontalStackLayout Spacing="10">
+                                    <!-- Remove -->
+
+                                    <ImageButton
+                                        Grid.Column="2"
+                                        CornerRadius="0"
+                                        HeightRequest="22"
+                                        WidthRequest="22"
+                                        Padding="0"
+                                        BackgroundColor="Transparent"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=RemoveCommand}"
+                                        CommandParameter="{Binding .}"
+                                        VerticalOptions="Start"
+                                        HorizontalOptions="End">
+                                        <ImageButton.Source>
+                                            <FontImageSource FontFamily="FontAwesome"
+                                                             Glyph="{x:Static fontresources:FontAwesomeIcons.Trash}"
+                                                             Color="{StaticResource Danger}"/>
+                                        </ImageButton.Source>
+                                    </ImageButton>
+
+                                </Grid>
+
+                                <Grid ColumnDefinitions="*,Auto">
+
+                                    <!-- Price -->
+
+                                    <VerticalStackLayout Spacing="2">
+
+                                        <Label
+                                            FontSize="22"
+                                            FontFamily="OpenSansSemibold"
+                                            Text="{Binding LineSubTotal,StringFormat='₹ {0:N0}'}"
+                                            TextColor="{StaticResource Accent}"/>
+
+                                        <Label
+                                            FontSize="12"
+                                            Text="{Binding UnitPrice,StringFormat='(₹ {0:N2} each)'}"
+                                            TextColor="{StaticResource BodyText}"/>
+
+                                    </VerticalStackLayout>
+
+                                    <!-- Quantity Stepper -->
+
+                                    <HorizontalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="14"
+                                        VerticalOptions="Center">
 
                                         <Button
-                                            WidthRequest="35"
-                                            HeightRequest="35"
-                                            Text="-"
-                                            FontSize="20"
-                                            Padding="0"
+                                            Style="{StaticResource StepperButtonStyle}"
+                                            Text="{x:Static fontresources:FontAwesomeIcons.Minus}"
+                                            BackgroundColor="{StaticResource ChipBackground}"
+                                            TextColor="{StaticResource ChipText}"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=DecreaseCommand}"
                                             CommandParameter="{Binding .}"/>
 
                                         <Label
-                                            VerticalOptions="Center"
+                                            FontSize="16"
+                                            FontFamily="OpenSansSemibold"
                                             Text="{Binding Quantity}"
-                                            FontAttributes="Bold"/>
+                                            TextColor="{StaticResource TitleText}"
+                                            VerticalOptions="Center"
+                                            WidthRequest="18"
+                                            HorizontalTextAlignment="Center"/>
 
                                         <Button
-                                            WidthRequest="35"
-                                            HeightRequest="35"
-                                            Text="+"
-                                            FontSize="20"
-                                            Padding="0"
+                                            Style="{StaticResource StepperButtonStyle}"
+                                            Text="{x:Static fontresources:FontAwesomeIcons.Plus}"
+                                            BackgroundColor="{StaticResource Accent}"
+                                            TextColor="White"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=IncreaseCommand}"
                                             CommandParameter="{Binding .}"/>
 
                                     </HorizontalStackLayout>
 
+                                </Grid>
+
+                                <!-- Per-item breakdown -->
+
+                                <Border
+                                    Padding="12,10"
+                                    BackgroundColor="{StaticResource WarningBackground}"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 12">
+
+                                    <Grid ColumnDefinitions="*,Auto,*,Auto,*">
+
+                                        <VerticalStackLayout Grid.Column="0"
+                                                             Spacing="2">
+                                            <Label
+                                                Text="Subtotal"
+                                                FontSize="11"
+                                                TextColor="{StaticResource BodyText}"/>
+                                            <Label
+                                                FontSize="14"
+                                                FontFamily="OpenSansSemibold"
+                                                Text="{Binding LineSubTotal,StringFormat='₹ {0:N2}'}"
+                                                TextColor="{StaticResource TitleText}"/>
+                                        </VerticalStackLayout>
+
+                                        <BoxView
+                                            Grid.Column="1"
+                                            WidthRequest="1"
+                                            Margin="6,2"
+                                            Color="{StaticResource Border}"/>
+
+                                        <VerticalStackLayout Grid.Column="2"
+                                                             Spacing="2">
+                                            <Label
+                                                Text="{Binding GstRatePercent,StringFormat='GST ({0:0.##}%)'}"
+                                                FontSize="11"
+                                                TextColor="{StaticResource BodyText}"/>
+                                            <Label
+                                                FontSize="14"
+                                                FontFamily="OpenSansSemibold"
+                                                Text="{Binding LineTax,StringFormat='₹ {0:N2}'}"
+                                                TextColor="{StaticResource TitleText}"/>
+                                        </VerticalStackLayout>
+
+                                        <BoxView
+                                            Grid.Column="3"
+                                            WidthRequest="1"
+                                            Margin="6,2"
+                                            Color="{StaticResource Border}"/>
+
+                                        <VerticalStackLayout Grid.Column="4"
+                                                             Spacing="2">
+                                            <Label
+                                                Text="{Binding Quantity,StringFormat='Total (for {0} item)'}"
+                                                FontSize="11"
+                                                TextColor="{StaticResource BodyText}"/>
+                                            <Label
+                                                FontSize="14"
+                                                FontFamily="OpenSansSemibold"
+                                                Text="{Binding LineTotal,StringFormat='₹ {0:N2}'}"
+                                                TextColor="{StaticResource TitleText}"/>
+                                        </VerticalStackLayout>
+
+                                    </Grid>
+
                                 </Border>
 
-                                <!-- Remove -->
-
-                                <ImageButton
-                                    Grid.Row="2"
-                                    Grid.Column="2"
-                                    HeightRequest="24"
-                                    BackgroundColor="Transparent"
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=RemoveCommand}"
-                                    CommandParameter="{Binding .}"
-                                    HorizontalOptions="End">
-                                    <ImageButton.Source>
-                                        <FontImageSource FontFamily="FontAwesome"
-                                                         Glyph="{x:Static fontresources:FontAwesomeIcons.Trash}"
-                                                         Color="Red"/>
-                                    </ImageButton.Source>
-                                </ImageButton>
-
-                            </Grid>
+                            </VerticalStackLayout>
 
                         </Border>
 
@@ -197,37 +355,133 @@
             <Border
                 IsVisible="{Binding Items.Count,Converter={toolkit:IntToBoolConverter}}"
                 Grid.Row="2"
-                BackgroundColor="White"
-                Padding="20"
+                BackgroundColor="{StaticResource CardBackground}"
+                Padding="20,20,20,24"
                 Stroke="{StaticResource Border}"
                 StrokeShape="RoundRectangle 20,20,0,0">
 
-                <VerticalStackLayout Spacing="15">
+                <VerticalStackLayout Spacing="14">
 
                     <Grid ColumnDefinitions="*,Auto">
 
                         <Label
-                            Text="Grand Total"
-                            FontSize="18"
-                            FontAttributes="Bold"/>
+                            Text="Subtotal"
+                            FontSize="14"
+                            TextColor="{StaticResource BodyText}"/>
 
                         <Label
                             Grid.Column="1"
-                            FontSize="24"
-                            FontAttributes="Bold"
-                            Text="{Binding GrandTotal,StringFormat='₹ {0:F0}'}"
-                            TextColor="{StaticResource Accent}"/>
+                            FontSize="14"
+                            Text="{Binding SubTotal,StringFormat='₹ {0:N2}'}"
+                            TextColor="{StaticResource TitleText}"/>
 
                     </Grid>
 
-                    <Button
+                    <Grid ColumnDefinitions="*,Auto">
+
+                        <Label
+                            Text="Tax (GST)"
+                            FontSize="14"
+                            TextColor="{StaticResource BodyText}"/>
+
+                        <Label
+                            Grid.Column="1"
+                            FontSize="14"
+                            Text="{Binding TaxTotal,StringFormat='₹ {0:N2}'}"
+                            TextColor="{StaticResource TitleText}"/>
+
+                    </Grid>
+
+                    <Grid
+                        ColumnDefinitions="*,Auto"
+                        IsVisible="{Binding HasDiscount}">
+
+                        <Label
+                            Text="Discount"
+                            FontSize="14"
+                            TextColor="{StaticResource BodyText}"/>
+
+                        <Label
+                            Grid.Column="1"
+                            FontSize="14"
+                            Text="{Binding DiscountAmount,StringFormat='- ₹ {0:N2}'}"
+                            TextColor="{StaticResource TitleText}"/>
+
+                    </Grid>
+
+                    <BoxView
+                        HeightRequest="1"
+                        Color="{StaticResource Border}"/>
+
+                    <Border
+                        Padding="14,12"
+                        BackgroundColor="{StaticResource WarningBackground}"
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 12">
+
+                        <Grid ColumnDefinitions="*,Auto">
+
+                            <Label
+                                Text="Grand Total"
+                                FontSize="17"
+                                FontFamily="OpenSansSemibold"
+                                TextColor="{StaticResource TitleText}"
+                                VerticalOptions="Center"/>
+
+                            <Label
+                                Grid.Column="1"
+                                FontSize="24"
+                                FontFamily="OpenSansSemibold"
+                                Text="{Binding GrandTotal,StringFormat='₹ {0:N2}'}"
+                                TextColor="{StaticResource Accent}"
+                                VerticalOptions="Center"/>
+
+                        </Grid>
+
+                    </Border>
+
+                    <Border
                         HeightRequest="55"
-                        Text="Proceed To Checkout"
-                        FontAttributes="Bold"
                         BackgroundColor="{StaticResource Accent}"
-                        TextColor="White"
-                        CornerRadius="15"
-                        Command="{Binding CheckoutCommand}"/>
+                        Stroke="Transparent"
+                        StrokeShape="RoundRectangle 15">
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding CheckoutCommand}"/>
+                        </Border.GestureRecognizers>
+
+                        <Grid
+                            ColumnDefinitions="Auto,Auto,Auto"
+                            ColumnSpacing="10"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center">
+
+                            <Label
+                                FontFamily="FontAwesome"
+                                Text="{x:Static fontresources:FontAwesomeIcons.Lock}"
+                                FontSize="16"
+                                TextColor="White"
+                                VerticalOptions="Center"/>
+
+                            <Label
+                                Grid.Column="1"
+                                Text="Proceed To Checkout"
+                                FontSize="16"
+                                FontAttributes="Bold"
+                                TextColor="White"
+                                VerticalOptions="Center"/>
+
+                            <Label
+                                Grid.Column="2"
+                                FontFamily="FontAwesome"
+                                Text="{x:Static fontresources:FontAwesomeIcons.ArrowRight}"
+                                FontSize="16"
+                                TextColor="White"
+                                VerticalOptions="Center"/>
+
+                        </Grid>
+
+                    </Border>
 
                 </VerticalStackLayout>
 

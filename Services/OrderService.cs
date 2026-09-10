@@ -47,7 +47,30 @@ public class OrderService(IOrderApi orderApi,
             {
                 Items = [.. cartItems.Select(x => new OrderItemRequest
                 {
-                    ProductId = x.Product.Id,
+                    ProductId = x.ProductId,
+                    Quantity = x.Quantity
+                })]
+            };
+
+            await orderApi.CreateOrderAsync(request);
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to place order ({StatusCode}).", apiEx.StatusCode);
+        }
+    }
+
+    public async Task CheckOutAsync(List<CartItem> cartItems)
+    {
+        try
+        {
+            await connectivityService.CheckInternetAccessAsync();
+
+            var request = new CreateOrderRequest
+            {
+                Items = [.. cartItems.Select(x => new OrderItemRequest
+                {
+                    ProductId = x.ProductId,
                     Quantity = x.Quantity
                 })]
             };

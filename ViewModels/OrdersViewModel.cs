@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
 using System.Collections.ObjectModel;
@@ -9,14 +10,18 @@ namespace Equiparts.ViewModels;
 public partial class OrdersViewModel : BaseViewModel
 {
     private readonly IOrderService _orderService;
+    private readonly IDialogService _dialogService;
+    private readonly ILoadingPopupService _loadingPopupService;
 
     public ObservableCollection<Order> Orders { get; } = [];
 
-    public OrdersViewModel(IOrderService orderService)
+    public OrdersViewModel(IOrderService orderService, IDialogService dialogService, ILoadingPopupService loadingPopupService)
     {
         Title = "Orders";
 
         _orderService = orderService;
+        _dialogService = dialogService;
+        _loadingPopupService = loadingPopupService;
     }
 
     [RelayCommand]
@@ -27,14 +32,22 @@ public partial class OrdersViewModel : BaseViewModel
 
         IsBusy = true;
 
-        Orders.Clear();
+        try
+        {
+            Orders.Clear();
 
-        var orders = await _orderService.GetOrdersAsync();
+            using (_loadingPopupService.Show())
+            {
+                var orders = await _orderService.GetOrdersAsync();
 
-        foreach (var order in orders.OrderByDescending(x => x.Date))
-            Orders.Add(order);
-
-        IsBusy = false;
+                foreach (var order in orders.OrderByDescending(x => x.Date))
+                    Orders.Add(order);
+            }
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
@@ -57,8 +70,7 @@ public partial class OrdersViewModel : BaseViewModel
         if (order == null)
             return;
 
-        bool confirm = await Shell.Current.DisplayAlertAsync(
-            "Cancel Order",
+        bool confirm = await _dialogService.ShowConfirmAsync(
             "Do you want to cancel this order?",
             "Yes",
             "No");
@@ -69,5 +81,17 @@ public partial class OrdersViewModel : BaseViewModel
         await _orderService.CancelOrderAsync(order.OrderNo);
 
         await Load();
+    }
+
+    public override void LoadDataOnNavigatedTo()
+    {
+        try
+        {
+            _ = Load();
+        }
+        catch (Exception)
+        {
+
+        }
     }
 }

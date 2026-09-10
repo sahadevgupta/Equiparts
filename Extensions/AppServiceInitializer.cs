@@ -15,7 +15,8 @@ public static class AppServiceInitializer
         builder.Services.AddTransient<ICartService, CartService>()
                         .AddTransient<IProductService, ProductService>()
                         .AddTransient<IOrderService, OrderService>()
-                        .AddTransient<IProfileService, ProfileService>();
+                        .AddTransient<IProfileService, ProfileService>()
+                        .AddTransient<IDialogService, DialogService>();
 
         // Auth: token storage/refresh + connectivity.
         builder.Services.AddSingleton<IConnectivity>(Connectivity.Current)

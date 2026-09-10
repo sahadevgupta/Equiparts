@@ -4,6 +4,7 @@ using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Equiparts.Enums;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
@@ -18,6 +19,7 @@ public partial class ProductViewModel : BaseViewModel, IQueryAttributable
     readonly IProductService _productService;
     readonly ICartService _cartService;
     readonly INavigationService _navigationService;
+    readonly IDialogService _dialogService;
 
     int? _categoryId;
     int _currentPage;
@@ -43,13 +45,14 @@ public partial class ProductViewModel : BaseViewModel, IQueryAttributable
     [ObservableProperty]
     private string? debugInfo;
 
-    public ProductViewModel(IProductService productService, ICartService cartService, INavigationService navigationService)
+    public ProductViewModel(IProductService productService, ICartService cartService, INavigationService navigationService, IDialogService dialogService)
     {
         Title = "Products";
 
         _productService = productService;
         _cartService = cartService;
         _navigationService = navigationService;
+        _dialogService = dialogService;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -64,10 +67,9 @@ public partial class ProductViewModel : BaseViewModel, IQueryAttributable
     [RelayCommand]
     async Task BulkOrder()
     {
-        await Shell.Current.DisplayAlertAsync(
-            "Bulk Order / RFQ",
+        await _dialogService.ShowAlertAsync(
             "Our sales team will reach out to help with your bulk order or request for quotation.",
-            "OK");
+            AlertType.Success);
     }
 
     [RelayCommand]
@@ -230,11 +232,8 @@ public partial class ProductViewModel : BaseViewModel, IQueryAttributable
         if (product is null || !product.CanAddToCart)
             return;
 
-        await _cartService.AddToCart(product.Id, 1);
+        await _cartService.AddToCartAsync(product.Id, 1);
 
-        await Shell.Current.DisplayAlertAsync(
-            "Success",
-            $"{product.Name} added to cart.",
-            "OK");
+        _dialogService.ShowToast($"{product.Name} added to cart.");
     }
 }

@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using Equiparts.Enums;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
@@ -13,6 +14,7 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
 {
     readonly ICartService _cartService;
     readonly INavigationService _navigationService;
+    readonly IDialogService _dialogService;
 
     [ObservableProperty]
     private Product? product;
@@ -26,10 +28,11 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
 
     public bool HasCartItems => CartItemCount > 0;
 
-    public ProductDetailViewModel(ICartService cartService, INavigationService navigationService)
+    public ProductDetailViewModel(ICartService cartService, INavigationService navigationService, IDialogService dialogService)
     {
         _cartService = cartService;
         _navigationService = navigationService;
+        _dialogService = dialogService;
     }
 
     // The product listing already fetched the full product record, so the detail
@@ -58,13 +61,10 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
         if (Product is null || !Product.CanAddToCart)
             return;
 
-        await _cartService.AddToCart(Product.Id, 1);
+        await _cartService.AddToCartAsync(Product.Id, 1);
         CartItemCount = _cartService.GetCartCount();
 
-        await Shell.Current.DisplayAlertAsync(
-            "Success",
-            $"{Product.Name} added to cart.",
-            "OK");
+        _dialogService.ShowToast($"{Product.Name} added to cart.");
     }
 
     [RelayCommand]
@@ -73,10 +73,9 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
         if (Product is null)
             return;
 
-        await Shell.Current.DisplayAlertAsync(
-            "Enquiry Sent",
+        await _dialogService.ShowAlertAsync(
             $"Our team will get back to you with a quote for {Product.Name} shortly.",
-            "OK");
+            AlertType.Success);
     }
 
     [RelayCommand]
@@ -104,9 +103,8 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
         if (Product is null)
             return;
 
-        await Shell.Current.DisplayAlertAsync(
-            "Notification Set",
+        await _dialogService.ShowAlertAsync(
             $"We'll let you know as soon as {Product.Name} is back in stock.",
-            "OK");
+            AlertType.Success);
     }
 }

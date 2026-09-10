@@ -48,6 +48,9 @@
     <Color x:Key="ChipBackground">#EEF0F3</Color>
     <Color x:Key="ChipText">#4B5563</Color>
 
+    <!-- Popup overlay -->
+    <Color x:Key="PopupBackground">#A0000000</Color>
+
     <!-- Link / focus accent (login screen field focus, links, biometrics icon) -->
     <Color x:Key="LinkColor">#5C6BC0</Color>
     <Color x:Key="PrimaryColor">#0B2A4A</Color>

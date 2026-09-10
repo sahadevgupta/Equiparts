@@ -1,6 +1,7 @@
 using Equiparts.Configuration.Mapper.Converters;
 using Equiparts.Models;
 using Equiparts.Models.Auth;
+using Equiparts.Models.Cart;
 using Equiparts.Models.Catalog;
 using Equiparts.Models.Orders;
 using Equiparts.Models.Profile;
@@ -88,5 +89,14 @@ public static class BackendToAppModelMapper
 
         var converter = new AddressResponseToAddressConverter();
         return addressResponses.Select(converter.Convert).ToList();
+    }
+
+    public static CartSummary? GetCartSummary(CartResponse? cartResponse)
+    {
+        if (cartResponse is null)
+            return null;
+
+        var converter = new CartResponseToCartSummaryConverter();
+        return converter.Convert(cartResponse);
     }
 }

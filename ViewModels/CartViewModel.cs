@@ -1,7 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Equiparts.Enums;
+using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
+using Equiparts.Views;
 using System.Collections.ObjectModel;
 
 namespace Equiparts.ViewModels;
@@ -10,30 +13,55 @@ public partial class CartViewModel : BaseViewModel
 {
     private readonly ICartService _cartService;
     private readonly IOrderService _orderService;
+    private readonly ILoadingPopupService _loadingPopupService;
+    private readonly IDialogService _dialogService;
 
     public ObservableCollection<CartItem> Items { get; } = [];
 
-    public decimal GrandTotal => _cartService?.GetGrandTotal() ?? 0;
+    public decimal SubTotal => _cartService.Cart?.SubTotal ?? 0;
 
-    public CartViewModel(ICartService cartService, IOrderService orderService)
+    public decimal TaxTotal => _cartService.Cart?.TaxTotal ?? 0;
+
+    public decimal DiscountAmount => _cartService.Cart?.DiscountAmount ?? 0;
+
+    public bool HasDiscount => _cartService.Cart?.HasDiscount ?? false;
+
+    public decimal GrandTotal => _cartService.Cart?.GrandTotal ?? 0;
+
+    public string ItemCountLabel => Items.Count == 1 ? "1 Item" : $"{Items.Count} Items";
+
+    [ObservableProperty]
+    private bool _isListEmpty;
+
+    public CartViewModel(ICartService cartService, IOrderService orderService, ILoadingPopupService loadingPopupService, IDialogService dialogService)
     {
+        Title = "My Cart";
+
         _cartService = cartService;
         _orderService = orderService;
+        _loadingPopupService = loadingPopupService;
+        _dialogService = dialogService;
 
-        //RefreshCart();
-
-        //_cartService.CartChanged += RefreshCart;
+        _cartService.CartChanged += RefreshCart;
     }
 
     private async Task InitializeDataAsync()
     {
+        if (IsBusy)
+            return;
+
+        IsBusy = true;
+
         try
         {
-            await _cartService.GetCartAsync();
+            using (_loadingPopupService.Show())
+            {
+                await _cartService.GetCartAsync();
+            }
         }
-        catch (Exception ex)
+        finally
         {
-
+            IsBusy = false;
         }
     }
 
@@ -44,35 +72,61 @@ public partial class CartViewModel : BaseViewModel
         foreach (var item in _cartService.Items)
             Items.Add(item);
 
+        OnPropertyChanged(nameof(SubTotal));
+        OnPropertyChanged(nameof(TaxTotal));
+        OnPropertyChanged(nameof(DiscountAmount));
+        OnPropertyChanged(nameof(HasDiscount));
         OnPropertyChanged(nameof(GrandTotal));
+        OnPropertyChanged(nameof(ItemCountLabel));
+
+        IsListEmpty = !Items.Any();
     }
 
     [RelayCommand]
-    void Increase(CartItem item)
+    async Task Increase(CartItem item)
     {
-        _cartService.IncreaseQuantity(item.Product);
+        if (item is null)
+            return;
 
-        OnPropertyChanged(nameof(GrandTotal));
+        await _cartService.UpdateCartItemAsync(item.CartItemId, item.Quantity + 1);
     }
 
     [RelayCommand]
-    void Decrease(CartItem item)
+    async Task Decrease(CartItem item)
     {
+        if (item is null)
+            return;
+
         if (item.Quantity > 1)
-        {
-            _cartService.DecreaseQuantity(item.Product);
-        }
-
-
-        OnPropertyChanged(nameof(GrandTotal));
+            await _cartService.UpdateCartItemAsync(item.CartItemId, item.Quantity - 1);
+        else
+            await _cartService.RemoveFromCartAsync(item.CartItemId);
     }
 
     [RelayCommand]
-    void Remove(CartItem item)
+    async Task Remove(CartItem item)
     {
-        _cartService.RemoveFromCart(item.Product);
+        if (item is null)
+            return;
 
-        OnPropertyChanged(nameof(GrandTotal));
+        await _cartService.RemoveFromCartAsync(item.CartItemId);
+    }
+
+    [RelayCommand]
+    async Task ClearCart()
+    {
+        if (!Items.Any())
+            return;
+
+        bool confirmed = await _dialogService.ShowConfirmAsync(
+            "Remove all items from your cart?",
+            "Clear",
+            "Cancel");
+
+        if (!confirmed)
+            return;
+
+        await _cartService.ClearCartAsync();
     }
 
     [RelayCommand]
@@ -80,31 +134,25 @@ public partial class CartViewModel : BaseViewModel
     {
         if (!_cartService.Items.Any())
         {
-            await Shell.Current.DisplayAlertAsync(
-                "Cart",
-                "Your cart is empty.",
-                "OK");
+            await _dialogService.ShowAlertAsync("Your cart is empty.");
 
             return;
         }
 
         await _orderService.PlaceOrderAsync(_cartService.Items.ToList());
 
-        _cartService.Clear();
+        await _cartService.ClearCartAsync();
 
-        await Shell.Current.DisplayAlertAsync(
-            "Success",
-            "Order placed successfully.",
-            "OK");
+        await _dialogService.ShowAlertAsync("Order placed successfully.", AlertType.Success);
 
-        await Shell.Current.GoToAsync("//orders");
+        await Shell.Current.GoToAsync(nameof(OrdersPage));
     }
 
     #region [ Override Methods ]
 
     public override void LoadDataOnNavigatedTo()
     {
-        InitializeDataAsync();
+        _ = InitializeDataAsync();
     }
 
     #endregion

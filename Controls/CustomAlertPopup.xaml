@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="Equiparts.Controls.CustomAlertPopup"
+               x:TypeArguments="x:Boolean"
+               x:Name="customAlertPopup"
+               CanBeDismissedByTappingOutsideOfPopup="False">
+
+    <toolkit:Popup.Content>
+        <Border StyleClass="Card"
+                Padding="24"
+                Margin="24,0"
+                VerticalOptions="Center">
+            <VerticalStackLayout Spacing="20">
+                <Image HorizontalOptions="Center"
+                       VerticalOptions="Center">
+                    <Image.Source>
+                        <FontImageSource FontFamily="FontAwesome"
+                                         Size="48"
+                                         Glyph="{Binding Icon, Source={x:Reference customAlertPopup}}"
+                                         Color="{Binding IconTintColor, Source={x:Reference customAlertPopup}}"/>
+                    </Image.Source>
+                </Image>
+
+                <Label Text="{Binding Message, Source={x:Reference customAlertPopup}}"
+                       StyleClass="Body"
+                       HorizontalTextAlignment="Center"/>
+
+                <Grid ColumnSpacing="12"
+                      HorizontalOptions="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="CancelButton"
+                            Grid.Column="0"
+                            Text="{Binding CancelText, Source={x:Reference customAlertPopup}}"
+                            BackgroundColor="{StaticResource ChipBackground}"
+                            TextColor="{StaticResource ChipText}"
+                            MinimumWidthRequest="100"
+                            Clicked="OnCancelClicked"
+                            IsVisible="False"/>
+
+                    <Button Grid.Column="1"
+                            Text="{Binding AcceptText, Source={x:Reference customAlertPopup}}"
+                            MinimumWidthRequest="100"
+                            Clicked="OnAcceptClicked"/>
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </toolkit:Popup.Content>
+</toolkit:Popup>

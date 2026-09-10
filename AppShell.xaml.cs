@@ -22,6 +22,7 @@ namespace Equiparts
             Routing.RegisterRoute(nameof(ProductDetailPage), typeof(ProductDetailPage));
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(ChangePasswordPage), typeof(ChangePasswordPage));
+            Routing.RegisterRoute(nameof(OrdersPage), typeof(OrdersPage));
 
             // Loaded += OnLoaded;
         }
