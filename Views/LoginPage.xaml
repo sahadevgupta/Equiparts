@@ -18,7 +18,8 @@
             <Grid>
 
                 <!-- White card: sits behind the header curve, holds all of the form content -->
-                <Border BackgroundColor="{StaticResource CardBackground}"
+                <Border x:Name="LoginCard"
+                        BackgroundColor="{StaticResource CardBackground}"
                         Stroke="Transparent"
                         Margin="20,90,20,30"
                         VerticalOptions="Start"
@@ -294,7 +295,8 @@
                               InputTransparent="True"/>
 
                 <!-- Logo badge, straddling the header/card boundary -->
-                <Border WidthRequest="96"
+                <Border x:Name="LogoBadge"
+                        WidthRequest="96"
                         HeightRequest="96"
                         Stroke="White"
                         StrokeThickness="4"

@@ -7,33 +7,113 @@
                 BackgroundColor="#081F3E">
 
     <views:BasePage.PageContent>
-        <Grid BackgroundColor="#081F3E">
-            <Grid WidthRequest="208"
-                  HeightRequest="208"
-                  HorizontalOptions="Center"
-                  VerticalOptions="Center">
+        <Grid x:Name="RootLayer"
+              BackgroundColor="#081F3E">
 
-                <GraphicsView x:Name="OuterRingGraphics"
-                              WidthRequest="208"
-                              HeightRequest="208"
-                              InputTransparent="True"/>
-
-                <GraphicsView x:Name="InnerRingGraphics"
-                              WidthRequest="208"
-                              HeightRequest="208"
-                              InputTransparent="True"/>
-
-                <!-- Same navy background as the page, so only the EP mark itself
-                     (not the square image bounds) reads inside the rings. -->
-                <Image x:Name="LogoImage"
-                       Source="ep_icon.png"
-                       WidthRequest="104"
-                       HeightRequest="104"
-                       Aspect="AspectFit"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       InputTransparent="True"/>
+            <!-- Scattered ambient sparkle twinkles, matching the reference video's background. -->
+            <Grid x:Name="SparkleLayer"
+                  InputTransparent="True">
+                <Label Text="&#x2726;" TextColor="#3FFFFFFF" FontSize="10" Margin="48,120,0,0" HorizontalOptions="Start" VerticalOptions="Start"/>
+                <Label Text="&#x2726;" TextColor="#33FFFFFF" FontSize="8"  Margin="0,150,54,0"  HorizontalOptions="End"   VerticalOptions="Start"/>
+                <Label Text="&#x2726;" TextColor="#33FFFFFF" FontSize="9"  Margin="30,0,0,140"  HorizontalOptions="Start" VerticalOptions="End"/>
+                <Label Text="&#x2726;" TextColor="#3FFFFFFF" FontSize="11" Margin="0,0,40,170"  HorizontalOptions="End"   VerticalOptions="End"/>
+                <Label Text="&#x2726;" TextColor="#2EFFFFFF" FontSize="7"  Margin="0,60,0,0"    HorizontalOptions="Center" VerticalOptions="Start"/>
+                <Label Text="&#x2726;" TextColor="#2EFFFFFF" FontSize="8"  Margin="0,0,0,80"    HorizontalOptions="Center" VerticalOptions="End"/>
             </Grid>
+
+            <!-- Soft ambient glow bloom behind the mark. -->
+            <Ellipse x:Name="AmbientGlow"
+                     WidthRequest="260"
+                     HeightRequest="260"
+                     HorizontalOptions="Center"
+                     VerticalOptions="Center"
+                     Opacity="0"
+                     InputTransparent="True">
+                <Ellipse.Fill>
+                    <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
+                        <GradientStop Offset="0.0" Color="#40F58220"/>
+                        <GradientStop Offset="1.0" Color="#00081F3E"/>
+                    </RadialGradientBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <!-- Full-bleed backdrop matching LoginPage's own page background: on
+                 LoginPage the margin strip around the card (and everything below the
+                 header) is this near-white color, not navy, so this has to sit behind
+                 the card too or navy would still show at the edges/bottom. -->
+            <BoxView x:Name="TransitionPageBackdrop"
+                     Color="{StaticResource PageBackground}"
+                     Opacity="0"
+                     InputTransparent="True"/>
+
+            <!-- Login's own white card, sitting behind the wave header exactly like it
+                 does on LoginPage, so as the wave grows in it carves its shape out of an
+                 already-white backdrop instead of revealing white only after the page
+                 swap (which read as a hard cut). -->
+            <Border x:Name="TransitionCard"
+                    BackgroundColor="{StaticResource CardBackground}"
+                    Stroke="Transparent"
+                    Margin="20,90,20,30"
+                    Opacity="0"
+                    InputTransparent="True">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="28,28,28,28"/>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="#22000000"
+                            Offset="0,6"
+                            Radius="16"
+                            Opacity="0.15"/>
+                </Border.Shadow>
+            </Border>
+
+            <!-- Wavy header the logo settles onto when handing off to Login - same
+                 drawable Login's own header uses, grown in via GrowthProgress so the
+                 transition reads as one continuous shape, not a page cut. -->
+            <GraphicsView x:Name="TransitionHeaderGraphics"
+                          HeightRequest="240"
+                          VerticalOptions="Start"
+                          InputTransparent="True"
+                          Opacity="0"/>
+
+            <!-- EP mark + the ring that becomes its Login badge border, grouped so
+                 both scale/translate together from "big, centered splash mark" down
+                 to "small badge at the header/card boundary" as one continuous move
+                 (see RunTransitionToLoginAsync) instead of a hard page swap. -->
+            <Grid x:Name="LogoScene"
+                  WidthRequest="96"
+                  HeightRequest="96"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center"
+                  InputTransparent="True">
+
+                <Ellipse x:Name="BadgeRing"
+                         WidthRequest="96"
+                         HeightRequest="96"
+                         Stroke="White"
+                         StrokeThickness="4"
+                         Fill="{StaticResource PrimaryDark}"
+                         Opacity="0"/>
+
+                <!-- EP mark: the exact same glyph paths as ep_logo_animated.svg, redrawn
+                     (not modified) so each letter can trace as a glowing outline and
+                     then fill solid, matching the reference animation - see code-behind. -->
+                <GraphicsView x:Name="LogoGraphics"
+                              WidthRequest="90"
+                              HeightRequest="78"
+                              HorizontalOptions="Center"
+                              VerticalOptions="Center"
+                              InputTransparent="True">
+                    <GraphicsView.Shadow>
+                        <Shadow x:Name="LogoGlow"
+                                Brush="White"
+                                Offset="0,0"
+                                Radius="0"
+                                Opacity="0"/>
+                    </GraphicsView.Shadow>
+                </GraphicsView>
+            </Grid>
+
         </Grid>
     </views:BasePage.PageContent>
 </views:BasePage>

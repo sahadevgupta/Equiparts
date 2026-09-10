@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- .NET MAUI's generated Maui.MainTheme.Base maps its own custom
+         "bottomNavigationViewStyle" attribute to the legacy
+         Widget.Design.BottomNavigationView style. That style predates the
+         ThemeEnforcement.checkTextAppearance() validation the modern
+         com.google.android.material.bottomnavigation.BottomNavigationView
+         class runs (used by Shell's TabBar), so it's missing the
+         itemTextAppearance* attributes that check requires - crashing with
+         "This component requires that you specify a valid TextAppearance
+         attribute" the moment Shell builds the bottom tab bar (e.g. landing
+         on Home with a stored session). Overriding just this one attribute
+         to the real MaterialComponents style fixes it; everything else is
+         inherited from MAUI's generated theme unchanged. -->
+    <style name="Maui.SplashTheme.Fixed" parent="Maui.SplashTheme">
+        <item name="bottomNavigationViewStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+    </style>
+</resources>

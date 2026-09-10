@@ -36,7 +36,7 @@ namespace Equiparts
             {
                 //handlers.AddHandler<Microsoft.Maui.Controls.CarouselView, Microsoft.Maui.Controls.Handlers.Items.CarouselViewHandler>();
 #if ANDROID
-                handlers.AddHandler(typeof(Shell), typeof(Equiparts.Platforms.Android.Handlers.CustomShellRenderer));
+                //handlers.AddHandler(typeof(Shell), typeof(Equiparts.Platforms.Android.Handlers.CustomShellRenderer));
 #endif
                 handlers.AddHandler<BorderlessEntry, Equiparts.Platforms.Handlers.PlainEntryHandler>();
             });

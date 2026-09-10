@@ -31,7 +31,9 @@ public partial class HomeViewModel(ICartService cartService,
 
     [ObservableProperty]
     private bool _isRefreshing;
-
+    private IEnumerable<Category> categories;
+    private IEnumerable<Banner> banners;
+    private IEnumerable<Product> products;
 
     [RelayCommand]
     public async Task LoadAsync()
@@ -44,25 +46,25 @@ public partial class HomeViewModel(ICartService cartService,
 
         try
         {
-            using (loadingPopupService.Show())
+            if (categories != null || banners != null || products != null)
             {
-                var categoryTask = productService.GetCategoriesAsync();
-                var bannerTask = productService.GetBannersAsync();
-                var productTask = productService.GetProductsAsync();
-
-                await Task.WhenAll(categoryTask, bannerTask, productTask);
-
-                var categories = await categoryTask;
-                var banners = await bannerTask;
-                var products = await productTask;
-
-                await MainThread.InvokeOnMainThreadAsync(() =>
+                await UpdateDashboardDataAsync();
+            }
+            else
+            {
+                using (loadingPopupService.Show())
                 {
-                    AppConfiguration.Categories = categories;
-                    Categories = new ObservableCollection<Category>(categories);
-                    Banners = new ObservableCollection<Banner>(banners);
-                    BestSellers = new ObservableCollection<Product>(products.Take(4));
-                });
+                    var categoryTask = productService.GetCategoriesAsync();
+                    var bannerTask = productService.GetBannersAsync();
+                    var productTask = productService.GetProductsAsync();
+
+                    await Task.WhenAll(categoryTask, bannerTask, productTask);
+
+                    categories = await categoryTask;
+                    banners = await bannerTask;
+                    products = await productTask;
+                    await UpdateDashboardDataAsync();
+                }
             }
         }
         catch (Exception ex)
@@ -74,6 +76,17 @@ public partial class HomeViewModel(ICartService cartService,
         {
             IsBusy = false;
         }
+    }
+
+    private async Task UpdateDashboardDataAsync()
+    {
+        await MainThread.InvokeOnMainThreadAsync(() =>
+        {
+            AppConfiguration.Categories = categories;
+            Categories = new ObservableCollection<Category>(categories);
+            Banners = new ObservableCollection<Banner>(banners);
+            BestSellers = new ObservableCollection<Product>(products.Take(4));
+        });
     }
 
     [RelayCommand]

@@ -53,10 +53,12 @@ namespace Equiparts.Services
 
         public async Task OnWindowCreatedAsync()
         {
-            await CheckUserLoggedInStateAsync();
+            // Show the splash screen first; it calls NavigateToInitialDestinationAsync()
+            // itself once its entrance animation has played out.
+            await Shell.Current.GoToAsync("//loading");
         }
 
-        private async Task CheckUserLoggedInStateAsync()
+        public async Task NavigateToInitialDestinationAsync()
         {
             var hasSession = await _tokenService.HasStoredSessionAsync();
             if (hasSession)

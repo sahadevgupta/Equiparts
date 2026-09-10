@@ -56,7 +56,7 @@
             <ShellContent ContentTemplate="{DataTemplate views:CartPage}"/>
         </Tab>
 
-        <Tab Title="Orders">
+        <!-- <Tab Title="Orders">
             <Tab.Icon>
                 <FontImageSource FontFamily="FontAwesome"
                                  Glyph="{x:Static fontresources:FontAwesomeIcons.DiceD6}"/>
@@ -64,7 +64,7 @@
 
             <ShellContent ContentTemplate="{DataTemplate views:OrdersPage}"
                           Route="orders"/>
-        </Tab>
+        </Tab> -->
 
         <Tab Title="Profile">
             <Tab.Icon>
