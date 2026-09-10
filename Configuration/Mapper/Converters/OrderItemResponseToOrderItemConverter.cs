@@ -9,12 +9,11 @@ public class OrderItemResponseToOrderItemConverter : ConverterBase<OrderItemResp
     {
         return new OrderItem
         {
-            ProductId = source.ProductId,
-            ProductName = source.ProductName,
-            ImageUrl = source.ImageUrl,
-            UnitPrice = source.UnitPrice,
+            PartNumber = source.PartNumber,
+            ProductName = source.ProductName ?? string.Empty,
+            UnitPrice = (decimal)source.UnitPrice,
             Quantity = source.Quantity,
-            LineTotal = source.LineTotal
+            LineTotal = (decimal)source.LineTotal
         };
     }
 }

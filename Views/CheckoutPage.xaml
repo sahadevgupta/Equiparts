@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<views:BasePage
+    x:Class="Equiparts.Views.CheckoutPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+    xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
+    xmlns:models="clr-namespace:Equiparts.Models"
+    xmlns:converter="clr-namespace:Equiparts.Converter"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:views="clr-namespace:Equiparts.Views"
+    x:DataType="viewModels:CheckoutViewModel"
+    BackgroundColor="{StaticResource PageBackground}"
+    Shell.NavBarIsVisible="False">
+
+    <views:BasePage.Resources>
+
+        <!-- Flat cards for this page, matching Cart/Product: the app-wide default
+             Border style (Styles.xaml) adds a drop shadow that reads wrong here. -->
+        <Style TargetType="Border">
+            <Setter Property="Shadow"
+                    Value="{x:Null}"/>
+        </Style>
+
+        <converter:EqualityMultiConverter x:Key="EqualityConverter"/>
+
+        <Style x:Key="SectionCardStyle"
+               TargetType="Border">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource CardBackground}"/>
+            <Setter Property="Stroke"
+                    Value="{StaticResource Border}"/>
+            <Setter Property="StrokeShape"
+                    Value="RoundRectangle 16"/>
+            <Setter Property="Padding"
+                    Value="16"/>
+        </Style>
+
+        <Style x:Key="SectionTitleLabelStyle"
+               TargetType="Label">
+            <Setter Property="FontSize"
+                    Value="16"/>
+            <Setter Property="FontFamily"
+                    Value="OpenSansSemibold"/>
+            <Setter Property="TextColor"
+                    Value="{StaticResource TitleText}"/>
+        </Style>
+
+    </views:BasePage.Resources>
+
+    <views:BasePage.PageContent>
+        <Grid RowDefinitions="Auto,*,Auto">
+
+            <!-- Header -->
+            <Grid
+                Grid.Row="0"
+                ColumnDefinitions="Auto,*"
+                Padding="10,14"
+                ColumnSpacing="10"
+                BackgroundColor="{StaticResource NavyBlue}">
+
+                <ImageButton
+                    Grid.Column="0"
+                    BackgroundColor="Transparent"
+                    HeightRequest="34"
+                    WidthRequest="34"
+                    Padding="0"
+                    Command="{Binding GoBackCommand}">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="FontAwesome"
+                                         Glyph="{x:Static fontresources:FontAwesomeIcons.ArrowLeft}"
+                                         Size="18"
+                                         Color="White"/>
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <Label
+                    Grid.Column="1"
+                    Text="Checkout"
+                    FontSize="20"
+                    FontFamily="OpenSansSemibold"
+                    TextColor="White"
+                    VerticalOptions="Center"/>
+
+            </Grid>
+
+            <!-- Scrollable content -->
+            <ScrollView Grid.Row="1">
+
+                <VerticalStackLayout Padding="15"
+                                     Spacing="14">
+
+                    <!-- Delivery Address -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Grid ColumnDefinitions="*,Auto">
+
+                                <HorizontalStackLayout Spacing="8">
+                                    <Label
+                                        FontFamily="FontAwesome"
+                                        Text="{x:Static fontresources:FontAwesomeIcons.MapMarkerAlt}"
+                                        FontSize="16"
+                                        TextColor="{StaticResource Accent}"
+                                        VerticalOptions="Center"/>
+                                    <Label
+                                        Text="Delivery Address"
+                                        Style="{StaticResource SectionTitleLabelStyle}"
+                                        VerticalOptions="Center"/>
+                                </HorizontalStackLayout>
+
+                                <Label
+                                    Grid.Column="1"
+                                    Text="Change"
+                                    FontSize="13"
+                                    FontFamily="OpenSansSemibold"
+                                    TextColor="{StaticResource Accent}"
+                                    VerticalOptions="Center"
+                                    IsVisible="{Binding HasAddress}">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ChangeAddressCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+
+                            </Grid>
+
+                            <!-- Selected address (compact) -->
+                            <Border
+                                IsVisible="{Binding HasAddress}"
+                                Padding="12"
+                                BackgroundColor="{StaticResource PageBackground}"
+                                Stroke="{StaticResource Border}"
+                                StrokeShape="RoundRectangle 12">
+
+                                <VerticalStackLayout Spacing="3">
+
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label
+                                            FontSize="14"
+                                            FontFamily="OpenSansSemibold"
+                                            TextColor="{StaticResource TitleText}"
+                                            Text="{Binding SelectedAddress.FullName}"/>
+
+                                        <Border
+                                            IsVisible="{Binding SelectedAddress.IsDefault}"
+                                            Padding="7,2"
+                                            BackgroundColor="{StaticResource SuccessBackground}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 8">
+                                            <Label
+                                                Text="DEFAULT"
+                                                FontSize="9"
+                                                FontAttributes="Bold"
+                                                TextColor="{StaticResource Success}"/>
+                                        </Border>
+                                    </HorizontalStackLayout>
+
+                                    <Label
+                                        FontSize="13"
+                                        TextColor="{StaticResource BodyText}"
+                                        Text="{Binding SelectedAddress.DisplayLines}"/>
+
+                                    <Label
+                                        FontSize="13"
+                                        TextColor="{StaticResource BodyText}"
+                                        Text="{Binding SelectedAddress.PostalCode}"/>
+
+                                    <Label
+                                        FontSize="13"
+                                        TextColor="{StaticResource BodyText}"
+                                        Text="{Binding SelectedAddress.PhoneNumber,StringFormat='Mobile: {0}'}"/>
+
+                                </VerticalStackLayout>
+
+                            </Border>
+
+                            <!-- Empty state -->
+                            <Border
+                                IsVisible="{Binding HasAddress,Converter={toolkit:InvertedBoolConverter}}"
+                                Padding="0"
+                                BackgroundColor="Transparent"
+                                Stroke="{StaticResource Accent}"
+                                StrokeDashArray="4,3"
+                                StrokeThickness="1.5"
+                                HeightRequest="50"
+                                StrokeShape="RoundRectangle 12">
+
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding AddNewAddressCommand}"/>
+                                </Border.GestureRecognizers>
+
+                                <HorizontalStackLayout Spacing="8"
+                                                       HorizontalOptions="Center"
+                                                       VerticalOptions="Center">
+                                    <Label
+                                        FontFamily="FontAwesome"
+                                        Text="{x:Static fontresources:FontAwesomeIcons.Plus}"
+                                        FontSize="14"
+                                        TextColor="{StaticResource Accent}"/>
+                                    <Label
+                                        Text="Add New Address"
+                                        FontFamily="OpenSansSemibold"
+                                        FontSize="14"
+                                        TextColor="{StaticResource Accent}"/>
+                                </HorizontalStackLayout>
+
+                            </Border>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- Order Items -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="12">
+
+                            <Grid ColumnDefinitions="*,Auto">
+
+                                <Label
+                                    Text="{Binding Items.Count,StringFormat='Order Items ({0})'}"
+                                    Style="{StaticResource SectionTitleLabelStyle}"
+                                    VerticalOptions="Center"/>
+
+                                <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding HasMoreItems}"
+                                    Text="{Binding ShowAllItems,Converter={toolkit:BoolToObjectConverter TrueObject='Show less',FalseObject='View all items'}}"
+                                    FontSize="13"
+                                    FontFamily="OpenSansSemibold"
+                                    TextColor="{StaticResource Accent}"
+                                    VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ToggleShowAllItemsCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+
+                            </Grid>
+
+                            <VerticalStackLayout
+                                Spacing="12"
+                                BindableLayout.ItemsSource="{Binding DisplayedItems}">
+
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:CartItem">
+
+                                        <Grid ColumnDefinitions="56,*,Auto"
+                                              ColumnSpacing="10">
+
+                                            <Border
+                                                HeightRequest="56"
+                                                WidthRequest="56"
+                                                Padding="0"
+                                                Stroke="{StaticResource Border}"
+                                                StrokeShape="RoundRectangle 10">
+                                                <Image
+                                                    Aspect="AspectFill"
+                                                    Source="{Binding ImageUrl}"/>
+                                            </Border>
+
+                                            <VerticalStackLayout
+                                                Grid.Column="1"
+                                                Spacing="2"
+                                                VerticalOptions="Center">
+
+                                                <Label
+                                                    FontSize="14"
+                                                    FontFamily="OpenSansSemibold"
+                                                    LineBreakMode="TailTruncation"
+                                                    TextColor="{StaticResource TitleText}"
+                                                    Text="{Binding Name}"/>
+
+                                                <Label
+                                                    FontSize="12"
+                                                    TextColor="{StaticResource BodyText}"
+                                                    Text="{Binding PartNumber,StringFormat='Part No. {0}'}"/>
+
+                                                <Label
+                                                    FontSize="12"
+                                                    TextColor="{StaticResource BodyText}"
+                                                    Text="{Binding Quantity,StringFormat='Qty: {0}'}"/>
+
+                                            </VerticalStackLayout>
+
+                                            <VerticalStackLayout
+                                                Grid.Column="2"
+                                                Spacing="2"
+                                                VerticalOptions="Center"
+                                                HorizontalOptions="End">
+
+                                                <Label
+                                                    FontSize="14"
+                                                    FontFamily="OpenSansSemibold"
+                                                    TextColor="{StaticResource Accent}"
+                                                    HorizontalTextAlignment="End"
+                                                    Text="{Binding LineSubTotal,StringFormat='₹ {0:N2}'}"/>
+
+                                                <Label
+                                                    FontSize="11"
+                                                    TextColor="{StaticResource BodyText}"
+                                                    HorizontalTextAlignment="End"
+                                                    Text="{Binding UnitPrice,StringFormat='₹ {0:N2} each'}"/>
+
+                                            </VerticalStackLayout>
+
+                                        </Grid>
+
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- Coupon / Promo Code -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <HorizontalStackLayout Spacing="8">
+                                <Label
+                                    FontFamily="FontAwesome"
+                                    Text="{x:Static fontresources:FontAwesomeIcons.TicketAlt}"
+                                    FontSize="16"
+                                    TextColor="{StaticResource Accent}"
+                                    VerticalOptions="Center"/>
+                                <Label
+                                    Text="Coupon / Promo Code"
+                                    Style="{StaticResource SectionTitleLabelStyle}"
+                                    VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+
+                            <!-- Entry + Apply (no coupon applied yet) -->
+                            <Grid
+                                ColumnDefinitions="*,Auto"
+                                ColumnSpacing="10"
+                                IsVisible="{Binding AppliedCoupon,Converter={toolkit:IsNullConverter}}">
+
+                                <Border
+                                    BackgroundColor="{StaticResource PageBackground}"
+                                    Stroke="{StaticResource Border}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 10"
+                                    Padding="12,0"
+                                    HeightRequest="46">
+                                    <Entry
+                                        Placeholder="Enter coupon code"
+                                        Text="{Binding CouponCode}"
+                                        FontSize="14"
+                                        VerticalOptions="Center"
+                                        TextColor="{StaticResource TitleText}"/>
+                                </Border>
+
+                                <Button
+                                    Grid.Column="1"
+                                    Text="Apply"
+                                    WidthRequest="90"
+                                    HeightRequest="46"
+                                    FontSize="14"
+                                    IsEnabled="{Binding IsCouponApplying,Converter={toolkit:InvertedBoolConverter}}"
+                                    Command="{Binding ApplyCouponCommand}"/>
+
+                            </Grid>
+
+                            <!-- Applying state -->
+                            <HorizontalStackLayout
+                                Spacing="8"
+                                IsVisible="{Binding IsCouponApplying}">
+                                <ActivityIndicator
+                                    IsRunning="{Binding IsCouponApplying}"
+                                    Color="{StaticResource Accent}"
+                                    HeightRequest="16"
+                                    WidthRequest="16"/>
+                                <Label
+                                    Text="Validating coupon…"
+                                    FontSize="13"
+                                    TextColor="{StaticResource BodyText}"/>
+                            </HorizontalStackLayout>
+
+                            <!-- Result message -->
+                            <Label
+                                Text="{Binding CouponMessage}"
+                                FontSize="13"
+                                IsVisible="{Binding CouponMessage,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
+                                TextColor="{Binding CouponMessageIsError,Converter={toolkit:BoolToObjectConverter TrueObject={StaticResource Danger},FalseObject={StaticResource Success}}}"/>
+
+                            <!-- Applied coupon chip -->
+                            <Border
+                                IsVisible="{Binding AppliedCoupon,Converter={toolkit:IsNotNullConverter}}"
+                                Padding="12,10"
+                                BackgroundColor="{StaticResource SuccessBackground}"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 12">
+
+                                <Grid ColumnDefinitions="Auto,*,Auto"
+                                      ColumnSpacing="10">
+
+                                    <Label
+                                        FontFamily="FontAwesome"
+                                        Text="{x:Static fontresources:FontAwesomeIcons.CheckCircle}"
+                                        FontSize="16"
+                                        TextColor="{StaticResource Success}"
+                                        VerticalOptions="Center"/>
+
+                                    <VerticalStackLayout Grid.Column="1"
+                                                         Spacing="1">
+                                        <Label
+                                            FontSize="14"
+                                            FontFamily="OpenSansSemibold"
+                                            TextColor="{StaticResource TitleText}"
+                                            Text="{Binding AppliedCoupon.Code}"/>
+                                        <Label
+                                            FontSize="12"
+                                            TextColor="{StaticResource BodyText}"
+                                            Text="{Binding AppliedCoupon.Description}"/>
+                                    </VerticalStackLayout>
+
+                                    <Label
+                                        Grid.Column="2"
+                                        FontFamily="FontAwesome"
+                                        Text="{x:Static fontresources:FontAwesomeIcons.Times}"
+                                        FontSize="16"
+                                        TextColor="{StaticResource ChipText}"
+                                        VerticalOptions="Center">
+                                        <Label.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding RemoveCouponCommand}"/>
+                                        </Label.GestureRecognizers>
+                                    </Label>
+
+                                </Grid>
+
+                            </Border>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- Price Details -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                Text="Price Details"
+                                Style="{StaticResource SectionTitleLabelStyle}"/>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Item Total"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource TitleText}"
+                                       Text="{Binding Summary.ItemTotal,StringFormat='₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto"
+                                  IsVisible="{Binding Summary.HasDiscount}">
+                                <Label Text="Discount"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource Success}"
+                                       Text="{Binding Summary.Discount,StringFormat='- ₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto"
+                                  IsVisible="{Binding Summary.HasCouponDiscount}">
+                                <Label Text="Coupon Discount"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource Success}"
+                                       Text="{Binding Summary.CouponDiscount,StringFormat='- ₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Delivery Charges"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource Success}"
+                                       IsVisible="{Binding Summary.IsFreeDelivery}"
+                                       Text="FREE"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource TitleText}"
+                                       IsVisible="{Binding Summary.HasDeliveryCharge}"
+                                       Text="{Binding Summary.DeliveryCharge,StringFormat='₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Tax (GST)"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource TitleText}"
+                                       Text="{Binding Summary.Tax,StringFormat='₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <BoxView HeightRequest="1"
+                                     Color="{StaticResource Border}"/>
+
+                            <Border
+                                Padding="14,12"
+                                BackgroundColor="{StaticResource WarningBackground}"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 12">
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label
+                                        Text="Grand Total"
+                                        FontSize="16"
+                                        FontFamily="OpenSansSemibold"
+                                        TextColor="{StaticResource TitleText}"
+                                        VerticalOptions="Center"/>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="22"
+                                        FontFamily="OpenSansSemibold"
+                                        TextColor="{StaticResource Accent}"
+                                        VerticalOptions="Center"
+                                        Text="{Binding Summary.GrandTotal,StringFormat='₹ {0:N2}'}"/>
+                                </Grid>
+
+                            </Border>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- Payment Method -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="12">
+
+                            <Label
+                                Text="Payment Method"
+                                Style="{StaticResource SectionTitleLabelStyle}"/>
+
+                            <VerticalStackLayout
+                                Spacing="10"
+                                BindableLayout.ItemsSource="{Binding PaymentMethods}">
+
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:PaymentMethod">
+
+                                        <Border
+                                            Padding="12"
+                                            BackgroundColor="{StaticResource PageBackground}"
+                                            Stroke="{StaticResource Border}"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 12">
+
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding BindingContext.SelectPaymentMethodCommand,Source={RelativeSource AncestorType={x:Type views:CheckoutPage}}}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+
+                                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                                  ColumnSpacing="12">
+
+                                                <Border
+                                                    Grid.Column="0"
+                                                    HeightRequest="38"
+                                                    WidthRequest="38"
+                                                    Padding="0"
+                                                    BackgroundColor="{StaticResource ChipBackground}"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 19">
+                                                    <Label
+                                                        FontFamily="FontAwesome"
+                                                        Text="{Binding IconGlyph}"
+                                                        FontSize="16"
+                                                        TextColor="{StaticResource TitleText}"
+                                                        HorizontalOptions="Center"
+                                                        VerticalOptions="Center"/>
+                                                </Border>
+
+                                                <VerticalStackLayout Grid.Column="1"
+                                                                     Spacing="1"
+                                                                     VerticalOptions="Center">
+                                                    <Label
+                                                        FontSize="14"
+                                                        FontFamily="OpenSansSemibold"
+                                                        TextColor="{StaticResource TitleText}"
+                                                        Text="{Binding Name}"/>
+                                                    <Label
+                                                        FontSize="12"
+                                                        TextColor="{StaticResource BodyText}"
+                                                        Text="{Binding Description}"/>
+                                                </VerticalStackLayout>
+
+                                                <Grid Grid.Column="2"
+                                                      WidthRequest="20"
+                                                      HeightRequest="20"
+                                                      VerticalOptions="Center">
+
+                                                    <Label
+                                                        FontFamily="FontAwesome"
+                                                        FontSize="18"
+                                                        TextColor="{StaticResource Border}"
+                                                        Text="{x:Static fontresources:FontAwesomeIcons.Circle}">
+                                                        <Label.IsVisible>
+                                                            <MultiBinding Converter="{StaticResource EqualityConverter}"
+                                                                          ConverterParameter="Invert">
+                                                                <Binding Path="."/>
+                                                                <Binding Path="BindingContext.SelectedPaymentMethod"
+                                                                         Source="{RelativeSource AncestorType={x:Type views:CheckoutPage}}"/>
+                                                            </MultiBinding>
+                                                        </Label.IsVisible>
+                                                    </Label>
+
+                                                    <Label
+                                                        FontFamily="FontAwesome"
+                                                        FontSize="18"
+                                                        TextColor="{StaticResource Accent}"
+                                                        Text="{x:Static fontresources:FontAwesomeIcons.DotCircle}">
+                                                        <Label.IsVisible>
+                                                            <MultiBinding Converter="{StaticResource EqualityConverter}">
+                                                                <Binding Path="."/>
+                                                                <Binding Path="BindingContext.SelectedPaymentMethod"
+                                                                         Source="{RelativeSource AncestorType={x:Type views:CheckoutPage}}"/>
+                                                            </MultiBinding>
+                                                        </Label.IsVisible>
+                                                    </Label>
+
+                                                </Grid>
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <BoxView HeightRequest="4"
+                             Color="Transparent"/>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+            <!-- Bottom Pay CTA -->
+            <Border
+                Grid.Row="2"
+                BackgroundColor="{StaticResource CardBackground}"
+                Padding="16,14,16,18"
+                Stroke="{StaticResource Border}"
+                StrokeShape="RoundRectangle 20,20,0,0">
+
+                <Border
+                    HeightRequest="54"
+                    BackgroundColor="{StaticResource Accent}"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 15"
+                    IsEnabled="{Binding IsPlacingOrder,Converter={toolkit:InvertedBoolConverter}}">
+
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border"
+                                     Binding="{Binding IsPlacingOrder}"
+                                     Value="True">
+                            <Setter Property="Opacity"
+                                    Value="0.6"/>
+                        </DataTrigger>
+                    </Border.Triggers>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding PlaceOrderCommand}"/>
+                    </Border.GestureRecognizers>
+
+                    <Grid ColumnDefinitions="Auto,Auto"
+                          ColumnSpacing="10"
+                          HorizontalOptions="Center"
+                          VerticalOptions="Center">
+
+                        <ActivityIndicator
+                            IsRunning="{Binding IsPlacingOrder}"
+                            IsVisible="{Binding IsPlacingOrder}"
+                            Color="White"
+                            HeightRequest="18"
+                            WidthRequest="18"
+                            VerticalOptions="Center"/>
+
+                        <Label
+                            Grid.Column="1"
+                            Text="{Binding PayButtonLabel}"
+                            FontSize="16"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            VerticalOptions="Center"/>
+
+                    </Grid>
+
+                </Border>
+
+            </Border>
+
+        </Grid>
+    </views:BasePage.PageContent>
+
+</views:BasePage>

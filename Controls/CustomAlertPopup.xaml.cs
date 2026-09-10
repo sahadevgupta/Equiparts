@@ -1,8 +1,9 @@
-using CommunityToolkit.Maui.Views;
+using Mopups.Pages;
+using Mopups.Services;
 
 namespace Equiparts.Controls;
 
-public partial class CustomAlertPopup : Popup<bool>
+public partial class CustomAlertPopup : PopupPage
 {
     public static readonly BindableProperty MessageProperty =
         BindableProperty.Create(nameof(Message), typeof(string), typeof(CustomAlertPopup), string.Empty);
@@ -53,6 +54,10 @@ public partial class CustomAlertPopup : Popup<bool>
         set => SetValue(CancelTextProperty, value);
     }
 
+    private readonly TaskCompletionSource<bool> _resultCompletionSource = new();
+
+    public Task<bool> Result => _resultCompletionSource.Task;
+
     public CustomAlertPopup()
     {
         InitializeComponent();
@@ -64,7 +69,13 @@ public partial class CustomAlertPopup : Popup<bool>
         popup.CancelButton.IsVisible = !string.IsNullOrWhiteSpace((string?)newValue);
     }
 
-    async void OnAcceptClicked(object sender, EventArgs e) => await CloseAsync(true);
+    async void OnAcceptClicked(object sender, EventArgs e) => await CloseWithResultAsync(true);
 
-    async void OnCancelClicked(object sender, EventArgs e) => await CloseAsync(false);
+    async void OnCancelClicked(object sender, EventArgs e) => await CloseWithResultAsync(false);
+
+    private async Task CloseWithResultAsync(bool result)
+    {
+        _resultCompletionSource.TrySetResult(result);
+        await MopupService.Instance.PopAsync();
+    }
 }

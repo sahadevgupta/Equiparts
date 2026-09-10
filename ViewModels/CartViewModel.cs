@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Equiparts.Enums;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
@@ -12,7 +11,7 @@ namespace Equiparts.ViewModels;
 public partial class CartViewModel : BaseViewModel
 {
     private readonly ICartService _cartService;
-    private readonly IOrderService _orderService;
+    private readonly INavigationService _navigationService;
     private readonly ILoadingPopupService _loadingPopupService;
     private readonly IDialogService _dialogService;
 
@@ -33,12 +32,12 @@ public partial class CartViewModel : BaseViewModel
     [ObservableProperty]
     private bool _isListEmpty;
 
-    public CartViewModel(ICartService cartService, IOrderService orderService, ILoadingPopupService loadingPopupService, IDialogService dialogService)
+    public CartViewModel(ICartService cartService, INavigationService navigationService, ILoadingPopupService loadingPopupService, IDialogService dialogService)
     {
         Title = "My Cart";
 
         _cartService = cartService;
-        _orderService = orderService;
+        _navigationService = navigationService;
         _loadingPopupService = loadingPopupService;
         _dialogService = dialogService;
 
@@ -139,13 +138,7 @@ public partial class CartViewModel : BaseViewModel
             return;
         }
 
-        await _orderService.PlaceOrderAsync(_cartService.Items.ToList());
-
-        await _cartService.ClearCartAsync();
-
-        await _dialogService.ShowAlertAsync("Order placed successfully.", AlertType.Success);
-
-        await Shell.Current.GoToAsync(nameof(OrdersPage));
+        await _navigationService.NaviagteAsync<CheckoutPage>();
     }
 
     #region [ Override Methods ]

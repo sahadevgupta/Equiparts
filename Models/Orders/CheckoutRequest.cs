@@ -11,4 +11,7 @@ public class CheckoutRequest
 
     [JsonPropertyName("paymentMethod")]
     public string? PaymentMethod { get; set; }
+
+    [JsonPropertyName("couponCode")]
+    public string? CouponCode { get; set; }
 }

@@ -15,9 +15,7 @@ public interface IOrderApi
     Task<ApiResult<OrderResponse>> CheckoutAsync([Body] CheckoutRequest request, CancellationToken cancellationToken = default);
 
     [Get("/api/orders")]
-    Task<ApiResult<PagedResult<OrderResponse>>> GetOrdersAsync(
-        [Query] int page = 1,
-        [Query] int pageSize = 20,
+    Task<ApiResult<List<OrderResponse>>> GetOrdersAsync(
         CancellationToken cancellationToken = default);
 
     [Get("/api/orders/{orderId}")]

@@ -191,14 +191,16 @@ public class ProfileService(IProfileApi profileApi,
     {
         return new AddressRequest
         {
-            Label = address.Label,
-            AddressLine1 = address.AddressLine1,
-            AddressLine2 = address.AddressLine2,
+            //Label = address.Label,
+            FullName = address.FullName,
+            AddressLine1 = address.Line1,
+            AddressLine2 = address.Line2,
             City = address.City,
             State = address.State,
             PostalCode = address.PostalCode,
             Country = address.Country,
             PhoneNumber = address.PhoneNumber,
+            Landmark = address.Landmark,
             IsDefault = address.IsDefault
         };
     }

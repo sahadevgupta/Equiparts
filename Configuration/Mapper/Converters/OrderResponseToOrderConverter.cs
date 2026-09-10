@@ -11,11 +11,11 @@ public class OrderResponseToOrderConverter : ConverterBase<OrderResponse, Order>
     {
         return new Order
         {
-            Id = source.Id,
+            Id = source.OrderId,
             OrderNo = source.OrderNumber,
-            Date = source.OrderDate,
-            Total = source.Total,
-            Status = source.Status,
+            Date = source.PlacedAtUtc,
+            Total = (decimal)source.TotalAmount,
+            Status = source.OrderStatus,
             Items = source.Items.Select(_itemConverter.Convert).ToList()
         };
     }

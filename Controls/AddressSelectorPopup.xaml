@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopup:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                 xmlns:mopup="clr-namespace:Mopups.Pages;assembly=Mopups"
+                 xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                 xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+                 xmlns:controls="clr-namespace:Equiparts.Controls"
+                 x:Class="Equiparts.Controls.AddressSelectorPopup"
+                 x:Name="addressSelectorPopup"
+                 BackgroundColor="{StaticResource PopupBackground}"
+                 CloseWhenBackgroundIsClicked="False">
+
+    <mopup:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+            DurationIn="300"
+            DurationOut="200"
+            EasingIn="SinIn"
+            EasingOut="SinOut"
+            PositionIn="Center"
+            PositionOut="Center"/>
+    </mopup:PopupPage.Animation>
+
+    <mopup:PopupPage.Resources>
+        <Style TargetType="Border">
+            <Setter Property="Shadow"
+                    Value="{x:Null}"/>
+        </Style>
+    </mopup:PopupPage.Resources>
+
+    <Border StyleClass="Card"
+            Padding="0"
+            Margin="20,60"
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="0">
+
+        <Grid RowDefinitions="Auto,*,Auto">
+
+            <!-- Header -->
+            <Grid Grid.Row="0"
+                  ColumnDefinitions="*,Auto"
+                  Padding="18,16"
+                  BackgroundColor="{StaticResource NavyBlue}">
+
+                <Label
+                    Text="Select Delivery Address"
+                    FontSize="17"
+                    FontFamily="OpenSansSemibold"
+                    TextColor="White"
+                    VerticalOptions="Center"/>
+
+                <ImageButton
+                    Grid.Column="1"
+                    BackgroundColor="Transparent"
+                    HeightRequest="28"
+                    WidthRequest="28"
+                    Padding="0"
+                    Clicked="OnCloseClicked">
+                    <ImageButton.Source>
+                        <FontImageSource FontFamily="FontAwesome"
+                                         Glyph="{x:Static fontresources:FontAwesomeIcons.Times}"
+                                         Size="16"
+                                         Color="White"/>
+                    </ImageButton.Source>
+                </ImageButton>
+
+            </Grid>
+
+            <!-- Address list -->
+            <CollectionView
+                Grid.Row="1"
+                Margin="14"
+                ItemsSource="{Binding Items, Source={x:Reference addressSelectorPopup}}"
+                SelectionMode="None"
+                VerticalScrollBarVisibility="Never">
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout
+                        Padding="20"
+                        Spacing="8"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+
+                        <Label
+                            FontFamily="FontAwesome"
+                            Text="{x:Static fontresources:FontAwesomeIcons.MapMarkerAlt}"
+                            FontSize="42"
+                            TextColor="{StaticResource ChipText}"
+                            HorizontalOptions="Center"/>
+
+                        <Label
+                            Text="No saved addresses yet"
+                            HorizontalTextAlignment="Center"
+                            TextColor="{StaticResource BodyText}"/>
+
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="controls:AddressPickerItem">
+
+                        <Border
+                            Margin="0,0,0,12"
+                            Padding="14"
+                            BackgroundColor="{StaticResource CardBackground}"
+                            Stroke="{Binding IsSelected,Converter={toolkit:BoolToObjectConverter TrueObject={StaticResource Accent},FalseObject={StaticResource Border}}}"
+                            StrokeThickness="1.5"
+                            StrokeShape="RoundRectangle 14">
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnAddressTapped"
+                                                      CommandParameter="{Binding Address}"/>
+                            </Border.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  ColumnSpacing="12">
+
+                                <Label
+                                    Grid.Column="0"
+                                    FontFamily="FontAwesome"
+                                    FontSize="20"
+                                    VerticalOptions="Start"
+                                    TextColor="{Binding IsSelected,Converter={toolkit:BoolToObjectConverter TrueObject={StaticResource Accent},FalseObject={StaticResource Border}}}"
+                                    Text="{Binding IsSelected,Converter={toolkit:BoolToObjectConverter TrueObject={x:Static fontresources:FontAwesomeIcons.DotCircle},FalseObject={x:Static fontresources:FontAwesomeIcons.Circle}}}"/>
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Spacing="3">
+
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Label
+                                            FontSize="15"
+                                            FontFamily="OpenSansSemibold"
+                                            TextColor="{StaticResource TitleText}"
+                                            Text="{Binding Address.FullName}"/>
+
+                                        <Border
+                                            IsVisible="{Binding Address.IsDefault}"
+                                            Padding="7,2"
+                                            BackgroundColor="{StaticResource SuccessBackground}"
+                                            StrokeThickness="0"
+                                            StrokeShape="RoundRectangle 8">
+                                            <Label
+                                                Text="DEFAULT"
+                                                FontSize="9"
+                                                FontAttributes="Bold"
+                                                TextColor="{StaticResource Success}"/>
+                                        </Border>
+                                    </HorizontalStackLayout>
+
+                                    <Label
+                                        FontSize="13"
+                                        TextColor="{StaticResource BodyText}"
+                                        LineBreakMode="WordWrap"
+                                        Text="{Binding Address.DisplayLines}"/>
+
+                                    <Label
+                                        FontSize="13"
+                                        TextColor="{StaticResource BodyText}"
+                                        Text="{Binding Address.PostalCode}"/>
+
+                                    <Label
+                                        FontSize="13"
+                                        TextColor="{StaticResource BodyText}"
+                                        Text="{Binding Address.PhoneNumber,StringFormat='Mobile: {0}'}"/>
+
+                                </VerticalStackLayout>
+
+                                <ImageButton
+                                    Grid.Column="2"
+                                    VerticalOptions="Start"
+                                    BackgroundColor="Transparent"
+                                    HeightRequest="20"
+                                    WidthRequest="20"
+                                    Padding="0"
+                                    CornerRadius="0"
+                                    CommandParameter="{Binding Address}"
+                                    Clicked="OnEditClicked">
+                                    <ImageButton.Source>
+                                        <FontImageSource FontFamily="FontAwesome"
+                                                         Glyph="{x:Static fontresources:FontAwesomeIcons.PenSquare}"
+                                                         Size="16"
+                                                         Color="{StaticResource ChipText}"/>
+                                    </ImageButton.Source>
+                                </ImageButton>
+
+                            </Grid>
+
+                        </Border>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- Add new -->
+            <Border
+                Grid.Row="2"
+                Margin="14,0,14,14"
+                Padding="0"
+                BackgroundColor="Transparent"
+                Stroke="{StaticResource Accent}"
+                StrokeDashArray="4,3"
+                StrokeThickness="1.5"
+                HeightRequest="50"
+                StrokeShape="RoundRectangle 12">
+
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAddNewClicked"/>
+                </Border.GestureRecognizers>
+
+                <HorizontalStackLayout Spacing="8"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center">
+
+                    <Label
+                        FontFamily="FontAwesome"
+                        Text="{x:Static fontresources:FontAwesomeIcons.Plus}"
+                        FontSize="14"
+                        TextColor="{StaticResource Accent}"/>
+
+                    <Label
+                        Text="Add New Address"
+                        FontFamily="OpenSansSemibold"
+                        FontSize="14"
+                        TextColor="{StaticResource Accent}"/>
+
+                </HorizontalStackLayout>
+
+            </Border>
+
+        </Grid>
+
+    </Border>
+
+</mopup:PopupPage>

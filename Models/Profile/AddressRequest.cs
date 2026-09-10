@@ -4,13 +4,16 @@ namespace Equiparts.Models.Profile;
 
 public class AddressRequest
 {
-    [JsonPropertyName("label")]
-    public string? Label { get; set; }
+    // [JsonPropertyName("label")]
+    // public string? Label { get; set; }
 
-    [JsonPropertyName("addressLine1")]
+    [JsonPropertyName("contactName")]
+    public string FullName { get; set; } = string.Empty;
+
+    [JsonPropertyName("line1")]
     public string AddressLine1 { get; set; } = string.Empty;
 
-    [JsonPropertyName("addressLine2")]
+    [JsonPropertyName("line2")]
     public string? AddressLine2 { get; set; }
 
     [JsonPropertyName("city")]
@@ -25,8 +28,11 @@ public class AddressRequest
     [JsonPropertyName("country")]
     public string Country { get; set; } = string.Empty;
 
-    [JsonPropertyName("phoneNumber")]
+    [JsonPropertyName("contactPhone")]
     public string? PhoneNumber { get; set; }
+
+    [JsonPropertyName("landmark")]
+    public string? Landmark { get; set; }
 
     [JsonPropertyName("isDefault")]
     public bool IsDefault { get; set; }

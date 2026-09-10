@@ -5,23 +5,38 @@ namespace Equiparts.Models.Orders;
 
 public class OrderResponse
 {
-    [JsonPropertyName("id")]
-    public int Id { get; set; }
+    [JsonPropertyName("orderId")]
+    public int OrderId { get; set; }
 
     [JsonPropertyName("orderNumber")]
-    public string OrderNumber { get; set; } = string.Empty;
+    public string OrderNumber { get; set; }
 
-    [JsonPropertyName("status")]
-    public string Status { get; set; } = string.Empty;
+    [JsonPropertyName("orderStatus")]
+    public string OrderStatus { get; set; }
 
-    [JsonPropertyName("orderDate")]
-    public DateTime OrderDate { get; set; }
+    [JsonPropertyName("paymentStatus")]
+    public string PaymentStatus { get; set; }
 
-    [JsonPropertyName("total")]
-    public decimal Total { get; set; }
+    [JsonPropertyName("paymentMethod")]
+    public string PaymentMethod { get; set; }
 
-    [JsonPropertyName("shippingAddress")]
-    public AddressResponse? ShippingAddress { get; set; }
+    [JsonPropertyName("subTotal")]
+    public double SubTotal { get; set; }
+
+    [JsonPropertyName("discountAmount")]
+    public double DiscountAmount { get; set; }
+
+    [JsonPropertyName("taxAmount")]
+    public double TaxAmount { get; set; }
+
+    [JsonPropertyName("shippingCharge")]
+    public double ShippingCharge { get; set; }
+
+    [JsonPropertyName("totalAmount")]
+    public double TotalAmount { get; set; }
+
+    [JsonPropertyName("placedAtUtc")]
+    public DateTime PlacedAtUtc { get; set; }
 
     [JsonPropertyName("items")]
     public List<OrderItemResponse> Items { get; set; } = [];

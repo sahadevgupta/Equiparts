@@ -2,6 +2,8 @@ using CommunityToolkit.Maui;
 using Equiparts.Handlers;
 using Equiparts.Interfaces;
 using Equiparts.Services;
+using Mopups.Interfaces;
+using Mopups.Services;
 
 namespace Equiparts.Extensions;
 
@@ -12,10 +14,13 @@ public static class AppServiceInitializer
         builder.Services.AddTransient<AuthHandler>()
                         .AddTransient<INavigationService, NavigationService>();
 
+        builder.Services.AddSingleton<IPopupNavigation>(MopupService.Instance);
+
         builder.Services.AddTransient<ICartService, CartService>()
                         .AddTransient<IProductService, ProductService>()
                         .AddTransient<IOrderService, OrderService>()
                         .AddTransient<IProfileService, ProfileService>()
+                        .AddTransient<ICouponService, CouponService>()
                         .AddTransient<IDialogService, DialogService>();
 
         // Auth: token storage/refresh + connectivity.

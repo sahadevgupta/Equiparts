@@ -15,6 +15,9 @@ public partial class OrdersViewModel : BaseViewModel
 
     public ObservableCollection<Order> Orders { get; } = [];
 
+    [ObservableProperty]
+    private bool _isListEmpty;
+
     public OrdersViewModel(IOrderService orderService, IDialogService dialogService, ILoadingPopupService loadingPopupService)
     {
         Title = "Orders";
@@ -43,6 +46,8 @@ public partial class OrdersViewModel : BaseViewModel
                 foreach (var order in orders.OrderByDescending(x => x.Date))
                     Orders.Add(order);
             }
+
+            IsListEmpty = !Orders.Any();
         }
         finally
         {

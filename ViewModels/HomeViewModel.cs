@@ -86,7 +86,7 @@ public partial class HomeViewModel(ICartService cartService,
             AppConfiguration.Categories = categories;
             Categories = new ObservableCollection<Category>(categories);
             Banners = new ObservableCollection<Banner>(banners);
-            BestSellers = new ObservableCollection<Product>(products.Take(4));
+            BestSellers = new ObservableCollection<Product>(products.Where(p => p.IsBestSeller && p.IsInStock));
         });
     }
 

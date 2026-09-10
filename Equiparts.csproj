@@ -73,6 +73,7 @@
 		<PackageReference Include="FFImageLoading.Maui" Version="1.3.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.100" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
+		<PackageReference Include="Mopups" Version="1.3.4" />
 		<PackageReference Include="Refit" Version="15.2.0" />
 		<PackageReference Include="Refit.HttpClientFactory" Version="15.2.0" />
 		<PackageReference Include="Sentry.Maui" Version="6.10.0" />

@@ -6,9 +6,13 @@ public class Address
 
     public string? Label { get; set; }
 
-    public string AddressLine1 { get; set; } = string.Empty;
+    public string FullName { get; set; } = string.Empty;
 
-    public string? AddressLine2 { get; set; }
+    public string Line1 { get; set; } = string.Empty;
+
+    public string? Line2 { get; set; }
+
+    public string? Type { get; set; }
 
     public string City { get; set; } = string.Empty;
 
@@ -20,5 +24,11 @@ public class Address
 
     public string? PhoneNumber { get; set; }
 
+    public string? Landmark { get; set; }
+
     public bool IsDefault { get; set; }
+
+    public string DisplayLines =>
+        string.Join(", ", new[] { Line1, Line2, Landmark, City, State }
+            .Where(part => !string.IsNullOrWhiteSpace(part)));
 }

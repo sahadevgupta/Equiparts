@@ -21,7 +21,7 @@ public class OrderService(IOrderApi orderApi,
             if (response is not { Success: true, Data: not null })
                 return [];
 
-            return BackendToAppModelMapper.GetOrders(response.Data.Items);
+            return BackendToAppModelMapper.GetOrders(response.Data);
         }
         catch (ApiException apiEx)
         {
@@ -37,7 +37,7 @@ public class OrderService(IOrderApi orderApi,
         return orders.FirstOrDefault(x => x.OrderNo == orderNo);
     }
 
-    public async Task PlaceOrderAsync(List<CartItem> cartItems)
+    public async Task PlaceOrderAsync(List<CartItem> cartItems, int addressId, string paymentMethod, string? couponCode = null, CancellationToken cancellationToken = default)
     {
         try
         {
@@ -45,6 +45,9 @@ public class OrderService(IOrderApi orderApi,
 
             var request = new CreateOrderRequest
             {
+                AddressId = addressId,
+                PaymentMethod = paymentMethod,
+                CouponCode = couponCode,
                 Items = [.. cartItems.Select(x => new OrderItemRequest
                 {
                     ProductId = x.ProductId,
@@ -52,7 +55,7 @@ public class OrderService(IOrderApi orderApi,
                 })]
             };
 
-            await orderApi.CreateOrderAsync(request);
+            var a = await orderApi.CreateOrderAsync(request);
         }
         catch (ApiException apiEx)
         {
@@ -60,26 +63,34 @@ public class OrderService(IOrderApi orderApi,
         }
     }
 
-    public async Task CheckOutAsync(List<CartItem> cartItems)
+    public async Task<Order?> CheckoutAsync(int addressId, string paymentMethod, string? couponCode = null, CancellationToken cancellationToken = default)
     {
         try
         {
-            await connectivityService.CheckInternetAccessAsync();
+            await connectivityService.CheckInternetAccessAsync(cancellationToken);
 
-            var request = new CreateOrderRequest
+            var request = new CheckoutRequest
             {
-                Items = [.. cartItems.Select(x => new OrderItemRequest
-                {
-                    ProductId = x.ProductId,
-                    Quantity = x.Quantity
-                })]
+                AddressId = addressId,
+                PaymentMethod = paymentMethod,
+                CouponCode = couponCode
             };
 
-            await orderApi.CreateOrderAsync(request);
+            var response = await orderApi.CheckoutAsync(request, cancellationToken);
+
+            if (response is not { Success: true, Data: not null })
+                return null;
+
+            return BackendToAppModelMapper.GetOrder(response.Data);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
         }
         catch (ApiException apiEx)
         {
-            logger.LogWarning(apiEx, "Failed to place order ({StatusCode}).", apiEx.StatusCode);
+            logger.LogWarning(apiEx, "Failed to checkout order ({StatusCode}).", apiEx.StatusCode);
+            return null;
         }
     }
 

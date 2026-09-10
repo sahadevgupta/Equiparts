@@ -9,15 +9,17 @@
     xmlns:views="clr-namespace:Equiparts.Views"
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     x:DataType="viewModels:OrdersViewModel"
-    Shell.NavBarIsVisible="False"
-    BackgroundColor="{StaticResource PageBackground}">
+    Shell.NavBarIsVisible="True"
+    Shell.TabBarIsVisible="False"
+    BackgroundColor="{StaticResource PageBackground}"
+    Title="Orders">
 
     <views:BasePage.PageContent>
         <Grid RowDefinitions="Auto,*">
 
             <!-- Header -->
-            <Image Source="header_logo"
-                   Margin="-2,0"/>
+            <!-- <Image Source="header_logo"
+                   Margin="-2,0"/> -->
             <Grid IsVisible="false"
                   Padding="20,20,20,15"
                   BackgroundColor="{StaticResource Primary}">
@@ -53,7 +55,8 @@
                     <VerticalStackLayout
                         VerticalOptions="Center"
                         HorizontalOptions="Center"
-                        Spacing="15">
+                        Spacing="15"
+                        IsVisible="{Binding IsListEmpty}">
 
                         <Label
                             FontFamily="FontAwesome"

@@ -4,6 +4,7 @@ using Equiparts.Extensions;
 using Equiparts.Interfaces;
 using FFImageLoading.Maui;
 using Microsoft.Extensions.Logging;
+using Mopups.Hosting;
 
 namespace Equiparts
 {
@@ -15,6 +16,7 @@ namespace Equiparts
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .ConfigureMopups()
                 .UseFFImageLoading()
                 .ConfigureFonts(fonts =>
                 {

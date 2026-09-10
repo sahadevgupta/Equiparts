@@ -1,22 +1,15 @@
-using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Extensions;
 using Equiparts.Controls;
 using Equiparts.Enums;
 using Equiparts.Extensions;
 using Equiparts.Interfaces;
+using Mopups.Interfaces;
 
 namespace Equiparts.Services;
 
-public class DialogService : IDialogService
+public class DialogService(IPopupNavigation popupNavigation) : IDialogService
 {
-    private static readonly PopupOptions Options = new()
-    {
-        CanBeDismissedByTappingOutsideOfPopup = false,
-        PageOverlayColor = Color.FromArgb("#A0000000")
-    };
-
     public async Task ShowAlertAsync(string message, AlertType alertType = AlertType.Warning)
     {
         await ShowAsync(message, alertType, "OK", null);
@@ -36,7 +29,7 @@ public class DialogService : IDialogService
         });
     }
 
-    private static async Task<bool> ShowAsync(string message, AlertType alertType, string acceptText, string? cancelText)
+    private async Task<bool> ShowAsync(string message, AlertType alertType, string acceptText, string? cancelText)
     {
         var (icon, tintColor) = GetIconAndColor(alertType);
 
@@ -51,8 +44,8 @@ public class DialogService : IDialogService
 
         return await MainThread.InvokeOnMainThreadAsync(async () =>
         {
-            var result = await Shell.Current.ShowPopupAsync<bool>(popup, Options);
-            return !result.WasDismissedByTappingOutsideOfPopup && result.Result;
+            await popupNavigation.PushAsync(popup);
+            return await popup.Result;
         });
     }
 

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mopup:PopupPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+                 xmlns:mopup="clr-namespace:Mopups.Pages;assembly=Mopups"
+                 xmlns:mopupsanim="clr-namespace:Mopups.Animations;assembly=Mopups"
+                 xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+                 xmlns:controls="clr-namespace:Equiparts.Controls"
+                 xmlns:models="clr-namespace:Equiparts.Models"
+                 x:Class="Equiparts.Controls.AddressEditorPopup"
+                 x:DataType="controls:AddressEditorPopup"
+                 BackgroundColor="{StaticResource PopupBackground}"
+                 CloseWhenBackgroundIsClicked="False">
+
+    <mopup:PopupPage.Animation>
+        <mopupsanim:MoveAnimation
+            DurationIn="300"
+            DurationOut="200"
+            EasingIn="SinIn"
+            EasingOut="SinOut"
+            PositionIn="Center"
+            PositionOut="Center"/>
+    </mopup:PopupPage.Animation>
+
+    <mopup:PopupPage.Resources>
+        <Style TargetType="Border">
+            <Setter Property="Shadow"
+                    Value="{x:Null}"/>
+        </Style>
+
+        <Style x:Key="FieldLabelStyle"
+               TargetType="Label">
+            <Setter Property="FontSize"
+                    Value="12"/>
+            <Setter Property="FontFamily"
+                    Value="OpenSansSemibold"/>
+            <Setter Property="TextColor"
+                    Value="{StaticResource BodyText}"/>
+        </Style>
+
+        <Style x:Key="FieldBorderStyle"
+               TargetType="Border">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource PageBackground}"/>
+            <Setter Property="Stroke"
+                    Value="{StaticResource Border}"/>
+            <Setter Property="StrokeThickness"
+                    Value="1"/>
+            <Setter Property="StrokeShape"
+                    Value="RoundRectangle 10"/>
+            <Setter Property="Padding"
+                    Value="12,0"/>
+            <Setter Property="HeightRequest"
+                    Value="46"/>
+        </Style>
+
+        <Style x:Key="FieldEntryStyle"
+               TargetType="Entry">
+            <Setter Property="FontSize"
+                    Value="14"/>
+            <Setter Property="TextColor"
+                    Value="{StaticResource TitleText}"/>
+            <Setter Property="PlaceholderColor"
+                    Value="Gray"/>
+            <Setter Property="VerticalOptions"
+                    Value="Center"/>
+        </Style>
+    </mopup:PopupPage.Resources>
+
+    <Border StyleClass="Card"
+            Padding="0"
+            Margin="16,40"
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="0">
+
+        <Grid RowDefinitions="Auto,*,Auto">
+
+            <!-- Header -->
+            <Label
+                Grid.Row="0"
+                Text="{Binding HeaderText}"
+                FontSize="17"
+                FontFamily="OpenSansSemibold"
+                TextColor="White"
+                Padding="18,16"
+                BackgroundColor="{StaticResource NavyBlue}"/>
+
+            <!-- Form -->
+            <ScrollView Grid.Row="1">
+
+                <VerticalStackLayout Padding="18,16"
+                                     Spacing="12">
+
+                    <Label
+                        Text="{Binding ErrorMessage}"
+                        IsVisible="{Binding ErrorMessage,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
+                        FontSize="13"
+                        TextColor="{StaticResource Danger}"/>
+
+                    <controls:ExtendedEntry PlaceholderText="Recipient's full name"
+                                            Text="{Binding FullName}"
+                                            Title="Full Name"
+                                            SuffixText="*"/>
+                    <controls:ExtendedEntry PlaceholderText="10-digit mobile number"
+                                            Text="{Binding MobileNumber}"
+                                            Title="Mobile Number"
+                                            EntryKeyboard="Telephone"
+                                            MaxLength="10"
+                                            SuffixText="*"/>
+                    <controls:ExtendedEntry PlaceholderText="House / building / street"
+                                            Text="{Binding AddressLine1}"
+                                            Title="Address Line 1"
+                                            SuffixText="*"/>
+                    <controls:ExtendedEntry PlaceholderText="Area / locality (optional)"
+                                            Text="{Binding AddressLine2}"
+                                            Title="Address Line 2"/>
+
+                    <Grid ColumnDefinitions="*,*"
+                          RowDefinitions="Auto,Auto"
+                          ColumnSpacing="12"
+                          RowSpacing="12">
+
+                        <controls:ExtendedEntry PlaceholderText="City"
+                                                Text="{Binding City}"
+                                                Title="City"
+                                                SuffixText="*"/>
+
+                        <controls:ExtendedEntry PlaceholderText="State"
+                                                Text="{Binding State}"
+                                                Title="State"
+                                                SuffixText="*"
+                                                Grid.Column="1"/>
+
+                        <controls:ExtendedEntry PlaceholderText="6-digit pincode"
+                                                Text="{Binding PostalCode}"
+                                                Title="Pincode"
+                                                EntryKeyboard="Numeric"
+                                                SuffixText="*"
+                                                Grid.Row="1"
+                                                Grid.Column="0"/>
+
+                        <controls:ExtendedEntry PlaceholderText="Optional"
+                                                Text="{Binding Landmark}"
+                                                Title="Landmark"
+                                                Grid.Row="1"
+                                                Grid.Column="1"/>
+                    </Grid>
+
+                    <HorizontalStackLayout Spacing="10"
+                                           Margin="0,4,0,0">
+                        <Switch IsToggled="{Binding IsDefault}"
+                                OnColor="{StaticResource Accent}"
+                                ThumbColor="White"/>
+                        <Label Text="Set as default address"
+                               FontSize="13"
+                               VerticalOptions="Center"
+                               TextColor="{StaticResource TitleText}"/>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+            <!-- Actions -->
+            <Grid Grid.Row="2"
+                  ColumnDefinitions="*,*"
+                  ColumnSpacing="12"
+                  Padding="18,14"
+                  BackgroundColor="{StaticResource CardBackground}">
+
+                <Button
+                    Grid.Column="0"
+                    Text="Cancel"
+                    BackgroundColor="{StaticResource ChipBackground}"
+                    TextColor="{StaticResource ChipText}"
+                    Clicked="OnCancelClicked"/>
+
+                <Button
+                    Grid.Column="1"
+                    Text="Save Address"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="White"
+                    Clicked="OnSaveClicked"/>
+
+            </Grid>
+
+        </Grid>
+
+    </Border>
+
+</mopup:PopupPage>

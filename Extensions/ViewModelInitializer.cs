@@ -9,6 +9,7 @@ public static class ViewModelInitializer
         builder.Services.AddTransient<HomeViewModel>()
                         .AddTransient<CategoriesViewModel>()
                         .AddTransient<CartViewModel>()
+                        .AddTransient<CheckoutViewModel>()
                         .AddTransient<OrdersViewModel>()
                         .AddTransient<LoginViewModel>()
                         .AddTransient<RegisterViewModel>()
