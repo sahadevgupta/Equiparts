@@ -63,6 +63,45 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
+    public async Task<(bool Success, string? ErrorMessage)> RegisterAsync(string fullName, string email, string password, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var response = await _authApi.RegisterAsync(
+                new RegisterRequest { FullName = fullName, Email = email, Password = password },
+                cancellationToken);
+
+            if (response is not { Success: true, Data: not null })
+                return (false, response.Message ?? "Registration failed. Please try again.");
+
+            await _tokenService.SaveTokensAsync(response.Data.AccessToken, response.Data.RefreshToken, response.Data.AccessTokenExpiresUtc);
+
+            var userSession = BackendToAppModelMapper.GetUserSession(response.Data);
+            if (userSession is not null)
+                _currentUserService.Set(userSession);
+
+            _logger.LogInformation("Registration successful.");
+            return (true, null);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            _logger.LogWarning(apiEx, "Registration rejected by server ({StatusCode}).", apiEx.StatusCode);
+            var message = apiEx.StatusCode == HttpStatusCode.Conflict
+                ? "An account with this email already exists."
+                : "Registration failed. Please try again.";
+            return (false, message);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or TimeoutException)
+        {
+            _logger.LogWarning(ex, "Registration failed due to a network error.");
+            return (false, "Unable to reach the server. Please check your connection.");
+        }
+    }
+
     public async Task LogoutAsync()
     {
         _logger.LogInformation("Logging out.");

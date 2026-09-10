@@ -6,5 +6,7 @@ public interface IAuthenticationService
 {
     Task<(bool Success, string? ErrorMessage)> LoginAsync(string email, string password, CancellationToken cancellationToken = default);
 
+    Task<(bool Success, string? ErrorMessage)> RegisterAsync(string fullName, string email, string password, CancellationToken cancellationToken = default);
+
     Task LogoutAsync();
 }

@@ -1,3 +1,4 @@
+using System.Net;
 using Equiparts.Configuration.Mapper;
 using Equiparts.Interfaces;
 using Equiparts.Models;
@@ -62,6 +63,38 @@ public class ProfileService(IProfileApi profileApi,
         {
             logger.LogWarning(apiEx, "Failed to update profile ({StatusCode}).", apiEx.StatusCode);
             return null;
+        }
+    }
+
+    public async Task<(bool Success, string? ErrorMessage)> ChangePasswordAsync(string currentPassword, string newPassword, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await connectivityService.CheckInternetAccessAsync(cancellationToken);
+
+            var request = new ChangePasswordRequest
+            {
+                CurrentPassword = currentPassword,
+                NewPassword = newPassword
+            };
+
+            var response = await profileApi.ChangePasswordAsync(request, cancellationToken);
+
+            return response.Success
+                ? (true, null)
+                : (false, response.Message ?? "Failed to change password. Please try again.");
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Failed to change password ({StatusCode}).", apiEx.StatusCode);
+            var message = apiEx.StatusCode == HttpStatusCode.Unauthorized || apiEx.StatusCode == HttpStatusCode.BadRequest
+                ? "Current password is incorrect."
+                : "Failed to change password. Please try again.";
+            return (false, message);
         }
     }
 

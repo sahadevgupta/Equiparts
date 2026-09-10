@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Equiparts.Extensions;
 using Equiparts.Interfaces;
+using Equiparts.Views;
 
 namespace Equiparts.ViewModels;
 
@@ -51,6 +52,9 @@ public partial class LoginViewModel : BaseViewModel
 
     [RelayCommand]
     private void LoginWithBiometrics() => ErrorMessage = "Biometric login isn't available yet.";
+
+    [RelayCommand]
+    private async Task GoToRegister() => await Shell.Current.GoToAsync(nameof(RegisterPage));
 
     [RelayCommand]
     private async Task LoginAsync()

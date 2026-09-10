@@ -6,120 +6,141 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+    xmlns:controls="clr-namespace:Equiparts.Controls"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:models="clr-namespace:Equiparts.Models"
     xmlns:views="clr-namespace:Equiparts.Views"
     x:DataType="viewModels:ProductViewModel"
-    Shell.NavBarIsVisible="False"
+    Shell.NavBarIsVisible="True"
     BackgroundColor="{StaticResource PageBackground}">
 
-    <views:BasePage.PageContent>
-        <Grid RowDefinitions="Auto,Auto,*">
+    <views:BasePage.Resources>
+        <!-- The app-wide default Border style (Styles.xaml) adds a drop shadow and a
+             grey stroke to every Border. That's wrong for the flat badges/chips/dots
+             used throughout this page, so it's cleared here rather than for the whole app. -->
+        <Style TargetType="Border">
+            <Setter Property="Shadow"
+                    Value="{x:Null}"/>
+        </Style>
+    </views:BasePage.Resources>
 
-            <!-- Header -->
-            <Grid Grid.Row="0"
-                  Padding="15,15,15,16"
-                  ColumnDefinitions="Auto,*"
-                  BackgroundColor="{StaticResource Primary}">
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto">
+            <Label VerticalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="19"
+                   TextColor="White"
+                   LineBreakMode="TailTruncation"
+                   Text="{Binding Title}"/>
 
-                <ImageButton
+            <Border Grid.Column="1"
+                    WidthRequest="38"
+                    HeightRequest="38"
+                    Padding="0"
+                    VerticalOptions="Center"
                     BackgroundColor="Transparent"
-                    VerticalOptions="Start"
-                    Command="{Binding GoBackCommand}">
+                    Stroke="#3FFFFFFF"
+                    StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 10"
+                    Margin="0,0,10,0"
+                    IsVisible="False">
 
-                    <ImageButton.Source>
-                        <FontImageSource FontFamily="FontAwesome"
-                                         Glyph="{x:Static fontresources:FontAwesomeIcons.ArrowLeft}"
-                                         Size="20"
-                                         Color="White"/>
-                    </ImageButton.Source>
-
-                </ImageButton>
-
-                <VerticalStackLayout Grid.Column="1"
-                                     Margin="12,0"
-                                     Spacing="2">
-
-                    <HorizontalStackLayout Spacing="8">
-
-                        <Label
-                            FontAttributes="Bold"
-                            FontSize="19"
-                            TextColor="White"
-                            LineBreakMode="TailTruncation"
-                            Text="{Binding Title}"/>
-
-                        <Border
-                            WidthRequest="8"
-                            HeightRequest="8"
-                            Padding="0"
-                            VerticalOptions="Center"
-                            BackgroundColor="{StaticResource Success}"
-                            StrokeThickness="0"
-                            StrokeShape="RoundRectangle 4"/>
-
-                    </HorizontalStackLayout>
-
-                    <Label
-                        FontSize="11"
-                        FontAttributes="Bold"
-                        TextTransform="Uppercase"
-                        CharacterSpacing="0.8"
-                        TextColor="#9FB3C8"
-                        Text="OEM Heavy Equipment Supplies"/>
-
-                </VerticalStackLayout>
-
-            </Grid>
-
-            <!-- Search -->
-            <Border Grid.Row="1"
-                    Margin="15"
-                    Padding="12"
-                    Stroke="{StaticResource Border}"
-                    BackgroundColor="White"
-                    StrokeShape="RoundRectangle 12">
-
-                <Grid ColumnDefinitions="30,*,Auto">
-
-                    <Image Source="search.png"
-                           HeightRequest="18"
-                           WidthRequest="18"/>
-
-                    <Entry Grid.Column="1"
-                           Placeholder="Search products..."
-                           PlaceholderColor="Gray"
-                           Text="{Binding SearchText}">
-
-                        <Entry.Behaviors>
-                            <toolkit:UserStoppedTypingBehavior
-                                StoppedTypingTimeThreshold="500"
-                                MinimumLengthThreshold="0"
-                                ShouldDismissKeyboardAutomatically="False"
-                                Command="{Binding SearchCommand}"/>
-                        </Entry.Behaviors>
-
-                    </Entry>
-
-                    <ImageButton Grid.Column="2"
-                                 IsVisible="{Binding SearchText,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
-                                 BackgroundColor="Transparent"
-                                 Command="{Binding ClearSearchCommand}">
-
-                        <ImageButton.Source>
-                            <FontImageSource FontFamily="FontAwesome"
-                                             Glyph="{x:Static fontresources:FontAwesomeIcons.Times}"
-                                             Size="18"
-                                             Color="Gray"/>
-                        </ImageButton.Source>
-
-                    </ImageButton>
-
-                </Grid>
+                <Label
+                    FontFamily="FontAwesome"
+                    Text="{x:Static fontresources:FontAwesomeIcons.Filter}"
+                    FontSize="16"
+                    TextColor="White"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"/>
 
             </Border>
 
+
+        </Grid>
+    </Shell.TitleView>
+
+    <views:BasePage.PageContent>
+        <Grid RowDefinitions="Auto,Auto,*"
+              RowSpacing="0">
+
+            <!-- Header -->
+            <!-- Search -->
+            <VerticalStackLayout BackgroundColor="{StaticResource NavyBlue}">
+                <Border BackgroundColor="White"
+                        Padding="0"
+                        Stroke="{StaticResource Border}"
+                        StrokeShape="RoundRectangle 6"
+                        x:Name="EntryBorder"
+                        StrokeThickness="1"
+                        HeightRequest="48"
+                        Margin="10,5,10,15">
+
+                    <Grid ColumnDefinitions="Auto,*,Auto"
+                          ColumnSpacing="10"
+                          Padding="12,0">
+
+                        <Label Grid.Column="0"
+                               FontFamily="FontAwesome"
+                               Text="{x:Static fontresources:FontAwesomeIcons.Search}"
+                               FontSize="18"
+                               TextColor="Gray"
+                               VerticalOptions="Center"/>
+
+                        <controls:BorderlessEntry Grid.Column="1"
+                                                  BackgroundColor="Transparent"
+                                                  Placeholder="Search products..."
+                                                  PlaceholderColor="Gray"
+                                                  Text="{Binding SearchText}"
+                                                  HorizontalOptions="Fill"
+                                                  VerticalTextAlignment="Center"
+                                                  VerticalOptions="Center"
+                                                  x:Name="UserStoppedTypingEntry">
+
+                            <controls:BorderlessEntry.Behaviors>
+                                <toolkit:UserStoppedTypingBehavior
+                                    BindingContext="{Binding Path=BindingContext, Source={x:Reference UserStoppedTypingEntry}, x:DataType=controls:BorderlessEntry}"
+                                    StoppedTypingTimeThreshold="500"
+                                    MinimumLengthThreshold="3"
+                                    ShouldDismissKeyboardAutomatically="False"
+                                    Command="{Binding SearchCommand}"/>
+                            </controls:BorderlessEntry.Behaviors>
+
+                        </controls:BorderlessEntry>
+
+                        <ImageButton Grid.Column="2"
+                                     IsVisible="{Binding SearchText,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
+                                     BackgroundColor="Transparent"
+                                     Command="{Binding ClearSearchCommand}">
+
+                            <ImageButton.Source>
+                                <FontImageSource FontFamily="FontAwesome"
+                                                 Glyph="{x:Static fontresources:FontAwesomeIcons.Times}"
+                                                 Size="18"
+                                                 Color="Gray"/>
+                            </ImageButton.Source>
+
+                        </ImageButton>
+
+                        <!-- <Label Grid.Column="3"
+                               FontFamily="FontAwesome"
+                               Text="{x:Static fontresources:FontAwesomeIcons.Barcode}"
+                               FontSize="18"
+                               TextColor="Gray"
+                               VerticalOptions="Center"/>
+
+                        <Label Grid.Column="4"
+                               FontFamily="FontAwesome"
+                               Text="{x:Static fontresources:FontAwesomeIcons.Microphone}"
+                               FontSize="18"
+                               TextColor="Gray"
+                               VerticalOptions="Center"/> -->
+
+                    </Grid>
+
+                </Border>
+
+            </VerticalStackLayout>
             <!-- Content -->
             <Grid Grid.Row="2">
 
@@ -128,7 +149,7 @@
 
                     <CollectionView ItemsSource="{Binding Products}"
                                     SelectionMode="None"
-                                    Margin="15,0,15,15"
+                                    Margin="0,10,0,0"
                                     RemainingItemsThreshold="3"
                                     RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
 
@@ -166,10 +187,11 @@
                             <DataTemplate x:DataType="models:Product">
 
                                 <Border
-                                    Margin="0,6"
+                                    Margin="10,6"
                                     Padding="14"
                                     BackgroundColor="White"
                                     Stroke="{StaticResource Border}"
+                                    StrokeThickness="1.5"
                                     StrokeShape="RoundRectangle 16">
 
                                     <Border.GestureRecognizers>
@@ -182,8 +204,10 @@
                                         <DataTrigger TargetType="Border"
                                                      Binding="{Binding IsOutOfStock}"
                                                      Value="True">
-                                            <Setter Property="BackgroundColor" Value="#F2F2F2"/>
-                                            <Setter Property="Opacity" Value="0.6"/>
+                                            <Setter Property="BackgroundColor"
+                                                    Value="#F2F2F2"/>
+                                            <Setter Property="Opacity"
+                                                    Value="0.6"/>
                                         </DataTrigger>
                                     </Border.Triggers>
 
@@ -454,43 +478,6 @@
                     Color="{StaticResource Accent}"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"/>
-
-                <!-- Bulk Order / RFQ -->
-                <Border
-                    Margin="0,0,0,16"
-                    Padding="18,12"
-                    HorizontalOptions="Center"
-                    VerticalOptions="End"
-                    StrokeThickness="0"
-                    BackgroundColor="{StaticResource Primary}"
-                    StrokeShape="RoundRectangle 28">
-
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BulkOrderCommand}"/>
-                    </Border.GestureRecognizers>
-
-                    <HorizontalStackLayout Spacing="10">
-
-                        <Border
-                            WidthRequest="8"
-                            HeightRequest="8"
-                            Padding="0"
-                            VerticalOptions="Center"
-                            StrokeThickness="0"
-                            BackgroundColor="{StaticResource Accent}"
-                            StrokeShape="RoundRectangle 4"/>
-
-                        <Label
-                            FontSize="14"
-                            FontAttributes="Bold"
-                            VerticalOptions="Center"
-                            TextColor="White"
-                            Text="Bulk Order / RFQ"/>
-
-                    </HorizontalStackLayout>
-
-                </Border>
-
             </Grid>
 
         </Grid>

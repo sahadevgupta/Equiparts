@@ -19,6 +19,7 @@ namespace Equiparts.Platforms.Handlers
             editText.SetBackgroundColor(Colors.Transparent.ToPlatform());
             editText.SetPadding(0, 0, 0, 0);
             editText.SetSingleLine(true);
+            editText.Background = null;
 
             return editText;
         }

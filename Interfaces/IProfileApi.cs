@@ -13,6 +13,9 @@ public interface IProfileApi
     [Put("/api/profile")]
     Task<ApiResult<ProfileResponse>> UpdateProfileAsync([Body] ProfileUpdateRequest request, CancellationToken cancellationToken = default);
 
+    [Post("/api/profile/change-password")]
+    Task<ApiResult<object?>> ChangePasswordAsync([Body] ChangePasswordRequest request, CancellationToken cancellationToken = default);
+
     [Get("/api/profile/addresses")]
     Task<ApiResult<List<AddressResponse>>> GetAddressesAsync(CancellationToken cancellationToken = default);
 

@@ -20,6 +20,8 @@ namespace Equiparts
             // so they need an explicit route registration for Shell.GoToAsync to find them.
             Routing.RegisterRoute(nameof(ProductPage), typeof(ProductPage));
             Routing.RegisterRoute(nameof(ProductDetailPage), typeof(ProductDetailPage));
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(ChangePasswordPage), typeof(ChangePasswordPage));
 
             // Loaded += OnLoaded;
         }

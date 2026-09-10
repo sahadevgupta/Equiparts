@@ -11,8 +11,11 @@ public static class ViewModelInitializer
                         .AddTransient<CartViewModel>()
                         .AddTransient<OrdersViewModel>()
                         .AddTransient<LoginViewModel>()
+                        .AddTransient<RegisterViewModel>()
                         .AddTransient<ProductViewModel>()
-                        .AddTransient<ProductDetailViewModel>();
+                        .AddTransient<ProductDetailViewModel>()
+                        .AddTransient<ProfileViewModel>()
+                        .AddTransient<ChangePasswordViewModel>();
 
         return builder;
     }

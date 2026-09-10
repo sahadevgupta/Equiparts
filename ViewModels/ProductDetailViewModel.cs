@@ -5,6 +5,8 @@ using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
 
+using Microsoft.Maui.ApplicationModel.DataTransfer;
+
 namespace Equiparts.ViewModels;
 
 public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
@@ -17,6 +19,12 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
 
     [ObservableProperty]
     private bool hasError;
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasCartItems))]
+    private int cartItemCount;
+
+    public bool HasCartItems => CartItemCount > 0;
 
     public ProductDetailViewModel(ICartService cartService, INavigationService navigationService)
     {
@@ -40,6 +48,8 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
         {
             HasError = true;
         }
+
+        CartItemCount = _cartService.GetCartCount();
     }
 
     [RelayCommand]
@@ -49,6 +59,7 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
             return;
 
         await _cartService.AddToCart(Product.Id, 1);
+        CartItemCount = _cartService.GetCartCount();
 
         await Shell.Current.DisplayAlertAsync(
             "Success",
@@ -72,5 +83,30 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
     async Task GoBack()
     {
         await _navigationService.GoBackAsync();
+    }
+
+    [RelayCommand]
+    async Task Share()
+    {
+        if (Product is null)
+            return;
+
+        await Microsoft.Maui.ApplicationModel.DataTransfer.Share.Default.RequestAsync(new ShareTextRequest
+        {
+            Title = "Share Product",
+            Text = $"{Product.Name} (SKU: {Product.Sku})"
+        });
+    }
+
+    [RelayCommand]
+    async Task NotifyStock()
+    {
+        if (Product is null)
+            return;
+
+        await Shell.Current.DisplayAlertAsync(
+            "Notification Set",
+            $"We'll let you know as soon as {Product.Name} is back in stock.",
+            "OK");
     }
 }
