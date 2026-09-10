@@ -7,6 +7,7 @@
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:models="clr-namespace:Equiparts.Models"
     xmlns:views="clr-namespace:Equiparts.Views"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     x:DataType="viewModels:OrdersViewModel"
     Shell.NavBarIsVisible="False"
     BackgroundColor="{StaticResource PageBackground}">
@@ -54,9 +55,12 @@
                     HorizontalOptions="Center"
                     Spacing="15">
 
-                    <Image
-                        Source="orders_empty.png"
-                        HeightRequest="180"/>
+                    <Label
+                        FontFamily="FontAwesome"
+                        Text="{x:Static fontresources:FontAwesomeIcons.Receipt}"
+                        FontSize="80"
+                        TextColor="{StaticResource ChipText}"
+                        HorizontalOptions="Center"/>
 
                     <Label
                         Text="No Orders Yet"

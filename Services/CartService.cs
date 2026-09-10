@@ -1,4 +1,5 @@
 using System.Net;
+using Equiparts.Configuration.Mapper;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Microsoft.Extensions.Logging;
@@ -21,7 +22,10 @@ public class CartService(ICartApi cartApi,
         {
             //await connectivityService.CheckInternetAccessAsync();
             var response = await cartApi.GetCartAsync(cancellationToken);
-            return Enumerable.Empty<Category>();
+            if (response is not { Success: true, Data: not null })
+                return Enumerable.Empty<Category>();
+
+            return BackendToAppModelMapper.GetCategories(response.Data);
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
