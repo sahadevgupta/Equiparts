@@ -4,11 +4,11 @@
                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                 x:Class="Equiparts.Views.InitialLoadingActivityIndicator"
                 xmlns:views="clr-namespace:Equiparts.Views"
-                BackgroundColor="#081F3E">
+                BackgroundColor="{StaticResource PrimaryColor}">
 
     <views:BasePage.PageContent>
         <Grid x:Name="RootLayer"
-              BackgroundColor="#081F3E">
+              BackgroundColor="{StaticResource PrimaryColor}">
 
             <!-- Scattered ambient sparkle twinkles, matching the reference video's background. -->
             <Grid x:Name="SparkleLayer"
@@ -31,8 +31,8 @@
                      InputTransparent="True">
                 <Ellipse.Fill>
                     <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
-                        <GradientStop Offset="0.0" Color="#40F58220"/>
-                        <GradientStop Offset="1.0" Color="#00081F3E"/>
+                        <GradientStop Offset="0.0" Color="#40C92027"/>
+                        <GradientStop Offset="1.0" Color="#001A1A1A"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
@@ -57,7 +57,7 @@
                     Opacity="0"
                     InputTransparent="True">
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="28,28,28,28"/>
+                    <Rectangle/>
                 </Border.StrokeShape>
                 <Border.Shadow>
                     <Shadow Brush="#22000000"

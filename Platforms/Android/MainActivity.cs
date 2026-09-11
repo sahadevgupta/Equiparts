@@ -182,7 +182,7 @@ namespace Equiparts
 
         private static global::Android.Graphics.Color ResolveChromeColor()
         {
-            var color = Color.FromArgb("#13233D"); //(Color)(App.Current?.Resources["PrimaryLight"] ?? Colors.Black);
+            var color = Color.FromArgb("#1A1A1A"); //(Color)(App.Current?.Resources["PrimaryColor"] ?? Colors.Black);
             return color.ToPlatform();
         }
 

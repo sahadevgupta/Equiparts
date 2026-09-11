@@ -13,6 +13,24 @@
          to the real MaterialComponents style fixes it; everything else is
          inherited from MAUI's generated theme unchanged. -->
     <style name="Maui.SplashTheme.Fixed" parent="Maui.SplashTheme">
-        <item name="bottomNavigationViewStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+        <item name="bottomNavigationViewStyle">@style/Equiparts.BottomNavigationView</item>
+    </style>
+
+    <!-- Widget.MaterialComponents.BottomNavigationView's own itemTextAppearance*
+         attributes reference theme attrs (e.g. textAppearanceCaption) that don't
+         reliably resolve with UseMaterial3 enabled in this project, which made
+         ThemeEnforcement.checkTextAppearance() throw
+         "This component requires that you specify a valid TextAppearance
+         attribute" - the exact crash this style exists to prevent - the moment
+         Shell built the bottom tab bar, on every launch. Pointing
+         itemTextAppearanceActive/Inactive at our own concrete TextAppearance
+         styles (not theme-attr references) makes resolution unconditional. -->
+    <style name="Equiparts.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/Equiparts.BottomNavigationView.TextAppearance</item>
+        <item name="itemTextAppearanceInactive">@style/Equiparts.BottomNavigationView.TextAppearance</item>
+    </style>
+
+    <style name="Equiparts.BottomNavigationView.TextAppearance" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>

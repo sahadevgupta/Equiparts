@@ -7,7 +7,7 @@
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     IsVisible="False">
 
-    <Border BackgroundColor="#D93025"
+    <Border BackgroundColor="{StaticResource ErrorColor}"
             StrokeThickness="0"
             Padding="0,6">
 
@@ -16,14 +16,15 @@
 
             <Label Text="{x:Static fontresources:FontAwesomeIcons.ExclamationTriangle}"
                    FontFamily="FontAwesome"
-                   TextColor="White"
+                   TextColor="{StaticResource White}"
                    FontSize="13"
                    VerticalOptions="Center"/>
 
             <Label Text="No internet connection"
-                   TextColor="White"
+                   TextColor="{StaticResource White}"
                    FontSize="13"
                    FontAttributes="Bold"
+                   FontFamily="SpaceGroteskSemibold"
                    VerticalOptions="Center"/>
 
         </HorizontalStackLayout>

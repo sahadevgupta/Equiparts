@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
@@ -8,20 +8,20 @@
     <Style TargetType="ContentPage"
            ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor"
-                Value="{StaticResource PageBackground}"/>
+                Value="{StaticResource BackgroundColor}"/>
     </Style>
 
     <Style TargetType="Shell"
            ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor"
-                Value="{StaticResource NavyBlue}"/>
+                Value="{StaticResource PrimaryColor}"/>
         <Setter Property="ForegroundColor"
                 Value="White"/>
         <Setter Property="TitleColor"
                 Value="White"/>
     </Style>
 
-    <!-- Title -->
+    <!-- Title: headline weight, Space Grotesk, Primary navy -->
 
     <Style TargetType="Label"
            Class="Title">
@@ -30,10 +30,10 @@
                 Value="24"/>
 
         <Setter Property="FontFamily"
-                Value="PoppinsBold"/>
+                Value="SpaceGroteskBold"/>
 
         <Setter Property="TextColor"
-                Value="{StaticResource TitleText}"/>
+                Value="{StaticResource PrimaryColor}"/>
     </Style>
 
     <!-- Section -->
@@ -45,13 +45,13 @@
                 Value="20"/>
 
         <Setter Property="FontFamily"
-                Value="OpenSansSemibold"/>
+                Value="SpaceGroteskSemibold"/>
 
         <Setter Property="TextColor"
-                Value="{StaticResource TitleText}"/>
+                Value="{StaticResource PrimaryColor}"/>
     </Style>
 
-    <!-- Body -->
+    <!-- Body: Geist, Neutral carbon-slate copy color -->
 
     <Style TargetType="Label"
            Class="Body">
@@ -60,13 +60,14 @@
                 Value="15"/>
 
         <Setter Property="FontFamily"
-                Value="PoppinsRegular"/>
+                Value="GeistRegular"/>
 
         <Setter Property="TextColor"
-                Value="{StaticResource BodyText}"/>
+                Value="{StaticResource PrimaryTextColor}"/>
     </Style>
 
-    <!-- Price -->
+    <!-- Price: headline-sm weight, Primary navy (crimson is reserved for
+         actions/alerts, not passive price display - see DESIGN.md) -->
 
     <Style TargetType="Label"
            Class="Price">
@@ -75,21 +76,29 @@
                 Value="20"/>
 
         <Setter Property="FontFamily"
-                Value="PoppinsBold"/>
+                Value="SpaceGroteskBold"/>
 
         <Setter Property="TextColor"
-                Value="{StaticResource PriceText}"/>
+                Value="{StaticResource PrimaryColor}"/>
     </Style>
 
-    <!-- Primary Button -->
+    <!-- Primary Button (Action Red): zero radius, 1px navy stroke, hard
+         2px/2px mechanical offset shadow. Pressed collapses the shadow and
+         translates the button 2px down-right instead of only recoloring it. -->
 
     <Style TargetType="Button">
 
         <Setter Property="BackgroundColor"
-                Value="{StaticResource Accent}"/>
+                Value="{StaticResource AccentColor}"/>
+
+        <Setter Property="BorderColor"
+                Value="{StaticResource PrimaryColor}"/>
+
+        <Setter Property="BorderWidth"
+                Value="1"/>
 
         <Setter Property="CornerRadius"
-                Value="12"/>
+                Value="0"/>
 
         <Setter Property="HeightRequest"
                 Value="48"/>
@@ -98,19 +107,151 @@
                 Value="White"/>
 
         <Setter Property="FontFamily"
-                Value="OpenSansSemibold"/>
+                Value="SpaceGroteskSemibold"/>
+
+        <Setter Property="FontSize"
+                Value="15"/>
+
+        <Setter Property="Shadow">
+            <Shadow Brush="{StaticResource PrimaryColor}"
+                    Offset="2,2"
+                    Radius="0"
+                    Opacity="1"/>
+        </Setter>
+
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal"/>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="TranslationX"
+                                    Value="2"/>
+                            <Setter Property="TranslationY"
+                                    Value="2"/>
+                            <Setter Property="Shadow">
+                                <Shadow Brush="{StaticResource PrimaryColor}"
+                                        Offset="0,0"
+                                        Radius="0"
+                                        Opacity="0"/>
+                            </Setter>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{StaticResource DisabledColor}"/>
+                            <Setter Property="BorderColor"
+                                    Value="{StaticResource DisabledColor}"/>
+                            <Setter Property="TextColor"
+                                    Value="White"/>
+                            <Setter Property="Shadow">
+                                <Shadow Brush="{StaticResource PrimaryColor}"
+                                        Offset="0,0"
+                                        Radius="0"
+                                        Opacity="0"/>
+                            </Setter>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
     </Style>
 
-    <!-- Card -->
+    <!-- Secondary Button (Navy Structural) -->
+    <Style TargetType="Button"
+           x:Key="SecondaryButtonStyle">
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="BorderColor"
+                Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="BorderWidth"
+                Value="1"/>
+        <Setter Property="CornerRadius"
+                Value="0"/>
+        <Setter Property="HeightRequest"
+                Value="48"/>
+        <Setter Property="TextColor"
+                Value="White"/>
+        <Setter Property="FontFamily"
+                Value="SpaceGroteskSemibold"/>
+        <Setter Property="FontSize"
+                Value="15"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal"/>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{StaticResource SecondaryColor}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{StaticResource DisabledColor}"/>
+                            <Setter Property="BorderColor"
+                                    Value="{StaticResource DisabledColor}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- Tertiary Button (Schematic Outline) -->
+    <Style TargetType="Button"
+           x:Key="TertiaryButtonStyle">
+        <Setter Property="BackgroundColor"
+                Value="Transparent"/>
+        <Setter Property="TextColor"
+                Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="BorderColor"
+                Value="{StaticResource PrimaryColor}"/>
+        <Setter Property="BorderWidth"
+                Value="1"/>
+        <Setter Property="CornerRadius"
+                Value="0"/>
+        <Setter Property="HeightRequest"
+                Value="48"/>
+        <Setter Property="FontFamily"
+                Value="SpaceGroteskSemibold"/>
+        <Setter Property="FontSize"
+                Value="15"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal"/>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor"
+                                    Value="{StaticResource SurfaceInsetColor}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="TextColor"
+                                    Value="{StaticResource DisabledColor}"/>
+                            <Setter Property="BorderColor"
+                                    Value="{StaticResource DisabledColor}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- Card: zero-radius, flat (Level 0 substrate - no shadow, per DESIGN.md) -->
 
     <Style TargetType="Border"
            Class="Card">
 
         <Setter Property="BackgroundColor"
-                Value="{StaticResource CardBackground}"/>
+                Value="{StaticResource CardColor}"/>
 
         <Setter Property="Stroke"
-                Value="{StaticResource Border}"/>
+                Value="{StaticResource BorderColor}"/>
 
         <Setter Property="StrokeThickness"
                 Value="1"/>
@@ -119,7 +260,7 @@
 
             <Setter.Value>
 
-                <RoundRectangle CornerRadius="16"/>
+                <Rectangle/>
 
             </Setter.Value>
 
@@ -132,18 +273,40 @@
                 Value="8,4"/>
     </Style>
 
-    <!-- Referenced by Controls/ExtendedEntry.xaml but never defined - missing keys
-             threw XamlParseException on first construction and crashed the app on
-             startup. Added to match existing usage: title/support/error labels and the
-             field entry's own text/placeholder styling. -->
+    <!-- Shared section card, used by Checkout/OrderDetails/etc. instead of each
+         page defining its own identical copy. -->
+    <Style TargetType="Border"
+           x:Key="SectionCardStyle">
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource CardColor}"/>
+        <Setter Property="Stroke"
+                Value="{StaticResource BorderColor}"/>
+        <Setter Property="StrokeShape"
+                Value="Rectangle"/>
+        <Setter Property="Padding"
+                Value="16"/>
+    </Style>
+
+    <Style TargetType="Label"
+           x:Key="SectionTitleLabelStyle">
+        <Setter Property="FontSize"
+                Value="16"/>
+        <Setter Property="FontFamily"
+                Value="SpaceGroteskSemibold"/>
+        <Setter Property="TextColor"
+                Value="{StaticResource PrimaryColor}"/>
+    </Style>
+
+    <!-- Referenced by Controls/ExtendedEntry.xaml: title/support/error labels and
+         the field entry's own text/placeholder styling. -->
     <Style TargetType="Label"
            x:Key="TitleStyleBlackBold">
         <Setter Property="FontSize"
                 Value="14"/>
         <Setter Property="FontFamily"
-                Value="OpenSansSemibold"/>
+                Value="SpaceGroteskSemibold"/>
         <Setter Property="TextColor"
-                Value="{StaticResource TitleText}"/>
+                Value="{StaticResource PrimaryColor}"/>
     </Style>
 
     <Style TargetType="Label"
@@ -151,9 +314,9 @@
         <Setter Property="FontSize"
                 Value="12"/>
         <Setter Property="FontFamily"
-                Value="OpenSansRegular"/>
+                Value="GeistRegular"/>
         <Setter Property="TextColor"
-                Value="{StaticResource BodyText}"/>
+                Value="{StaticResource SecondaryTextColor}"/>
     </Style>
 
     <Style TargetType="Label"
@@ -161,9 +324,9 @@
         <Setter Property="FontSize"
                 Value="12"/>
         <Setter Property="FontFamily"
-                Value="OpenSansRegular"/>
+                Value="GeistRegular"/>
         <Setter Property="TextColor"
-                Value="Red"/>
+                Value="{StaticResource ErrorColor}"/>
     </Style>
 
     <Style TargetType="Entry"
@@ -171,11 +334,11 @@
         <Setter Property="FontSize"
                 Value="15"/>
         <Setter Property="FontFamily"
-                Value="OpenSansRegular"/>
+                Value="GeistRegular"/>
         <Setter Property="TextColor"
-                Value="{StaticResource TextDark}"/>
+                Value="{StaticResource PrimaryTextColor}"/>
         <Setter Property="PlaceholderColor"
-                Value="Gray"/>
+                Value="{StaticResource MutedTextColor}"/>
     </Style>
 
     <Style TargetType="Label"
@@ -185,36 +348,32 @@
         <Setter Property="VerticalOptions"
                 Value="Center"/>
         <Setter Property="FontFamily"
-                Value="OpenSansSemibold"/>
+                Value="SpaceGroteskSemibold"/>
     </Style>
 
-    <!-- Page -->
-
-    <!-- Label -->
+    <!-- Default Label: every unstyled Label gets the brand font and ink color. -->
     <Style TargetType="Label">
         <Setter Property="TextColor"
-                Value="{StaticResource TextDark}"/>
+                Value="{StaticResource PrimaryTextColor}"/>
+        <Setter Property="FontFamily"
+                Value="GeistRegular"/>
     </Style>
 
-    <!-- ✅ Border Card Style -->
+    <!-- Default Border ("card" look used app-wide unless a page overrides it
+         locally for flat badges/chips): Slate-50 surface, hairline border,
+         zero radius, no shadow - Level 0 flat substrate per DESIGN.md. Pages
+         that need a raised (Level 1+) treatment set their own hard offset
+         Shadow locally rather than relying on this default. -->
     <Style TargetType="Border">
         <Setter Property="Stroke"
-                Value="#DDDDDD"/>
+                Value="{StaticResource BorderColor}"/>
         <Setter Property="StrokeThickness"
                 Value="1"/>
         <Setter Property="BackgroundColor"
-                Value="White"/>
+                Value="{StaticResource CardColor}"/>
         <Setter Property="StrokeShape">
-            <RoundRectangle CornerRadius="10"/>
-        </Setter>
-
-        <Setter Property="Shadow">
-            <Shadow Brush="#22000000"
-                    Offset="2,2"
-                    Radius="5"
-                    Opacity="0.3"/>
+            <Rectangle/>
         </Setter>
     </Style>
-
 
 </ResourceDictionary>

@@ -27,7 +27,7 @@
             <Label x:Name="SuffixLabel"
                    Grid.Row="0"
                    Style="{StaticResource TitleStyleBlackBold}"
-                   TextColor="Red"
+                   TextColor="{StaticResource ErrorColor}"
                    Text="{Binding SuffixText, Source={x:Reference customEntryControlWithTitle}}"
                    IsVisible="{Binding SuffixText, Source={x:Reference customEntryControlWithTitle}, Converter={toolkit:IsStringNotNullOrWhiteSpaceConverter}}"/>
         </HorizontalStackLayout>
@@ -42,7 +42,7 @@
                 BackgroundColor="White"
                 Padding="0"
                 Stroke="{StaticResource Border}"
-                StrokeShape="RoundRectangle 6"
+                StrokeShape="Rectangle"
                 x:Name="EntryBorder"
                 StrokeThickness="1">
 

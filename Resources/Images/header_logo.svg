@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="51 -14 162 162">
-  <title>Equiparts Groups mark</title>
-  <g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1595 342">
+  <title>Equiparts Group header logo</title>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="1595" height="342" fill="#ffffff"/>
+
+  <!-- Mark (same vector as ep_logo.svg, repositioned/scaled into the header) -->
+  <g transform="translate(80.74,80.01) scale(1.358)">
     <path fill="#dda027" d="M133.27,129.15c-.5,3.85-4.02,6.56-7.86,6.07-3.85-.5-6.56-4.02-6.07-7.86.5-3.85,4.02-6.56,7.86-6.07,3.85.5,6.56,4.01,6.07,7.86"/>
     <path fill="#dda027" d="M100.58,102.15c3.98,8.95,11.92,14.91,20.89,17.53,1.79-1.01,3.9-1.48,6.09-1.2,2.19.28,4.12,1.27,5.59,2.71,10.09-.28,19.96-4.63,25.91-13.5-15.27,5.05-29.79,5.97-44.93-.09-3.55-1.39-7.27-3.31-10.63-5.31-1.22-.74-2.42-1.5-3.67-2.23.22.71.48,1.39.75,2.08"/>
     <path fill="#dda027" d="M72.15,82.83c-3.81.72-7.48-1.79-8.2-5.6-.72-3.81,1.79-7.48,5.6-8.2,3.81-.72,7.48,1.79,8.2,5.6.72,3.81-1.79,7.48-5.6,8.2"/>
@@ -24,4 +29,14 @@
     <path fill="#c92027" d="M109.77,78.3c-3.2-1.44-6.05-3.35-8.75-5.61l.04-7.4c.01-2.36,2.01-4.11,4.29-4.17,2.23-.05,4.41,1.72,4.41,4.07v13.1Z"/>
     <path fill="#c92027" d="M108.78,57.02c0,1.82-1.47,3.29-3.29,3.29s-3.29-1.47-3.29-3.29,1.47-3.29,3.29-3.29,3.29,1.47,3.29,3.29"/>
   </g>
+
+  <!-- Divider -->
+  <rect x="418" y="88" width="4" height="166" fill="#d9d9d9"/>
+
+  <!-- Wordmark -->
+  <text x="460" y="180" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="92" letter-spacing="-1">
+    <tspan fill="#c92027">EQUI</tspan><tspan fill="#1a1a1a">PARTS</tspan>
+  </text>
+  <text x="463" y="222" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="34" fill="#8a8a8a">G R O U P</text>
+  <text x="463" y="258" font-family="Arial, Helvetica, sans-serif" font-weight="500" font-size="20" fill="#a9a9a9"><tspan>P A R T S</tspan><tspan dx="18">T H A T</tspan><tspan dx="18">P O W E R</tspan><tspan dx="18">P R O G R E S S</tspan></text>
 </svg>

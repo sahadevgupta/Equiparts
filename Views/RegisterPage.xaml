@@ -24,7 +24,7 @@
                         Padding="24,160,24,28">
 
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="28,28,28,28"/>
+                        <Rectangle/>
                     </Border.StrokeShape>
 
                     <Border.Shadow>
@@ -50,7 +50,7 @@
                                Margin="0,0,0,4"/>
 
                         <Label Text="{Binding ErrorMessage}"
-                               TextColor="Red"
+                               TextColor="{StaticResource ErrorColor}"
                                FontSize="13"
                                IsVisible="{Binding HasError}"
                                HorizontalOptions="Center"
@@ -88,7 +88,7 @@
                                 HeightRequest="54"
                                 Margin="0,4,0,0">
                             <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="14"/>
+                                <Rectangle/>
                             </Border.StrokeShape>
 
                             <Border.GestureRecognizers>
@@ -111,7 +111,7 @@
                                         VerticalOptions="Center"
                                         Margin="0,0,10,0">
                                     <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="17"/>
+                                        <Rectangle/>
                                     </Border.StrokeShape>
 
                                     <Label Text="{x:Static fontresources:FontAwesomeIcons.ArrowRight}"
@@ -167,7 +167,7 @@
                         InputTransparent="True"
                         Padding="3">
                     <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="48"/>
+                        <Rectangle/>
                     </Border.StrokeShape>
 
                     <Image Source="ep_logo"/>

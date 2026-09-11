@@ -74,7 +74,7 @@
                         <Label
                             Text="Your placed orders will appear here."
                             HorizontalTextAlignment="Center"
-                            TextColor="Gray"/>
+                            TextColor="{StaticResource MutedTextColor}"/>
 
                     </VerticalStackLayout>
 
@@ -90,7 +90,7 @@
                             Padding="15"
                             BackgroundColor="White"
                             Stroke="{StaticResource Border}"
-                            StrokeShape="RoundRectangle 16">
+                            StrokeShape="Rectangle">
 
                             <VerticalStackLayout
                                 Spacing="12">
@@ -109,7 +109,7 @@
                                         <Label
                                             FontSize="13"
                                             Text="{Binding Date,StringFormat='{0:dd MMM yyyy}'}"
-                                            TextColor="Gray"/>
+                                            TextColor="{StaticResource MutedTextColor}"/>
 
                                     </VerticalStackLayout>
 
@@ -119,7 +119,7 @@
                                         Grid.Column="1"
                                         Padding="10,5"
                                         BackgroundColor="#E9F8EC"
-                                        StrokeShape="RoundRectangle 25">
+                                        StrokeShape="Rectangle">
 
                                         <Label
                                             Text="{Binding Status}"
@@ -146,7 +146,7 @@
                                         <Label
                                             Text="Grand Total"
                                             FontSize="13"
-                                            TextColor="Gray"/>
+                                            TextColor="{StaticResource MutedTextColor}"/>
 
                                         <Label
                                             FontSize="20"
@@ -163,7 +163,7 @@
                                         Text="View Details"
                                         BackgroundColor="{StaticResource Accent}"
                                         TextColor="White"
-                                        CornerRadius="10"
+                                        CornerRadius="0"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:OrdersViewModel}}, Path=ViewOrderCommand}"
                                         CommandParameter="{Binding .}"/>
 

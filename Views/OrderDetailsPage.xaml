@@ -21,19 +21,6 @@
         <Style TargetType="Border">
             <Setter Property="Shadow" Value="{x:Null}"/>
         </Style>
-
-        <Style x:Key="SectionCardStyle" TargetType="Border">
-            <Setter Property="BackgroundColor" Value="{StaticResource CardBackground}"/>
-            <Setter Property="Stroke" Value="{StaticResource Border}"/>
-            <Setter Property="StrokeShape" Value="RoundRectangle 18"/>
-            <Setter Property="Padding" Value="16"/>
-        </Style>
-
-        <Style x:Key="SectionTitleLabelStyle" TargetType="Label">
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="FontFamily" Value="OpenSansSemibold"/>
-            <Setter Property="TextColor" Value="{StaticResource TitleText}"/>
-        </Style>
     </views:BasePage.Resources>
 
     <!-- Header -->
@@ -84,7 +71,7 @@
 
                 <Label
                     Text="We couldn't load this order's details."
-                    TextColor="Gray"
+                    TextColor="{StaticResource MutedTextColor}"
                     HorizontalTextAlignment="Center"/>
 
                 <Button
@@ -121,7 +108,7 @@
                                         Padding="0"
                                         BackgroundColor="{StaticResource SuccessBackground}"
                                         StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 27"
+                                        StrokeShape="Rectangle"
                                         IsVisible="{Binding IsDelivered}">
                                         <Label
                                             FontFamily="FontAwesome"
@@ -136,7 +123,7 @@
                                         Padding="0"
                                         BackgroundColor="{StaticResource DangerBackground}"
                                         StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 27"
+                                        StrokeShape="Rectangle"
                                         IsVisible="{Binding IsCancelled}">
                                         <Label
                                             FontFamily="FontAwesome"
@@ -151,7 +138,7 @@
                                         Padding="0"
                                         BackgroundColor="{StaticResource WarningBackground}"
                                         StrokeThickness="0"
-                                        StrokeShape="RoundRectangle 27"
+                                        StrokeShape="Rectangle"
                                         IsVisible="{Binding IsInProgress}">
                                         <Label
                                             FontFamily="FontAwesome"
@@ -175,21 +162,21 @@
 
                                     <Label
                                         FontSize="19"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         Text="{Binding Status}"
                                         TextColor="{StaticResource Success}"
                                         IsVisible="{Binding IsDelivered}"/>
 
                                     <Label
                                         FontSize="19"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         Text="{Binding Status}"
                                         TextColor="{StaticResource Danger}"
                                         IsVisible="{Binding IsCancelled}"/>
 
                                     <Label
                                         FontSize="19"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         Text="{Binding Status}"
                                         TextColor="{StaticResource Warning}"
                                         IsVisible="{Binding IsInProgress}"/>
@@ -221,7 +208,7 @@
 
                                     <Label
                                         FontSize="14"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         TextColor="{StaticResource TitleText}"
                                         Text="{Binding OrderNo}"/>
 
@@ -245,7 +232,7 @@
 
                                     <Label
                                         FontSize="14"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         TextColor="{StaticResource TitleText}"
                                         Text="{Binding Date,StringFormat='{0:dd MMM yyyy, hh:mm tt}'}"/>
 
@@ -278,7 +265,7 @@
                                             BackgroundColor="{StaticResource PageBackground}"
                                             Stroke="{StaticResource Border}"
                                             StrokeThickness="1"
-                                            StrokeShape="RoundRectangle 12">
+                                            StrokeShape="Rectangle">
 
                                             <Grid ColumnDefinitions="*,Auto"
                                                   ColumnSpacing="10">
@@ -289,7 +276,7 @@
 
                                                     <Label
                                                         FontSize="14"
-                                                        FontFamily="OpenSansSemibold"
+                                                        FontFamily="SpaceGroteskSemibold"
                                                         LineBreakMode="TailTruncation"
                                                         TextColor="{StaticResource TitleText}"
                                                         Text="{Binding ProductName}"/>
@@ -299,11 +286,11 @@
                                                         Padding="7,2"
                                                         BackgroundColor="{StaticResource ChipBackground}"
                                                         StrokeThickness="0"
-                                                        StrokeShape="RoundRectangle 6"
+                                                        StrokeShape="Rectangle"
                                                         IsVisible="{Binding PartNumber,Converter={toolkit:IsStringNotNullOrEmptyConverter}}">
                                                         <Label
                                                             FontSize="11"
-                                                            FontFamily="OpenSansSemibold"
+                                                            FontFamily="SpaceGroteskSemibold"
                                                             TextColor="{StaticResource ChipText}"
                                                             Text="{Binding PartNumber}"/>
                                                     </Border>
@@ -323,7 +310,7 @@
 
                                                     <Label
                                                         FontSize="14"
-                                                        FontFamily="OpenSansSemibold"
+                                                        FontFamily="SpaceGroteskSemibold"
                                                         TextColor="{StaticResource Accent}"
                                                         HorizontalTextAlignment="End"
                                                         Text="{Binding LineTotal,StringFormat='₹ {0:N2}'}"/>
@@ -418,19 +405,19 @@
                                 Padding="14,12"
                                 BackgroundColor="{StaticResource WarningBackground}"
                                 Stroke="Transparent"
-                                StrokeShape="RoundRectangle 12">
+                                StrokeShape="Rectangle">
 
                                 <Grid ColumnDefinitions="*,Auto">
                                     <Label
                                         Text="Grand Total"
                                         FontSize="16"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         TextColor="{StaticResource TitleText}"
                                         VerticalOptions="Center"/>
                                     <Label
                                         Grid.Column="1"
                                         FontSize="22"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         TextColor="{StaticResource Accent}"
                                         VerticalOptions="Center"
                                         Text="{Binding Total,StringFormat='₹ {0:N2}'}"/>
@@ -461,7 +448,7 @@
                                     Padding="0"
                                     BackgroundColor="{StaticResource ChipBackground}"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 19">
+                                    StrokeShape="Rectangle">
                                     <Label
                                         FontFamily="FontAwesome"
                                         Text="{Binding PaymentMethodIconGlyph}"
@@ -476,7 +463,7 @@
                                                      VerticalOptions="Center">
                                     <Label
                                         FontSize="14"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         TextColor="{StaticResource TitleText}"
                                         Text="{Binding PaymentMethodDisplay}"/>
                                     <Label
@@ -491,7 +478,7 @@
                                     Padding="10,5"
                                     BackgroundColor="{StaticResource SuccessBackground}"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 25"
+                                    StrokeShape="Rectangle"
                                     IsVisible="{Binding IsPaymentPaid}">
                                     <Label
                                         Text="{Binding PaymentStatus}"
@@ -505,7 +492,7 @@
                                     Padding="10,5"
                                     BackgroundColor="{StaticResource DangerBackground}"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 25"
+                                    StrokeShape="Rectangle"
                                     IsVisible="{Binding IsPaymentFailed}">
                                     <Label
                                         Text="{Binding PaymentStatus}"
@@ -519,7 +506,7 @@
                                     Padding="10,5"
                                     BackgroundColor="{StaticResource WarningBackground}"
                                     StrokeThickness="0"
-                                    StrokeShape="RoundRectangle 25"
+                                    StrokeShape="Rectangle"
                                     IsVisible="{Binding IsPaymentPending}">
                                     <Label
                                         Text="{Binding PaymentStatus}"

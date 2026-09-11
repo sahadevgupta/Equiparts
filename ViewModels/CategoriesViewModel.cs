@@ -41,7 +41,7 @@ public partial class CategoriesViewModel : BaseViewModel
     {
         Categories.Clear();
 
-        if (AppConfiguration.Categories != null)
+        if (AppConfiguration.Categories != null && AppConfiguration.Categories.Any())
         {
             Categories = new ObservableCollection<Category>(AppConfiguration.Categories);
         }

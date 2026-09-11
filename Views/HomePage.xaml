@@ -19,9 +19,10 @@
 
             <!-- Header -->
 
-            <Image Source="header_logo.png"
-                   Margin="-2,0"
-                   BackgroundColor="Red"/>
+            <Image Source="ep_header_logo.webp"
+                   Scale="1"
+                   HeightRequest="80"
+                   Margin="-2,0"/>
 
             <!-- Body -->
             <RefreshView Grid.Row="1"
@@ -39,7 +40,7 @@
                                 Padding="12"
                                 BackgroundColor="White"
                                 Stroke="{StaticResource Border}"
-                                StrokeShape="RoundRectangle 12">
+                                StrokeShape="Rectangle">
 
                             <Grid ColumnDefinitions="30,*">
 
@@ -51,7 +52,7 @@
                                 <Entry
                                     Grid.Column="1"
                                     Placeholder="Search products..."
-                                    PlaceholderColor="Gray"/>
+                                    PlaceholderColor="{StaticResource MutedTextColor}"/>
 
                             </Grid>
 
@@ -84,7 +85,7 @@
                                         <Border Padding="5"
                                                 BackgroundColor="White"
                                                 Stroke="{StaticResource Border}"
-                                                StrokeShape="RoundRectangle 15">
+                                                StrokeShape="Rectangle">
 
                                             <ffimageloading:CachedImage Source="{Binding ImageUrl}"
                                                                         HeightRequest="110"
@@ -113,7 +114,6 @@
 
                             <Label
                                 StyleClass="SectionTitle"
-                                TextColor="Black"
                                 Text="Offers of the Day"/>
 
                             <CarouselView ItemsSource="{Binding Banners}"
@@ -123,7 +123,7 @@
                                 <CarouselView.ItemTemplate>
                                     <DataTemplate x:DataType="models:Banner">
 
-                                        <Border StrokeShape="RoundRectangle 8"
+                                        <Border StrokeShape="Rectangle"
                                                 StrokeThickness="0">
                                             <ffimageloading:CachedImage Source="{Binding ImageUrl}"
                                                                         Aspect="Fill"/>
@@ -134,8 +134,8 @@
                             </CarouselView>
 
                             <IndicatorView x:Name="indicatorView"
-                                           IndicatorColor="LightGray"
-                                           SelectedIndicatorColor="DarkGray"
+                                           IndicatorColor="{StaticResource BorderColor}"
+                                           SelectedIndicatorColor="{StaticResource AccentColor}"
                                            HorizontalOptions="Center"/>
 
                         </VerticalStackLayout>
@@ -183,7 +183,7 @@
                                         Padding="10"
                                         BackgroundColor="White"
                                         Stroke="{StaticResource Border}"
-                                        StrokeShape="RoundRectangle 18">
+                                        StrokeShape="Rectangle">
 
                                         <Border.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=ProductSelectedCommand}"
@@ -222,7 +222,7 @@
                                                 BackgroundColor="{StaticResource Accent}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=AddToCartCommand}"
                                                 CommandParameter="{Binding .}"
-                                                CornerRadius="12"
+                                                CornerRadius="0"
                                                 HeightRequest="40"
                                                 Text="Add To Cart"
                                                 TextColor="White"/>

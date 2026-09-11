@@ -20,8 +20,11 @@ namespace Equiparts
                 .UseFFImageLoading()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Geist-Regular.ttf", "GeistRegular");
+                    fonts.AddFont("Geist-Medium.ttf", "GeistMedium");
+
+                    fonts.AddFont("SpaceGrotesk-SemiBold.ttf", "SpaceGroteskSemibold");
+                    fonts.AddFont("SpaceGrotesk-Bold.ttf", "SpaceGroteskBold");
 
                     fonts.AddFont("fa-solid-900.ttf", "FontAwesome");
                 })

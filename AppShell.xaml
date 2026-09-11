@@ -6,8 +6,10 @@
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     xmlns:views="clr-namespace:Equiparts.Views"
     FlyoutBehavior="Disabled"
-    Shell.TabBarForegroundColor="{StaticResource Accent}"
-    Shell.TabBarUnselectedColor="{StaticResource BodyText}">
+    Shell.TabBarBackgroundColor="{StaticResource PrimaryColor}"
+    Shell.TabBarForegroundColor="White"
+    Shell.TabBarUnselectedColor="{StaticResource MutedTextColor}"
+    Shell.TabBarTitleColor="White">
 
     <!-- ROUTE: loading - Initial loading/splash screen -->
     <ShellContent

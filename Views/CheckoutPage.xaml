@@ -25,28 +25,6 @@
 
         <converter:EqualityMultiConverter x:Key="EqualityConverter"/>
 
-        <Style x:Key="SectionCardStyle"
-               TargetType="Border">
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource CardBackground}"/>
-            <Setter Property="Stroke"
-                    Value="{StaticResource Border}"/>
-            <Setter Property="StrokeShape"
-                    Value="RoundRectangle 16"/>
-            <Setter Property="Padding"
-                    Value="16"/>
-        </Style>
-
-        <Style x:Key="SectionTitleLabelStyle"
-               TargetType="Label">
-            <Setter Property="FontSize"
-                    Value="16"/>
-            <Setter Property="FontFamily"
-                    Value="OpenSansSemibold"/>
-            <Setter Property="TextColor"
-                    Value="{StaticResource TitleText}"/>
-        </Style>
-
     </views:BasePage.Resources>
 
     <views:BasePage.PageContent>
@@ -79,7 +57,7 @@
                     Grid.Column="1"
                     Text="Checkout"
                     FontSize="20"
-                    FontFamily="OpenSansSemibold"
+                    FontFamily="SpaceGroteskSemibold"
                     TextColor="White"
                     VerticalOptions="Center"/>
 
@@ -115,7 +93,7 @@
                                     Grid.Column="1"
                                     Text="Change"
                                     FontSize="13"
-                                    FontFamily="OpenSansSemibold"
+                                    FontFamily="SpaceGroteskSemibold"
                                     TextColor="{StaticResource Accent}"
                                     VerticalOptions="Center"
                                     IsVisible="{Binding HasAddress}">
@@ -132,14 +110,14 @@
                                 Padding="12"
                                 BackgroundColor="{StaticResource PageBackground}"
                                 Stroke="{StaticResource Border}"
-                                StrokeShape="RoundRectangle 12">
+                                StrokeShape="Rectangle">
 
                                 <VerticalStackLayout Spacing="3">
 
                                     <HorizontalStackLayout Spacing="8">
                                         <Label
                                             FontSize="14"
-                                            FontFamily="OpenSansSemibold"
+                                            FontFamily="SpaceGroteskSemibold"
                                             TextColor="{StaticResource TitleText}"
                                             Text="{Binding SelectedAddress.FullName}"/>
 
@@ -148,7 +126,7 @@
                                             Padding="7,2"
                                             BackgroundColor="{StaticResource SuccessBackground}"
                                             StrokeThickness="0"
-                                            StrokeShape="RoundRectangle 8">
+                                            StrokeShape="Rectangle">
                                             <Label
                                                 Text="DEFAULT"
                                                 FontSize="9"
@@ -185,7 +163,7 @@
                                 StrokeDashArray="4,3"
                                 StrokeThickness="1.5"
                                 HeightRequest="50"
-                                StrokeShape="RoundRectangle 12">
+                                StrokeShape="Rectangle">
 
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding AddNewAddressCommand}"/>
@@ -201,7 +179,7 @@
                                         TextColor="{StaticResource Accent}"/>
                                     <Label
                                         Text="Add New Address"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         FontSize="14"
                                         TextColor="{StaticResource Accent}"/>
                                 </HorizontalStackLayout>
@@ -229,7 +207,7 @@
                                     IsVisible="{Binding HasMoreItems}"
                                     Text="{Binding ShowAllItems,Converter={toolkit:BoolToObjectConverter TrueObject='Show less',FalseObject='View all items'}}"
                                     FontSize="13"
-                                    FontFamily="OpenSansSemibold"
+                                    FontFamily="SpaceGroteskSemibold"
                                     TextColor="{StaticResource Accent}"
                                     VerticalOptions="Center">
                                     <Label.GestureRecognizers>
@@ -254,7 +232,7 @@
                                                 WidthRequest="56"
                                                 Padding="0"
                                                 Stroke="{StaticResource Border}"
-                                                StrokeShape="RoundRectangle 10">
+                                                StrokeShape="Rectangle">
                                                 <Image
                                                     Aspect="AspectFill"
                                                     Source="{Binding ImageUrl}"/>
@@ -267,7 +245,7 @@
 
                                                 <Label
                                                     FontSize="14"
-                                                    FontFamily="OpenSansSemibold"
+                                                    FontFamily="SpaceGroteskSemibold"
                                                     LineBreakMode="TailTruncation"
                                                     TextColor="{StaticResource TitleText}"
                                                     Text="{Binding Name}"/>
@@ -292,7 +270,7 @@
 
                                                 <Label
                                                     FontSize="14"
-                                                    FontFamily="OpenSansSemibold"
+                                                    FontFamily="SpaceGroteskSemibold"
                                                     TextColor="{StaticResource Accent}"
                                                     HorizontalTextAlignment="End"
                                                     Text="{Binding LineSubTotal,StringFormat='₹ {0:N2}'}"/>
@@ -344,7 +322,7 @@
                                     BackgroundColor="{StaticResource PageBackground}"
                                     Stroke="{StaticResource Border}"
                                     StrokeThickness="1"
-                                    StrokeShape="RoundRectangle 10"
+                                    StrokeShape="Rectangle"
                                     Padding="12,0"
                                     HeightRequest="46">
                                     <Entry
@@ -394,7 +372,7 @@
                                 Padding="12,10"
                                 BackgroundColor="{StaticResource SuccessBackground}"
                                 Stroke="Transparent"
-                                StrokeShape="RoundRectangle 12">
+                                StrokeShape="Rectangle">
 
                                 <Grid ColumnDefinitions="Auto,*,Auto"
                                       ColumnSpacing="10">
@@ -410,7 +388,7 @@
                                                          Spacing="1">
                                         <Label
                                             FontSize="14"
-                                            FontFamily="OpenSansSemibold"
+                                            FontFamily="SpaceGroteskSemibold"
                                             TextColor="{StaticResource TitleText}"
                                             Text="{Binding AppliedCoupon.Code}"/>
                                         <Label
@@ -513,19 +491,19 @@
                                 Padding="14,12"
                                 BackgroundColor="{StaticResource WarningBackground}"
                                 Stroke="Transparent"
-                                StrokeShape="RoundRectangle 12">
+                                StrokeShape="Rectangle">
 
                                 <Grid ColumnDefinitions="*,Auto">
                                     <Label
                                         Text="Grand Total"
                                         FontSize="16"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         TextColor="{StaticResource TitleText}"
                                         VerticalOptions="Center"/>
                                     <Label
                                         Grid.Column="1"
                                         FontSize="22"
-                                        FontFamily="OpenSansSemibold"
+                                        FontFamily="SpaceGroteskSemibold"
                                         TextColor="{StaticResource Accent}"
                                         VerticalOptions="Center"
                                         Text="{Binding Summary.GrandTotal,StringFormat='₹ {0:N2}'}"/>
@@ -558,7 +536,7 @@
                                             BackgroundColor="{StaticResource PageBackground}"
                                             Stroke="{StaticResource Border}"
                                             StrokeThickness="1"
-                                            StrokeShape="RoundRectangle 12">
+                                            StrokeShape="Rectangle">
 
                                             <Border.GestureRecognizers>
                                                 <TapGestureRecognizer
@@ -576,7 +554,7 @@
                                                     Padding="0"
                                                     BackgroundColor="{StaticResource ChipBackground}"
                                                     StrokeThickness="0"
-                                                    StrokeShape="RoundRectangle 19">
+                                                    StrokeShape="Rectangle">
                                                     <Label
                                                         FontFamily="FontAwesome"
                                                         Text="{Binding IconGlyph}"
@@ -591,7 +569,7 @@
                                                                      VerticalOptions="Center">
                                                     <Label
                                                         FontSize="14"
-                                                        FontFamily="OpenSansSemibold"
+                                                        FontFamily="SpaceGroteskSemibold"
                                                         TextColor="{StaticResource TitleText}"
                                                         Text="{Binding Name}"/>
                                                     <Label
@@ -662,13 +640,13 @@
                 BackgroundColor="{StaticResource CardBackground}"
                 Padding="16,14,16,18"
                 Stroke="{StaticResource Border}"
-                StrokeShape="RoundRectangle 20,20,0,0">
+                StrokeShape="Rectangle">
 
                 <Border
                     HeightRequest="54"
                     BackgroundColor="{StaticResource Accent}"
                     Stroke="Transparent"
-                    StrokeShape="RoundRectangle 15"
+                    StrokeShape="Rectangle"
                     IsEnabled="{Binding IsPlacingOrder,Converter={toolkit:InvertedBoolConverter}}">
 
                     <Border.Triggers>

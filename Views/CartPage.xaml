@@ -30,7 +30,7 @@
             <Setter Property="HeightRequest"
                     Value="34"/>
             <Setter Property="CornerRadius"
-                    Value="17"/>
+                    Value="0"/>
             <Setter Property="Padding"
                     Value="0"/>
             <Setter Property="FontFamily"
@@ -56,7 +56,7 @@
                         <Label
                             Text="My Cart"
                             FontSize="24"
-                            FontFamily="OpenSansSemibold"
+                            FontFamily="SpaceGroteskSemibold"
                             TextColor="White"/>
 
                         <Label
@@ -96,7 +96,7 @@
                     <Label
                         Text="Clear Cart"
                         FontSize="13"
-                        FontFamily="OpenSansSemibold"
+                        FontFamily="SpaceGroteskSemibold"
                         TextColor="White"
                         VerticalOptions="Center"/>
 
@@ -137,7 +137,7 @@
                         <Label
                             Text="Browse products and add them to your cart."
                             HorizontalTextAlignment="Center"
-                            TextColor="Gray"/>
+                            TextColor="{StaticResource MutedTextColor}"/>
 
                     </VerticalStackLayout>
 
@@ -152,7 +152,7 @@
                             Padding="14"
                             BackgroundColor="{StaticResource CardBackground}"
                             Stroke="{StaticResource Border}"
-                            StrokeShape="RoundRectangle 16">
+                            StrokeShape="Rectangle">
 
                             <VerticalStackLayout Spacing="14">
 
@@ -167,7 +167,7 @@
                                         WidthRequest="80"
                                         Padding="0"
                                         Stroke="{StaticResource Border}"
-                                        StrokeShape="RoundRectangle 12"
+                                        StrokeShape="Rectangle"
                                         HorizontalOptions="Start"
                                         VerticalOptions="Start">
 
@@ -186,7 +186,7 @@
 
                                         <Label
                                             FontSize="16"
-                                            FontFamily="OpenSansSemibold"
+                                            FontFamily="SpaceGroteskSemibold"
                                             LineBreakMode="TailTruncation"
                                             Text="{Binding Name}"
                                             TextColor="{StaticResource TitleText}"/>
@@ -228,7 +228,7 @@
 
                                         <Label
                                             FontSize="22"
-                                            FontFamily="OpenSansSemibold"
+                                            FontFamily="SpaceGroteskSemibold"
                                             Text="{Binding LineSubTotal,StringFormat='₹ {0:N0}'}"
                                             TextColor="{StaticResource Accent}"/>
 
@@ -256,7 +256,7 @@
 
                                         <Label
                                             FontSize="16"
-                                            FontFamily="OpenSansSemibold"
+                                            FontFamily="SpaceGroteskSemibold"
                                             Text="{Binding Quantity}"
                                             TextColor="{StaticResource TitleText}"
                                             VerticalOptions="Center"
@@ -281,7 +281,7 @@
                                     Padding="12,10"
                                     BackgroundColor="{StaticResource WarningBackground}"
                                     Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 12">
+                                    StrokeShape="Rectangle">
 
                                     <Grid ColumnDefinitions="*,Auto,*,Auto,*">
 
@@ -293,7 +293,7 @@
                                                 TextColor="{StaticResource BodyText}"/>
                                             <Label
                                                 FontSize="14"
-                                                FontFamily="OpenSansSemibold"
+                                                FontFamily="SpaceGroteskSemibold"
                                                 Text="{Binding LineSubTotal,StringFormat='₹ {0:N2}'}"
                                                 TextColor="{StaticResource TitleText}"/>
                                         </VerticalStackLayout>
@@ -312,7 +312,7 @@
                                                 TextColor="{StaticResource BodyText}"/>
                                             <Label
                                                 FontSize="14"
-                                                FontFamily="OpenSansSemibold"
+                                                FontFamily="SpaceGroteskSemibold"
                                                 Text="{Binding LineTax,StringFormat='₹ {0:N2}'}"
                                                 TextColor="{StaticResource TitleText}"/>
                                         </VerticalStackLayout>
@@ -331,7 +331,7 @@
                                                 TextColor="{StaticResource BodyText}"/>
                                             <Label
                                                 FontSize="14"
-                                                FontFamily="OpenSansSemibold"
+                                                FontFamily="SpaceGroteskSemibold"
                                                 Text="{Binding LineTotal,StringFormat='₹ {0:N2}'}"
                                                 TextColor="{StaticResource TitleText}"/>
                                         </VerticalStackLayout>
@@ -358,7 +358,7 @@
                 BackgroundColor="{StaticResource CardBackground}"
                 Padding="20,20,20,24"
                 Stroke="{StaticResource Border}"
-                StrokeShape="RoundRectangle 20,20,0,0">
+                StrokeShape="Rectangle">
 
                 <VerticalStackLayout Spacing="14">
 
@@ -417,21 +417,21 @@
                         Padding="14,12"
                         BackgroundColor="{StaticResource WarningBackground}"
                         Stroke="Transparent"
-                        StrokeShape="RoundRectangle 12">
+                        StrokeShape="Rectangle">
 
                         <Grid ColumnDefinitions="*,Auto">
 
                             <Label
                                 Text="Grand Total"
                                 FontSize="17"
-                                FontFamily="OpenSansSemibold"
+                                FontFamily="SpaceGroteskSemibold"
                                 TextColor="{StaticResource TitleText}"
                                 VerticalOptions="Center"/>
 
                             <Label
                                 Grid.Column="1"
                                 FontSize="24"
-                                FontFamily="OpenSansSemibold"
+                                FontFamily="SpaceGroteskSemibold"
                                 Text="{Binding GrandTotal,StringFormat='₹ {0:N2}'}"
                                 TextColor="{StaticResource Accent}"
                                 VerticalOptions="Center"/>
@@ -444,7 +444,7 @@
                         HeightRequest="55"
                         BackgroundColor="{StaticResource Accent}"
                         Stroke="Transparent"
-                        StrokeShape="RoundRectangle 15">
+                        StrokeShape="Rectangle">
 
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding CheckoutCommand}"/>

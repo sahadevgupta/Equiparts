@@ -59,7 +59,7 @@
                     Padding="12"
                     Stroke="{StaticResource Border}"
                     BackgroundColor="White"
-                    StrokeShape="RoundRectangle 12">
+                    StrokeShape="Rectangle">
 
                 <Grid ColumnDefinitions="30,*">
 
@@ -101,7 +101,7 @@
                         <DataTemplate
                             x:DataType="models:Category">
 
-                            <Border StrokeShape="RoundRectangle 12"
+                            <Border StrokeShape="Rectangle"
                                     BackgroundColor="White"
                                     Stroke="{StaticResource Border}">
 
@@ -153,7 +153,7 @@
                     Margin="10,0,0,0"
                     BackgroundColor="White"
                     Stroke="{StaticResource Border}"
-                    StrokeShape="RoundRectangle 16">
+                    StrokeShape="Rectangle">
 
                     <CollectionView
                         Margin="10"
@@ -170,7 +170,7 @@
                                     Margin="0,5"
                                     Padding="12"
                                     Stroke="{StaticResource Border}"
-                                    StrokeShape="RoundRectangle 12">
+                                    StrokeShape="Rectangle">
 
                                     <toolkit:Expander x:Name="expander">
                                         <toolkit:Expander.Header>
@@ -198,7 +198,7 @@
                                                     <Label
                                                         FontSize="12"
                                                         Text="View Products"
-                                                        TextColor="Gray">
+                                                        TextColor="{StaticResource MutedTextColor}">
 
                                                         <Label.GestureRecognizers>
                                                             <TapGestureRecognizer Command="{Binding BindingContext.OpenSubCategoryCommand, Source={x:Reference subCategories}}"

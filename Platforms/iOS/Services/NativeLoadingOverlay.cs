@@ -81,5 +81,5 @@ public sealed class NativeLoadingOverlay : INativeLoadingOverlay
         });
     }
 
-    private static Color ScrimColor => Color.FromArgb("#B3081F3E");
+    private static Color ScrimColor => Color.FromArgb("#B31A1A1A");
 }

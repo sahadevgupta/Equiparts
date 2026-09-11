@@ -1,14 +1,14 @@
 namespace Equiparts.Controls;
 
-// Draws the wavy navy header behind the login logo badge: short/high on the
-// left, sweeping down to long/low on the right. Plain XAML shapes can't
+// Draws the wavy near-black header behind the login logo badge: short/high on
+// the left, sweeping down to long/low on the right. Plain XAML shapes can't
 // produce this curve, so it's drawn directly on a GraphicsView canvas, with
-// the orange accent traced along the same edge.
+// the brand red accent traced along the same edge.
 public class CurvedHeaderDrawable : IDrawable
 {
-    private static readonly Color NavyTop = Color.FromArgb("#0B2E4A");
-    private static readonly Color NavyBottom = Color.FromArgb("#08152C");
-    private static readonly Color Accent = Color.FromArgb("#F58220");
+    private static readonly Color DarkTop = Color.FromArgb("#1A1A1A");
+    private static readonly Color DarkBottom = Color.FromArgb("#000000");
+    private static readonly Color Accent = Color.FromArgb("#C92027");
 
     // 0..1: lets the splash-to-login transition grow this same curve in from
     // nothing instead of only ever drawing it fully formed (default 1, so
@@ -48,8 +48,8 @@ public class CurvedHeaderDrawable : IDrawable
 
         // Drawn before the fill: on this canvas, SetFillPaint/FillPath resets the
         // stroke paint, so a stroke issued afterwards silently never appears. The
-        // navy fill painted next covers the inner half of this line, leaving a
-        // clean orange edge traced along the curve.
+        // dark fill painted next covers the inner half of this line, leaving a
+        // clean red edge traced along the curve.
         canvas.StrokeColor = Accent;
         canvas.StrokeSize = 5;
         canvas.StrokeLineCap = LineCap.Round;
@@ -61,8 +61,8 @@ public class CurvedHeaderDrawable : IDrawable
             EndPoint = new Point(1, 1),
             GradientStops =
             [
-                new PaintGradientStop(0, NavyTop),
-                new PaintGradientStop(1, NavyBottom)
+                new PaintGradientStop(0, DarkTop),
+                new PaintGradientStop(1, DarkBottom)
             ]
         };
 

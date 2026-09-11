@@ -31,7 +31,7 @@
     <Border StyleClass="Card"
             Padding="0"
             Margin="20,60"
-            StrokeShape="RoundRectangle 20"
+            StrokeShape="Rectangle"
             StrokeThickness="0">
 
         <Grid RowDefinitions="Auto,*,Auto">
@@ -45,7 +45,7 @@
                 <Label
                     Text="{Binding Title, Source={x:Reference addressSelectorPopup}}"
                     FontSize="17"
-                    FontFamily="OpenSansSemibold"
+                    FontFamily="SpaceGroteskSemibold"
                     TextColor="White"
                     VerticalOptions="Center"/>
 
@@ -105,7 +105,7 @@
                             BackgroundColor="{StaticResource CardBackground}"
                             Stroke="{Binding IsSelected,Converter={toolkit:BoolToObjectConverter TrueObject={StaticResource Accent},FalseObject={StaticResource Border}}}"
                             StrokeThickness="1.5"
-                            StrokeShape="RoundRectangle 14">
+                            StrokeShape="Rectangle">
 
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Tapped="OnAddressTapped"
@@ -129,7 +129,7 @@
                                     <HorizontalStackLayout Spacing="8">
                                         <Label
                                             FontSize="15"
-                                            FontFamily="OpenSansSemibold"
+                                            FontFamily="SpaceGroteskSemibold"
                                             TextColor="{StaticResource TitleText}"
                                             Text="{Binding Address.FullName}"/>
 
@@ -138,7 +138,7 @@
                                             Padding="7,2"
                                             BackgroundColor="{StaticResource SuccessBackground}"
                                             StrokeThickness="0"
-                                            StrokeShape="RoundRectangle 8">
+                                            StrokeShape="Rectangle">
                                             <Label
                                                 Text="DEFAULT"
                                                 FontSize="9"
@@ -202,7 +202,7 @@
                 StrokeDashArray="4,3"
                 StrokeThickness="1.5"
                 HeightRequest="50"
-                StrokeShape="RoundRectangle 12">
+                StrokeShape="Rectangle">
 
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnAddNewClicked"/>
@@ -220,7 +220,7 @@
 
                     <Label
                         Text="Add New Address"
-                        FontFamily="OpenSansSemibold"
+                        FontFamily="SpaceGroteskSemibold"
                         FontSize="14"
                         TextColor="{StaticResource Accent}"/>
 

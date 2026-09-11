@@ -15,7 +15,7 @@ public class LogoRevealDrawable : IDrawable
     private const float ViewH = 356f;
 
     private static readonly Color White = Colors.White;
-    private static readonly Color Orange = Color.FromArgb("#F15A24");
+    private static readonly Color Accent = Color.FromArgb("#C92027");
 
     // Same d="..." data as the three <path> elements in ep_logo_animated.svg.
     private readonly PathF _eTop = ParsePath(
@@ -55,7 +55,7 @@ public class LogoRevealDrawable : IDrawable
 
         DrawGlyph(canvas, _eTop, ETopTarget, growHorizontally: true, ETopOutline, ETopFill, White);
         DrawGlyph(canvas, _eBody, EBodyTarget, growHorizontally: false, EBodyOutline, EBodyFill, White);
-        DrawGlyph(canvas, _p, PTarget, growHorizontally: true, POutline, PFill, Orange);
+        DrawGlyph(canvas, _p, PTarget, growHorizontally: true, POutline, PFill, Accent);
 
         canvas.RestoreState();
     }
