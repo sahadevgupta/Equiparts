@@ -37,8 +37,9 @@ public class OrderService(IOrderApi orderApi,
         return orders.FirstOrDefault(x => x.OrderNo == orderNo);
     }
 
-    public async Task PlaceOrderAsync(List<CartItem> cartItems, int addressId, string paymentMethod, string? couponCode = null, CancellationToken cancellationToken = default)
+    public async Task<bool> PlaceOrderAsync(List<CartItem> cartItems, int addressId, string paymentMethod, string? couponCode = null, CancellationToken cancellationToken = default)
     {
+        bool isOrderPlaced = false;
         try
         {
             await connectivityService.CheckInternetAccessAsync();
@@ -55,12 +56,14 @@ public class OrderService(IOrderApi orderApi,
                 })]
             };
 
-            var a = await orderApi.CreateOrderAsync(request);
+            var response = await orderApi.CreateOrderAsync(request);
+            isOrderPlaced = response.Success;
         }
         catch (ApiException apiEx)
         {
             logger.LogWarning(apiEx, "Failed to place order ({StatusCode}).", apiEx.StatusCode);
         }
+        return isOrderPlaced;
     }
 
     public async Task<Order?> CheckoutAsync(int addressId, string paymentMethod, string? couponCode = null, CancellationToken cancellationToken = default)

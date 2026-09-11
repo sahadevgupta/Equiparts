@@ -205,12 +205,12 @@
                                 <BoxView HeightRequest="1"
                                          Color="{StaticResource Divider}"
                                          Margin="16,0"
-                                         IsVisible="False"/>
+                                         IsVisible="True"/>
 
                                 <Grid ColumnDefinitions="Auto,*,Auto"
                                       ColumnSpacing="14"
                                       Padding="16,14"
-                                      IsVisible="False">
+                                      IsVisible="True">
 
                                     <Grid.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding GoToAddressesCommand}"/>

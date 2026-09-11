@@ -1,7 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Equiparts.Controls;
+using Equiparts.Enums;
 using Equiparts.Interfaces;
+using Equiparts.Models;
 using Equiparts.Views;
+using Mopups.Interfaces;
 
 namespace Equiparts.ViewModels;
 
@@ -11,6 +15,8 @@ public partial class ProfileViewModel : BaseViewModel
     private readonly ICurrentUserService _currentUserService;
     private readonly IAuthenticationService _authenticationService;
     private readonly IDialogService _dialogService;
+    private readonly ILoadingPopupService _loadingPopupService;
+    private readonly IPopupNavigation _popupNavigation;
 
     [ObservableProperty]
     string initials = string.Empty;
@@ -40,7 +46,9 @@ public partial class ProfileViewModel : BaseViewModel
         IProfileService profileService,
         ICurrentUserService currentUserService,
         IAuthenticationService authenticationService,
-        IDialogService dialogService)
+        IDialogService dialogService,
+        ILoadingPopupService loadingPopupService,
+        IPopupNavigation popupNavigation)
     {
         Title = "Profile";
 
@@ -48,6 +56,8 @@ public partial class ProfileViewModel : BaseViewModel
         _currentUserService = currentUserService;
         _authenticationService = authenticationService;
         _dialogService = dialogService;
+        _loadingPopupService = loadingPopupService;
+        _popupNavigation = popupNavigation;
 
         ApplyCurrentUser();
     }
@@ -106,8 +116,88 @@ public partial class ProfileViewModel : BaseViewModel
     async Task GoToOrders() => await Shell.Current.GoToAsync(nameof(OrdersPage));
 
     [RelayCommand]
-    async Task GoToAddresses() =>
-        await _dialogService.ShowAlertAsync("Address management is coming soon.");
+    async Task GoToAddresses()
+    {
+        List<Address> addresses;
+
+        using (_loadingPopupService.Show())
+        {
+            addresses = await _profileService.GetAddressesAsync();
+        }
+
+        await ShowAddressManagerAsync(addresses);
+    }
+
+    private async Task ShowAddressManagerAsync(List<Address> addresses)
+    {
+        var selectedId = addresses.FirstOrDefault(a => a.IsDefault)?.Id ?? 0;
+
+        var popup = new AddressSelectorPopup(addresses, selectedId, "Manage Addresses");
+        await _popupNavigation.PushAsync(popup);
+        var selection = await popup.Result;
+
+        if (selection is null)
+            return;
+
+        if (selection.SelectedAddress is not null)
+        {
+            await SetDefaultAddressAsync(selection.SelectedAddress);
+            return;
+        }
+
+        if (selection.IsAddNew)
+        {
+            await OpenAddressEditorAsync(null);
+            return;
+        }
+
+        if (selection.EditAddress is not null)
+            await OpenAddressEditorAsync(selection.EditAddress);
+    }
+
+    private async Task SetDefaultAddressAsync(Address address)
+    {
+        List<Address> refreshed;
+
+        using (_loadingPopupService.Show())
+        {
+            if (!address.IsDefault)
+            {
+                address.IsDefault = true;
+                await _profileService.UpdateAddressAsync(address.Id, address);
+            }
+
+            refreshed = await _profileService.GetAddressesAsync();
+        }
+
+        await ShowAddressManagerAsync(refreshed);
+    }
+
+    private async Task OpenAddressEditorAsync(Address? existing)
+    {
+        var popup = new AddressEditorPopup(existing);
+        await _popupNavigation.PushAsync(popup);
+        var formAddress = await popup.Result;
+
+        List<Address> refreshed;
+
+        using (_loadingPopupService.Show())
+        {
+            if (formAddress is not null)
+            {
+                var saved = existing is null
+                    ? await _profileService.AddAddressAsync(formAddress)
+                    : await _profileService.UpdateAddressAsync(existing.Id, formAddress);
+
+                if (saved is null)
+                    await _dialogService.ShowAlertAsync("Failed to save address. Please try again.", AlertType.Error);
+            }
+
+            refreshed = await _profileService.GetAddressesAsync();
+        }
+
+        await ShowAddressManagerAsync(refreshed);
+    }
 
     [RelayCommand]
     async Task GoToWishlist() =>

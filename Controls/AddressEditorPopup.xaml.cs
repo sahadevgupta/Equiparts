@@ -177,13 +177,13 @@ public partial class AddressEditorPopup : PopupPage
             IsDefault = IsDefault
         };
 
-        _resultCompletionSource.TrySetResult(address);
         await MopupService.Instance.PopAsync();
+        _resultCompletionSource.TrySetResult(address);
     }
 
     async void OnCancelClicked(object sender, EventArgs e)
     {
-        _resultCompletionSource.TrySetResult(null);
         await MopupService.Instance.PopAsync();
+        _resultCompletionSource.TrySetResult(null);
     }
 }

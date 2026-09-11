@@ -11,6 +11,7 @@ public static class ViewModelInitializer
                         .AddTransient<CartViewModel>()
                         .AddTransient<CheckoutViewModel>()
                         .AddTransient<OrdersViewModel>()
+                        .AddTransient<OrderDetailsViewModel>()
                         .AddTransient<LoginViewModel>()
                         .AddTransient<RegisterViewModel>()
                         .AddTransient<ProductViewModel>()

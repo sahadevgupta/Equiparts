@@ -16,6 +16,12 @@ public class OrderResponseToOrderConverter : ConverterBase<OrderResponse, Order>
             Date = source.PlacedAtUtc,
             Total = (decimal)source.TotalAmount,
             Status = source.OrderStatus,
+            PaymentStatus = source.PaymentStatus,
+            PaymentMethod = source.PaymentMethod,
+            SubTotal = (decimal)source.SubTotal,
+            DiscountAmount = (decimal)source.DiscountAmount,
+            TaxAmount = (decimal)source.TaxAmount,
+            ShippingCharge = (decimal)source.ShippingCharge,
             Items = source.Items.Select(_itemConverter.Convert).ToList()
         };
     }

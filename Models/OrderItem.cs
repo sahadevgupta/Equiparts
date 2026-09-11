@@ -10,5 +10,7 @@ public class OrderItem
 
     public int Quantity { get; set; }
 
+    public decimal TaxAmount { get; set; }
+
     public decimal LineTotal { get; set; }
 }

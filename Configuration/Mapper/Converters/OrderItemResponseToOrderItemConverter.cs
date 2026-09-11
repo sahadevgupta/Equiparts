@@ -13,6 +13,7 @@ public class OrderItemResponseToOrderItemConverter : ConverterBase<OrderItemResp
             ProductName = source.ProductName ?? string.Empty,
             UnitPrice = (decimal)source.UnitPrice,
             Quantity = source.Quantity,
+            TaxAmount = (decimal)source.TaxAmount,
             LineTotal = (decimal)source.LineTotal
         };
     }

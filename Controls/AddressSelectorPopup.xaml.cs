@@ -23,16 +23,28 @@ public sealed class AddressSelectorResult
 
 public partial class AddressSelectorPopup : PopupPage
 {
+    public static readonly BindableProperty TitleProperty =
+        BindableProperty.Create(nameof(Title), typeof(string), typeof(AddressSelectorPopup), "Select Delivery Address");
+
     private readonly TaskCompletionSource<AddressSelectorResult?> _resultCompletionSource = new();
 
     public ObservableCollection<AddressPickerItem> Items { get; } = [];
 
     public Task<AddressSelectorResult?> Result => _resultCompletionSource.Task;
 
-    public AddressSelectorPopup(IReadOnlyList<Address> addresses, int selectedAddressId)
+    public string Title
+    {
+        get => (string)GetValue(TitleProperty);
+        set => SetValue(TitleProperty, value);
+    }
+
+    public AddressSelectorPopup(IReadOnlyList<Address> addresses, int selectedAddressId, string? title = null)
     {
         InitializeComponent();
         BindingContext = this;
+
+        if (title is not null)
+            Title = title;
 
         foreach (var address in addresses)
             Items.Add(new AddressPickerItem { Address = address, IsSelected = address.Id == selectedAddressId });
@@ -57,7 +69,7 @@ public partial class AddressSelectorPopup : PopupPage
 
     private async Task CloseWithResultAsync(AddressSelectorResult? result)
     {
-        _resultCompletionSource.TrySetResult(result);
         await MopupService.Instance.PopAsync();
+        _resultCompletionSource.TrySetResult(result);
     }
 }

@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<views:BasePage
+    x:Class="Equiparts.Views.OrderDetailsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
+    xmlns:models="clr-namespace:Equiparts.Models"
+    xmlns:views="clr-namespace:Equiparts.Views"
+    x:DataType="viewModels:OrderDetailsViewModel"
+    Shell.NavBarIsVisible="True"
+    BackgroundColor="{StaticResource PageBackground}"
+    Title="{Binding Order.OrderNo,FallbackValue='Order Details'}">
+
+    <views:BasePage.Resources>
+        <!-- The app-wide default Border style (Styles.xaml) adds a drop shadow and a
+             grey stroke to every Border. That's wrong for the flat badges/chips used
+             throughout this page, so it's cleared here rather than for the whole app. -->
+        <Style TargetType="Border">
+            <Setter Property="Shadow" Value="{x:Null}"/>
+        </Style>
+
+        <Style x:Key="SectionCardStyle" TargetType="Border">
+            <Setter Property="BackgroundColor" Value="{StaticResource CardBackground}"/>
+            <Setter Property="Stroke" Value="{StaticResource Border}"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 18"/>
+            <Setter Property="Padding" Value="16"/>
+        </Style>
+
+        <Style x:Key="SectionTitleLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="OpenSansSemibold"/>
+            <Setter Property="TextColor" Value="{StaticResource TitleText}"/>
+        </Style>
+    </views:BasePage.Resources>
+
+    <!-- Header -->
+    <Shell.TitleView>
+        <VerticalStackLayout VerticalOptions="Center"
+                              Spacing="1">
+
+            <Label
+                FontAttributes="Bold"
+                FontSize="18"
+                TextColor="White"
+                LineBreakMode="TailTruncation"
+                Text="{Binding Order.OrderNo,FallbackValue='Order Details'}"/>
+
+            <Label
+                FontSize="11"
+                TextColor="White"
+                Opacity="0.65"
+                LineBreakMode="TailTruncation"
+                IsVisible="{Binding Order,Converter={toolkit:IsNotNullConverter}}"
+                Text="{Binding Order.Date,StringFormat='Placed on {0:dd MMM yyyy}'}"/>
+
+        </VerticalStackLayout>
+    </Shell.TitleView>
+
+    <views:BasePage.PageContent>
+        <Grid RowDefinitions="*">
+
+            <!-- Not found / error state -->
+            <VerticalStackLayout
+                IsVisible="{Binding HasError}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Spacing="12">
+
+                <Label
+                    FontFamily="FontAwesome"
+                    Text="{x:Static fontresources:FontAwesomeIcons.ExclamationCircle}"
+                    FontSize="48"
+                    TextColor="{StaticResource Danger}"
+                    HorizontalOptions="Center"/>
+
+                <Label
+                    Text="Order not found"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"/>
+
+                <Label
+                    Text="We couldn't load this order's details."
+                    TextColor="Gray"
+                    HorizontalTextAlignment="Center"/>
+
+                <Button
+                    Text="Go Back"
+                    WidthRequest="140"
+                    Command="{Binding GoBackCommand}"/>
+
+            </VerticalStackLayout>
+
+            <!-- Details -->
+            <Grid IsVisible="{Binding HasError,Converter={toolkit:InvertedBoolConverter}}">
+
+            <ScrollView
+                BindingContext="{Binding Order}"
+                x:DataType="models:Order">
+
+                <VerticalStackLayout Padding="15"
+                                     Spacing="14">
+
+                    <!-- Status hero card -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="14">
+
+                            <Grid ColumnDefinitions="Auto,*"
+                                  ColumnSpacing="14">
+
+                                <!-- Status icon badge -->
+                                <Grid Grid.Column="0"
+                                      WidthRequest="54"
+                                      HeightRequest="54">
+
+                                    <Border
+                                        Padding="0"
+                                        BackgroundColor="{StaticResource SuccessBackground}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 27"
+                                        IsVisible="{Binding IsDelivered}">
+                                        <Label
+                                            FontFamily="FontAwesome"
+                                            FontSize="22"
+                                            TextColor="{StaticResource Success}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            Text="{Binding StatusIconGlyph}"/>
+                                    </Border>
+
+                                    <Border
+                                        Padding="0"
+                                        BackgroundColor="{StaticResource DangerBackground}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 27"
+                                        IsVisible="{Binding IsCancelled}">
+                                        <Label
+                                            FontFamily="FontAwesome"
+                                            FontSize="22"
+                                            TextColor="{StaticResource Danger}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            Text="{Binding StatusIconGlyph}"/>
+                                    </Border>
+
+                                    <Border
+                                        Padding="0"
+                                        BackgroundColor="{StaticResource WarningBackground}"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 27"
+                                        IsVisible="{Binding IsInProgress}">
+                                        <Label
+                                            FontFamily="FontAwesome"
+                                            FontSize="22"
+                                            TextColor="{StaticResource Warning}"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            Text="{Binding StatusIconGlyph}"/>
+                                    </Border>
+
+                                </Grid>
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Spacing="2"
+                                                     VerticalOptions="Center">
+
+                                    <Label
+                                        Text="Order Status"
+                                        FontSize="12"
+                                        TextColor="{StaticResource BodyText}"/>
+
+                                    <Label
+                                        FontSize="19"
+                                        FontFamily="OpenSansSemibold"
+                                        Text="{Binding Status}"
+                                        TextColor="{StaticResource Success}"
+                                        IsVisible="{Binding IsDelivered}"/>
+
+                                    <Label
+                                        FontSize="19"
+                                        FontFamily="OpenSansSemibold"
+                                        Text="{Binding Status}"
+                                        TextColor="{StaticResource Danger}"
+                                        IsVisible="{Binding IsCancelled}"/>
+
+                                    <Label
+                                        FontSize="19"
+                                        FontFamily="OpenSansSemibold"
+                                        Text="{Binding Status}"
+                                        TextColor="{StaticResource Warning}"
+                                        IsVisible="{Binding IsInProgress}"/>
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+
+                            <BoxView HeightRequest="1"
+                                     Color="{StaticResource Border}"/>
+
+                            <Grid ColumnDefinitions="*,*">
+
+                                <VerticalStackLayout Grid.Column="0"
+                                                     Spacing="3">
+
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label
+                                            FontFamily="FontAwesome"
+                                            Text="{x:Static fontresources:FontAwesomeIcons.Hashtag}"
+                                            FontSize="11"
+                                            TextColor="{StaticResource BodyText}"
+                                            VerticalOptions="Center"/>
+                                        <Label
+                                            Text="Order Number"
+                                            FontSize="12"
+                                            TextColor="{StaticResource BodyText}"/>
+                                    </HorizontalStackLayout>
+
+                                    <Label
+                                        FontSize="14"
+                                        FontFamily="OpenSansSemibold"
+                                        TextColor="{StaticResource TitleText}"
+                                        Text="{Binding OrderNo}"/>
+
+                                </VerticalStackLayout>
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Spacing="3">
+
+                                    <HorizontalStackLayout Spacing="6">
+                                        <Label
+                                            FontFamily="FontAwesome"
+                                            Text="{x:Static fontresources:FontAwesomeIcons.CalendarAlt}"
+                                            FontSize="11"
+                                            TextColor="{StaticResource BodyText}"
+                                            VerticalOptions="Center"/>
+                                        <Label
+                                            Text="Placed On"
+                                            FontSize="12"
+                                            TextColor="{StaticResource BodyText}"/>
+                                    </HorizontalStackLayout>
+
+                                    <Label
+                                        FontSize="14"
+                                        FontFamily="OpenSansSemibold"
+                                        TextColor="{StaticResource TitleText}"
+                                        Text="{Binding Date,StringFormat='{0:dd MMM yyyy, hh:mm tt}'}"/>
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- Order Items -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="12">
+
+                            <Label
+                                Text="{Binding Items.Count,StringFormat='Order Items ({0})'}"
+                                Style="{StaticResource SectionTitleLabelStyle}"/>
+
+                            <VerticalStackLayout
+                                Spacing="10"
+                                BindableLayout.ItemsSource="{Binding Items}">
+
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="models:OrderItem">
+
+                                        <Border
+                                            Padding="12"
+                                            BackgroundColor="{StaticResource PageBackground}"
+                                            Stroke="{StaticResource Border}"
+                                            StrokeThickness="1"
+                                            StrokeShape="RoundRectangle 12">
+
+                                            <Grid ColumnDefinitions="*,Auto"
+                                                  ColumnSpacing="10">
+
+                                                <VerticalStackLayout Grid.Column="0"
+                                                                     Spacing="4"
+                                                                     VerticalOptions="Center">
+
+                                                    <Label
+                                                        FontSize="14"
+                                                        FontFamily="OpenSansSemibold"
+                                                        LineBreakMode="TailTruncation"
+                                                        TextColor="{StaticResource TitleText}"
+                                                        Text="{Binding ProductName}"/>
+
+                                                    <Border
+                                                        HorizontalOptions="Start"
+                                                        Padding="7,2"
+                                                        BackgroundColor="{StaticResource ChipBackground}"
+                                                        StrokeThickness="0"
+                                                        StrokeShape="RoundRectangle 6"
+                                                        IsVisible="{Binding PartNumber,Converter={toolkit:IsStringNotNullOrEmptyConverter}}">
+                                                        <Label
+                                                            FontSize="11"
+                                                            FontFamily="OpenSansSemibold"
+                                                            TextColor="{StaticResource ChipText}"
+                                                            Text="{Binding PartNumber}"/>
+                                                    </Border>
+
+                                                    <Label
+                                                        FontSize="12"
+                                                        TextColor="{StaticResource BodyText}"
+                                                        Text="{Binding Quantity,StringFormat='Qty: {0}'}"/>
+
+                                                </VerticalStackLayout>
+
+                                                <VerticalStackLayout
+                                                    Grid.Column="1"
+                                                    Spacing="2"
+                                                    VerticalOptions="Center"
+                                                    HorizontalOptions="End">
+
+                                                    <Label
+                                                        FontSize="14"
+                                                        FontFamily="OpenSansSemibold"
+                                                        TextColor="{StaticResource Accent}"
+                                                        HorizontalTextAlignment="End"
+                                                        Text="{Binding LineTotal,StringFormat='₹ {0:N2}'}"/>
+
+                                                    <Label
+                                                        FontSize="11"
+                                                        TextColor="{StaticResource BodyText}"
+                                                        HorizontalTextAlignment="End"
+                                                        Text="{Binding UnitPrice,StringFormat='₹ {0:N2} each'}"/>
+
+                                                    <Label
+                                                        FontSize="11"
+                                                        TextColor="{StaticResource BodyText}"
+                                                        HorizontalTextAlignment="End"
+                                                        Text="{Binding TaxAmount,StringFormat='+ ₹ {0:N2} tax'}"/>
+
+                                                </VerticalStackLayout>
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+
+                            </VerticalStackLayout>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- Price Details -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                Text="Price Details"
+                                Style="{StaticResource SectionTitleLabelStyle}"/>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Subtotal"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource TitleText}"
+                                       Text="{Binding SubTotal,StringFormat='₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto"
+                                  IsVisible="{Binding HasDiscount}">
+                                <Label Text="Discount"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource Success}"
+                                       Text="{Binding DiscountAmount,StringFormat='- ₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Tax (GST)"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource TitleText}"
+                                       Text="{Binding TaxAmount,StringFormat='₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Text="Shipping Charges"
+                                       FontSize="14"
+                                       TextColor="{StaticResource BodyText}"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource Success}"
+                                       IsVisible="{Binding IsFreeShipping}"
+                                       Text="FREE"/>
+                                <Label Grid.Column="1"
+                                       FontSize="14"
+                                       TextColor="{StaticResource TitleText}"
+                                       IsVisible="{Binding IsFreeShipping,Converter={toolkit:InvertedBoolConverter}}"
+                                       Text="{Binding ShippingCharge,StringFormat='₹ {0:N2}'}"/>
+                            </Grid>
+
+                            <BoxView HeightRequest="1"
+                                     Color="{StaticResource Border}"/>
+
+                            <Border
+                                Padding="14,12"
+                                BackgroundColor="{StaticResource WarningBackground}"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 12">
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <Label
+                                        Text="Grand Total"
+                                        FontSize="16"
+                                        FontFamily="OpenSansSemibold"
+                                        TextColor="{StaticResource TitleText}"
+                                        VerticalOptions="Center"/>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="22"
+                                        FontFamily="OpenSansSemibold"
+                                        TextColor="{StaticResource Accent}"
+                                        VerticalOptions="Center"
+                                        Text="{Binding Total,StringFormat='₹ {0:N2}'}"/>
+                                </Grid>
+
+                            </Border>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- Payment Info -->
+                    <Border Style="{StaticResource SectionCardStyle}">
+
+                        <VerticalStackLayout Spacing="12">
+
+                            <Label
+                                Text="Payment Information"
+                                Style="{StaticResource SectionTitleLabelStyle}"/>
+
+                            <Grid ColumnDefinitions="Auto,*,Auto"
+                                  ColumnSpacing="12">
+
+                                <Border
+                                    Grid.Column="0"
+                                    HeightRequest="38"
+                                    WidthRequest="38"
+                                    Padding="0"
+                                    BackgroundColor="{StaticResource ChipBackground}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 19">
+                                    <Label
+                                        FontFamily="FontAwesome"
+                                        Text="{Binding PaymentMethodIconGlyph}"
+                                        FontSize="16"
+                                        TextColor="{StaticResource TitleText}"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"/>
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Spacing="1"
+                                                     VerticalOptions="Center">
+                                    <Label
+                                        FontSize="14"
+                                        FontFamily="OpenSansSemibold"
+                                        TextColor="{StaticResource TitleText}"
+                                        Text="{Binding PaymentMethodDisplay}"/>
+                                    <Label
+                                        FontSize="12"
+                                        TextColor="{StaticResource BodyText}"
+                                        Text="Payment Method"/>
+                                </VerticalStackLayout>
+
+                                <!-- Payment status badge -->
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="10,5"
+                                    BackgroundColor="{StaticResource SuccessBackground}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 25"
+                                    IsVisible="{Binding IsPaymentPaid}">
+                                    <Label
+                                        Text="{Binding PaymentStatus}"
+                                        TextColor="{StaticResource Success}"
+                                        FontAttributes="Bold"
+                                        FontSize="12"/>
+                                </Border>
+
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="10,5"
+                                    BackgroundColor="{StaticResource DangerBackground}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 25"
+                                    IsVisible="{Binding IsPaymentFailed}">
+                                    <Label
+                                        Text="{Binding PaymentStatus}"
+                                        TextColor="{StaticResource Danger}"
+                                        FontAttributes="Bold"
+                                        FontSize="12"/>
+                                </Border>
+
+                                <Border
+                                    Grid.Column="2"
+                                    Padding="10,5"
+                                    BackgroundColor="{StaticResource WarningBackground}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 25"
+                                    IsVisible="{Binding IsPaymentPending}">
+                                    <Label
+                                        Text="{Binding PaymentStatus}"
+                                        TextColor="{StaticResource Warning}"
+                                        FontAttributes="Bold"
+                                        FontSize="12"/>
+                                </Border>
+
+                            </Grid>
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <BoxView HeightRequest="4"
+                             Color="Transparent"/>
+
+                </VerticalStackLayout>
+
+            </ScrollView>
+
+            </Grid>
+
+        </Grid>
+    </views:BasePage.PageContent>
+
+</views:BasePage>

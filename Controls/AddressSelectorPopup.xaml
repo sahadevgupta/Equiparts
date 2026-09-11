@@ -43,7 +43,7 @@
                   BackgroundColor="{StaticResource NavyBlue}">
 
                 <Label
-                    Text="Select Delivery Address"
+                    Text="{Binding Title, Source={x:Reference addressSelectorPopup}}"
                     FontSize="17"
                     FontFamily="OpenSansSemibold"
                     TextColor="White"

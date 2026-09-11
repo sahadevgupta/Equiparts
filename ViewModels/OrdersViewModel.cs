@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
+using Equiparts.Views;
 using System.Collections.ObjectModel;
 
 namespace Equiparts.ViewModels;
@@ -12,19 +13,21 @@ public partial class OrdersViewModel : BaseViewModel
     private readonly IOrderService _orderService;
     private readonly IDialogService _dialogService;
     private readonly ILoadingPopupService _loadingPopupService;
+    private readonly INavigationService _navigationService;
 
     public ObservableCollection<Order> Orders { get; } = [];
 
     [ObservableProperty]
     private bool _isListEmpty;
 
-    public OrdersViewModel(IOrderService orderService, IDialogService dialogService, ILoadingPopupService loadingPopupService)
+    public OrdersViewModel(IOrderService orderService, IDialogService dialogService, ILoadingPopupService loadingPopupService, INavigationService navigationService)
     {
         Title = "Orders";
 
         _orderService = orderService;
         _dialogService = dialogService;
         _loadingPopupService = loadingPopupService;
+        _navigationService = navigationService;
     }
 
     [RelayCommand]
@@ -61,12 +64,10 @@ public partial class OrdersViewModel : BaseViewModel
         if (order == null)
             return;
 
-        // await Shell.Current.GoToAsync(
-        //     $"{nameof(OrderDetailsPage)}",
-        //     new Dictionary<string, object>
-        //     {
-        //         ["Order"] = order
-        //     });
+        await _navigationService.NaviagteAsync<OrderDetailsPage>(parameters: new Dictionary<string, object>
+        {
+            ["Order"] = order
+        });
     }
 
     [RelayCommand]

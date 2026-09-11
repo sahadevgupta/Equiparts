@@ -335,25 +335,22 @@ public partial class CheckoutViewModel : BaseViewModel
 
         try
         {
-            Order? order;
-
             using (_loadingPopupService.Show())
             {
-                await _orderService.PlaceOrderAsync(displayedItems.ToList(), SelectedAddress.Id, SelectedPaymentMethod.Id, AppliedCoupon?.Code);
+                var result = await _orderService.PlaceOrderAsync(displayedItems!.ToList(), SelectedAddress.Id, SelectedPaymentMethod.Id, AppliedCoupon?.Code);
 
-                // if (order is not null)
-                //     await _cartService.ClearCartAsync();
+                if (result)
+                    await _cartService.ClearCartAsync();
+                else
+                {
+                    await _dialogService.ShowAlertAsync("We couldn't place your order. Please try again.", AlertType.Error);
+                    return;
+                }
             }
-
-            // if (order is null)
-            // {
-            //     await _dialogService.ShowAlertAsync("We couldn't place your order. Please try again.", AlertType.Error);
-            //     return;
-            // }
 
             await _dialogService.ShowAlertAsync("Order placed successfully.", AlertType.Success);
 
-            await _navigationService.NaviagteAsync<OrdersPage>(replaceCurrent: true);
+            await Shell.Current.GoToAsync("//app/home");
         }
         finally
         {

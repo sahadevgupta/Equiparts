@@ -34,8 +34,11 @@
 		<ApplicationId>com.companyname.equiparts</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>2</ApplicationVersion>
+		<BuildYear>$([System.DateTime]::UtcNow.ToString("yy"))</BuildYear>
+		<BuildDayOfYear>$([System.DateTime]::UtcNow.DayOfYear.ToString("000"))</BuildDayOfYear>
+		<BuildHourMinute>$([System.DateTime]::UtcNow.ToString("HHmm"))</BuildHourMinute>
+		<ApplicationVersion>$([System.Int32]::Parse('$(BuildYear)$(BuildDayOfYear)$(BuildHourMinute)'))</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.$(BuildYear)$(BuildDayOfYear).$(BuildHourMinute)</ApplicationDisplayVersion>
 
 		<UseMaterial3>true</UseMaterial3>
 
