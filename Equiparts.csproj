@@ -31,7 +31,7 @@
 		<ApplicationTitle>Equiparts</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.equiparts</ApplicationId>
+		<ApplicationId>com.equipartsgroup.equiparts</ApplicationId>
 
 		<!-- Versions -->
 		<BuildYear>$([System.DateTime]::UtcNow.ToString("yy"))</BuildYear>
@@ -81,5 +81,14 @@
 		<PackageReference Include="Refit.HttpClientFactory" Version="15.2.0" />
 		<PackageReference Include="Sentry.Maui" Version="6.10.0" />
 	</ItemGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-android' AND '$(Configuration)' == 'Release'">
+		<AndroidKeyStore>true</AndroidKeyStore>
+		<AndroidPackageFormat>aab</AndroidPackageFormat>
+		<AndroidSigningKeyStore>$(MSBuildProjectDirectory)/keystore/Equiparts.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>equiparts</AndroidSigningKeyAlias>
+		<AndroidSigningKeyPass>Equiparts@123</AndroidSigningKeyPass>
+    <AndroidSigningStorePass>Equiparts@123</AndroidSigningStorePass>
+    </PropertyGroup>
 
 </Project>

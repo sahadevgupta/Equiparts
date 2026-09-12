@@ -158,9 +158,9 @@
                 <!-- Logo badge, straddling the header/card boundary -->
                 <Border WidthRequest="96"
                         HeightRequest="96"
-                        Stroke="White"
+                        Stroke="{StaticResource TertiaryColor}"
                         StrokeThickness="4"
-                        BackgroundColor="{StaticResource PrimaryDark}"
+                        BackgroundColor="White"
                         HorizontalOptions="Center"
                         VerticalOptions="Start"
                         Margin="0,135,0,0"
