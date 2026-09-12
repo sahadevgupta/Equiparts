@@ -62,6 +62,9 @@ public partial class ProductViewModel : BaseViewModel, IQueryAttributable
 
         if (query.TryGetValue("Title", out var titleValue) && titleValue is string title)
             Title = title;
+
+        if (query.TryGetValue("SearchText", out var searchTextValue) && searchTextValue is string searchText)
+            SearchText = searchText;
     }
 
     [RelayCommand]

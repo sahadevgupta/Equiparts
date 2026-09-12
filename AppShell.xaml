@@ -6,10 +6,10 @@
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     xmlns:views="clr-namespace:Equiparts.Views"
     FlyoutBehavior="Disabled"
-    Shell.TabBarBackgroundColor="{StaticResource PrimaryColor}"
-    Shell.TabBarForegroundColor="White"
+    Shell.TabBarBackgroundColor="{StaticResource Primary}"
+    Shell.TabBarForegroundColor="{StaticResource Accent}"
     Shell.TabBarUnselectedColor="{StaticResource MutedTextColor}"
-    Shell.TabBarTitleColor="White">
+    Shell.TabBarTitleColor="{StaticResource Accent}">
 
     <!-- ROUTE: loading - Initial loading/splash screen -->
     <ShellContent
@@ -39,8 +39,8 @@
         </Tab>
 
 
-        <Tab Title="Catalog">
-
+        <Tab Title="Catalog"
+             Route="catalog">
 
             <Tab.Icon>
                 <FontImageSource FontFamily="FontAwesome"

@@ -6,9 +6,9 @@ namespace Equiparts.Controls;
 // the brand red accent traced along the same edge.
 public class CurvedHeaderDrawable : IDrawable
 {
-    private static readonly Color DarkTop = Color.FromArgb("#1A1A1A");
+    private static readonly Color DarkTop = Color.FromArgb("#C92027");
     private static readonly Color DarkBottom = Color.FromArgb("#000000");
-    private static readonly Color Accent = Color.FromArgb("#C92027");
+    private static readonly Color Accent = Color.FromArgb("#E59F1C");
 
     // 0..1: lets the splash-to-login transition grow this same curve in from
     // nothing instead of only ever drawing it fully formed (default 1, so

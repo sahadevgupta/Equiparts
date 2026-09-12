@@ -58,29 +58,29 @@
 
                         <!-- Full name -->
                         <controls:ExtendedEntry Text="{Binding FullName}"
-                                                 LeadingIcon="{x:Static fontresources:FontAwesomeIcons.User}"
-                                                 LeadingIconType="Font"
-                                                 PlaceholderText="Full name"/>
+                                                LeadingIcon="{x:Static fontresources:FontAwesomeIcons.User}"
+                                                LeadingIconType="Font"
+                                                PlaceholderText="Full name"/>
 
                         <!-- Email -->
                         <controls:ExtendedEntry Text="{Binding Email}"
-                                                 LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Envelope}"
-                                                 LeadingIconType="Font"
-                                                 PlaceholderText="Enter email"/>
+                                                LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Envelope}"
+                                                LeadingIconType="Font"
+                                                PlaceholderText="Enter email"/>
 
                         <!-- Password -->
                         <controls:ExtendedEntry Text="{Binding Password}"
-                                                 LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Lock}"
-                                                 LeadingIconType="Font"
-                                                 PlaceholderText="Create password"
-                                                 IsPassword="True"/>
+                                                LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Lock}"
+                                                LeadingIconType="Font"
+                                                PlaceholderText="Create password"
+                                                IsPassword="True"/>
 
                         <!-- Confirm password -->
                         <controls:ExtendedEntry Text="{Binding ConfirmPassword}"
-                                                 LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Lock}"
-                                                 LeadingIconType="Font"
-                                                 PlaceholderText="Confirm password"
-                                                 IsPassword="True"/>
+                                                LeadingIcon="{x:Static fontresources:FontAwesomeIcons.Lock}"
+                                                LeadingIconType="Font"
+                                                PlaceholderText="Confirm password"
+                                                IsPassword="True"/>
 
                         <!-- Register button -->
                         <Border BackgroundColor="{StaticResource Primary}"
@@ -167,10 +167,10 @@
                         InputTransparent="True"
                         Padding="3">
                     <Border.StrokeShape>
-                        <Rectangle/>
+                        <RoundRectangle CornerRadius="48"/>
                     </Border.StrokeShape>
 
-                    <Image Source="ep_logo"/>
+                    <Image Source="ep_logo_new"/>
                 </Border>
 
             </Grid>

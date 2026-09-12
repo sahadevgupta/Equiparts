@@ -4,6 +4,7 @@
     x:Class="Equiparts.Views.ProfilePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Equiparts.Controls"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:views="clr-namespace:Equiparts.Views"
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
@@ -25,8 +26,12 @@
 
         <Grid RowDefinitions="Auto,*">
             <!-- Header -->
-            <Image Source="header_logo"
-                   Margin="-2,0"/>
+            <!-- <Image Source="header_logo"
+                   Margin="-2,0"/> -->
+            <controls:AppHeaderView ShowSearchBar="False"
+                                    HeaderTitle="Profile"
+                                    MainViewHeight="150"
+                                    CurveHeight="180"/>
             <ScrollView Grid.Row="1">
 
                 <VerticalStackLayout
@@ -39,7 +44,7 @@
                         Padding="18"
                         BackgroundColor="{StaticResource CardBackground}"
                         Stroke="{StaticResource Border}"
-                        StrokeShape="Rectangle">
+                        StrokeShape="RoundRectangle 18">
 
                         <Grid
                             ColumnDefinitions="Auto,*"
@@ -53,7 +58,7 @@
                                 HeightRequest="60"
                                 Padding="0"
                                 BackgroundColor="{StaticResource Primary}"
-                                StrokeShape="Rectangle"
+                                StrokeShape="RoundRectangle 16"
                                 VerticalOptions="Start">
 
                                 <Label
@@ -81,7 +86,7 @@
                                     Grid.Column="1"
                                     Padding="10,4"
                                     BackgroundColor="{StaticResource WarningBackground}"
-                                    StrokeShape="Rectangle"
+                                    StrokeShape="RoundRectangle 20"
                                     VerticalOptions="Center">
 
                                     <Label
@@ -681,6 +686,7 @@
                         FontSize="14"
                         CharacterSpacing="0.6"
                         HeightRequest="44"
+                        Shadow="{x:Null}"
                         Command="{Binding LogoutCommand}"/>
 
                     <Label

@@ -13,12 +13,42 @@
             <!-- Scattered ambient sparkle twinkles, matching the reference video's background. -->
             <Grid x:Name="SparkleLayer"
                   InputTransparent="True">
-                <Label Text="&#x2726;" TextColor="#3FFFFFFF" FontSize="10" Margin="48,120,0,0" HorizontalOptions="Start" VerticalOptions="Start"/>
-                <Label Text="&#x2726;" TextColor="#33FFFFFF" FontSize="8"  Margin="0,150,54,0"  HorizontalOptions="End"   VerticalOptions="Start"/>
-                <Label Text="&#x2726;" TextColor="#33FFFFFF" FontSize="9"  Margin="30,0,0,140"  HorizontalOptions="Start" VerticalOptions="End"/>
-                <Label Text="&#x2726;" TextColor="#3FFFFFFF" FontSize="11" Margin="0,0,40,170"  HorizontalOptions="End"   VerticalOptions="End"/>
-                <Label Text="&#x2726;" TextColor="#2EFFFFFF" FontSize="7"  Margin="0,60,0,0"    HorizontalOptions="Center" VerticalOptions="Start"/>
-                <Label Text="&#x2726;" TextColor="#2EFFFFFF" FontSize="8"  Margin="0,0,0,80"    HorizontalOptions="Center" VerticalOptions="End"/>
+                <Label Text="&#x2726;"
+                        TextColor="#3FFFFFFF"
+                        FontSize="10"
+                        Margin="48,120,0,0"
+                        HorizontalOptions="Start"
+                        VerticalOptions="Start"/>
+                <Label Text="&#x2726;"
+                        TextColor="#33FFFFFF"
+                        FontSize="8"
+                        Margin="0,150,54,0"
+                        HorizontalOptions="End"
+                        VerticalOptions="Start"/>
+                <Label Text="&#x2726;"
+                        TextColor="#33FFFFFF"
+                        FontSize="9"
+                        Margin="30,0,0,140"
+                        HorizontalOptions="Start"
+                        VerticalOptions="End"/>
+                <Label Text="&#x2726;"
+                        TextColor="#3FFFFFFF"
+                        FontSize="11"
+                        Margin="0,0,40,170"
+                        HorizontalOptions="End"
+                        VerticalOptions="End"/>
+                <Label Text="&#x2726;"
+                        TextColor="#2EFFFFFF"
+                        FontSize="7"
+                        Margin="0,60,0,0"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Start"/>
+                <Label Text="&#x2726;"
+                        TextColor="#2EFFFFFF"
+                        FontSize="8"
+                        Margin="0,0,0,80"
+                        HorizontalOptions="Center"
+                        VerticalOptions="End"/>
             </Grid>
 
             <!-- Soft ambient glow bloom behind the mark. -->
@@ -30,9 +60,12 @@
                      Opacity="0"
                      InputTransparent="True">
                 <Ellipse.Fill>
-                    <RadialGradientBrush Center="0.5,0.5" Radius="0.5">
-                        <GradientStop Offset="0.0" Color="#40C92027"/>
-                        <GradientStop Offset="1.0" Color="#001A1A1A"/>
+                    <RadialGradientBrush Center="0.5,0.5"
+                            Radius="0.5">
+                        <GradientStop Offset="0.0"
+                                Color="#40C92027"/>
+                        <GradientStop Offset="1.0"
+                                Color="#001A1A1A"/>
                     </RadialGradientBrush>
                 </Ellipse.Fill>
             </Ellipse>
@@ -92,7 +125,7 @@
                          HeightRequest="96"
                          Stroke="White"
                          StrokeThickness="4"
-                         Fill="{StaticResource PrimaryDark}"
+                         Fill="White"
                          Opacity="0"/>
 
                 <!-- EP mark: the exact same glyph paths as ep_logo_animated.svg, redrawn

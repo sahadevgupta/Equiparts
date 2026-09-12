@@ -4,10 +4,13 @@
     x:Class="Equiparts.Views.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Equiparts.Controls"
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Maui;assembly=FFImageLoading.Maui"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:models="clr-namespace:Equiparts.Models"
     xmlns:views="clr-namespace:Equiparts.Views"
+    xmlns:fontresources="clr-namespace:Equiparts.Extensions"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     x:DataType="viewModels:HomeViewModel"
     BackgroundColor="{StaticResource PageBackground}"
     Shell.NavBarIsVisible="False">
@@ -15,44 +18,100 @@
     <views:BasePage.PageContent>
         <Grid RowDefinitions="Auto,*"
               Padding="0"
-              Margin="0">
+              Margin="0"
+              RowSpacing="0">
 
-            <!-- Header -->
+            <!-- ===================== Header ===================== -->
 
-            <Image Source="ep_header_logo.webp"
-                   Scale="1"
-                   HeightRequest="80"
-                   Margin="-2,0"/>
+            <controls:AppHeaderView Grid.Row="0"
+                                     SearchQuery="{Binding SearchQuery}"
+                                     SearchCommand="{Binding SearchCommand}"/>
 
-            <!-- Body -->
+            <!-- ===================== Body ===================== -->
+
             <RefreshView Grid.Row="1"
                          IsRefreshing="{Binding IsRefreshing}"
                          Command="{Binding RefreshCommand}">
 
                 <ScrollView>
 
-                    <VerticalStackLayout Padding="16"
-                                         Spacing="20">
+                    <VerticalStackLayout Padding="16,16,16,24"
+                                         Spacing="24">
 
-                        <!-- Search -->
+                        <!-- Trust badges -->
 
-                        <Border IsVisible="False"
-                                Padding="12"
-                                BackgroundColor="White"
-                                Stroke="{StaticResource Border}"
-                                StrokeShape="Rectangle">
+                        <Border BackgroundColor="White"
+                                Padding="12,16"
+                                Stroke="{StaticResource BorderColor}"
+                                StrokeThickness="1">
 
-                            <Grid ColumnDefinitions="30,*">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="18"/>
+                            </Border.StrokeShape>
 
-                                <Image
-                                    HeightRequest="20"
-                                    Source="search.png"
-                                    WidthRequest="20"/>
+                            <Border.Shadow>
+                                <Shadow Brush="#1A0E1826"
+                                        Offset="0,8"
+                                        Radius="16"
+                                        Opacity="0.12"/>
+                            </Border.Shadow>
 
-                                <Entry
-                                    Grid.Column="1"
-                                    Placeholder="Search products..."
-                                    PlaceholderColor="{StaticResource MutedTextColor}"/>
+                            <Grid ColumnDefinitions="*,Auto,*,Auto,*">
+
+                                <VerticalStackLayout Grid.Column="0"
+                                                     Spacing="4"
+                                                     HorizontalOptions="Center">
+                                    <Label Text="{x:Static fontresources:FontAwesomeIcons.Award}"
+                                           FontFamily="FontAwesome"
+                                           FontSize="18"
+                                           TextColor="{StaticResource AccentColor}"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Genuine OEM"
+                                           FontFamily="GeistMedium"
+                                           FontSize="10"
+                                           TextColor="{StaticResource PrimaryTextColor}"
+                                           HorizontalTextAlignment="Center"/>
+                                </VerticalStackLayout>
+
+                                <BoxView Grid.Column="1"
+                                         WidthRequest="1"
+                                         Margin="0,2"
+                                         Color="{StaticResource BorderColor}"/>
+
+                                <VerticalStackLayout Grid.Column="2"
+                                                     Spacing="4"
+                                                     HorizontalOptions="Center">
+                                    <Label Text="{x:Static fontresources:FontAwesomeIcons.Truck}"
+                                           FontFamily="FontAwesome"
+                                           FontSize="18"
+                                           TextColor="{StaticResource AccentColor}"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Fast Dispatch"
+                                           FontFamily="GeistMedium"
+                                           FontSize="10"
+                                           TextColor="{StaticResource PrimaryTextColor}"
+                                           HorizontalTextAlignment="Center"/>
+                                </VerticalStackLayout>
+
+                                <BoxView Grid.Column="3"
+                                         WidthRequest="1"
+                                         Margin="0,2"
+                                         Color="{StaticResource BorderColor}"/>
+
+                                <VerticalStackLayout Grid.Column="4"
+                                                     Spacing="4"
+                                                     HorizontalOptions="Center">
+                                    <Label Text="{x:Static fontresources:FontAwesomeIcons.Headset}"
+                                           FontFamily="FontAwesome"
+                                           FontSize="18"
+                                           TextColor="{StaticResource AccentColor}"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="Expert Support"
+                                           FontFamily="GeistMedium"
+                                           FontSize="10"
+                                           TextColor="{StaticResource PrimaryTextColor}"
+                                           HorizontalTextAlignment="Center"/>
+                                </VerticalStackLayout>
 
                             </Grid>
 
@@ -60,75 +119,157 @@
 
                         <!-- Categories -->
 
-                        <Label
-                            StyleClass="SectionTitle"
-                            Text="Our Products Range"/>
+                        <VerticalStackLayout Spacing="12">
 
-                        <CollectionView ItemsUpdatingScrollMode="KeepScrollOffset"
-                                        ItemsSource="{Binding Categories}"
-                                        SelectionMode="Single"
-                                        SelectedItem="{Binding SelectedCategory}"
-                                        HorizontalScrollBarVisibility="Never">
+                            <Grid ColumnDefinitions="*,Auto">
 
-                            <CollectionView.ItemsLayout>
-                                <LinearItemsLayout Orientation="Horizontal"
-                                                   ItemSpacing="5"/>
-                            </CollectionView.ItemsLayout>
+                                <Label StyleClass="SectionTitle"
+                                       Text="Shop by Category"/>
 
-                            <CollectionView.ItemTemplate>
+                                <HorizontalStackLayout Grid.Column="1"
+                                                       Spacing="4"
+                                                       VerticalOptions="Center">
+                                    <HorizontalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ViewAllProductsCommand}"/>
+                                    </HorizontalStackLayout.GestureRecognizers>
 
-                                <DataTemplate x:DataType="models:Category">
+                                    <Label Text="View All"
+                                           FontFamily="SpaceGroteskSemibold"
+                                           FontSize="13"
+                                           TextColor="{StaticResource AccentColor}"/>
 
-                                    <VerticalStackLayout
-                                        HorizontalOptions="Center">
+                                    <Label Text="{x:Static fontresources:FontAwesomeIcons.AngleRight}"
+                                           FontFamily="FontAwesome"
+                                           FontSize="11"
+                                           TextColor="{StaticResource AccentColor}"
+                                           VerticalOptions="Center"/>
+                                </HorizontalStackLayout>
 
-                                        <Border Padding="5"
-                                                BackgroundColor="White"
-                                                Stroke="{StaticResource Border}"
-                                                StrokeShape="Rectangle">
+                            </Grid>
 
-                                            <ffimageloading:CachedImage Source="{Binding ImageUrl}"
-                                                                        HeightRequest="110"
-                                                                        WidthRequest="110"/>
+                            <CollectionView ItemsSource="{Binding Categories}"
+                                            SelectionMode="None">
+
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical"
+                                                     Span="2"
+                                                     HorizontalItemSpacing="12"
+                                                     VerticalItemSpacing="12"/>
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.ItemTemplate>
+
+                                    <DataTemplate x:DataType="models:Category">
+
+                                        <Border BackgroundColor="White"
+                                                Padding="12"
+                                                Stroke="{StaticResource BorderColor}"
+                                                StrokeThickness="1">
+
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="18"/>
+                                            </Border.StrokeShape>
+
+                                            <Border.Shadow>
+                                                <Shadow Brush="#140E1826"
+                                                        Offset="0,4"
+                                                        Radius="10"
+                                                        Opacity="0.10"/>
+                                            </Border.Shadow>
+
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=CategorySelectedCommand}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+
+                                            <Grid ColumnDefinitions="Auto,*"
+                                                  ColumnSpacing="12">
+
+                                                <Border Grid.Column="0"
+                                                        WidthRequest="52"
+                                                        HeightRequest="52"
+                                                        Padding="8"
+                                                        BackgroundColor="{StaticResource SurfaceInsetColor}"
+                                                        Stroke="Transparent">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle CornerRadius="14"/>
+                                                    </Border.StrokeShape>
+
+                                                    <ffimageloading:CachedImage Source="{Binding ImageUrl}"
+                                                                                Aspect="AspectFit"/>
+                                                </Border>
+
+                                                <VerticalStackLayout Grid.Column="1"
+                                                                     VerticalOptions="Center"
+                                                                     Spacing="2">
+
+                                                    <Label Text="{Binding Name}"
+                                                           FontFamily="SpaceGroteskSemibold"
+                                                           FontSize="14"
+                                                           TextColor="{StaticResource PrimaryColor}"
+                                                           LineBreakMode="TailTruncation"
+                                                           MaxLines="1"/>
+
+                                                    <Label Text="{Binding SubCategoryCount, StringFormat='{0} sub-categories'}"
+                                                           IsVisible="{Binding HasSubCategories}"
+                                                           FontFamily="GeistRegular"
+                                                           FontSize="11"
+                                                           TextColor="{StaticResource MutedTextColor}"/>
+
+                                                </VerticalStackLayout>
+
+                                            </Grid>
+
                                         </Border>
 
-                                        <Label
-                                            Margin="0,8,0,0"
-                                            FontAttributes="Bold"
-                                            FontSize="13"
-                                            HorizontalTextAlignment="Center"
-                                            Text="{Binding Name}"
-                                            WidthRequest="95"/>
+                                    </DataTemplate>
 
-                                    </VerticalStackLayout>
+                                </CollectionView.ItemTemplate>
 
-                                </DataTemplate>
+                            </CollectionView>
 
-                            </CollectionView.ItemTemplate>
+                        </VerticalStackLayout>
 
-                        </CollectionView>
+                        <!-- Offers -->
 
-                        <!-- Banner -->
+                        <VerticalStackLayout Spacing="12">
 
-                        <VerticalStackLayout Spacing="8">
-
-                            <Label
-                                StyleClass="SectionTitle"
-                                Text="Offers of the Day"/>
+                            <Label StyleClass="SectionTitle"
+                                   Text="Offers of the Day"/>
 
                             <CarouselView ItemsSource="{Binding Banners}"
                                           IndicatorView="indicatorView"
                                           Loop="True"
-                                          HeightRequest="200">
+                                          HeightRequest="170">
+
                                 <CarouselView.ItemTemplate>
+
                                     <DataTemplate x:DataType="models:Banner">
 
-                                        <Border StrokeShape="Rectangle"
-                                                StrokeThickness="0">
+                                        <Border StrokeThickness="0">
+
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="20"/>
+                                            </Border.StrokeShape>
+
+                                            <Border.Shadow>
+                                                <Shadow Brush="#260E1826"
+                                                        Offset="0,8"
+                                                        Radius="16"
+                                                        Opacity="0.16"/>
+                                            </Border.Shadow>
+
+                                            <!-- Banner artwork already carries its own designed
+                                                 title/copy, so it's shown as-is with no text
+                                                 overlay (avoids duplicating what's baked into the
+                                                 image). -->
                                             <ffimageloading:CachedImage Source="{Binding ImageUrl}"
                                                                         Aspect="Fill"/>
+
                                         </Border>
+
                                     </DataTemplate>
+
                                 </CarouselView.ItemTemplate>
 
                             </CarouselView>
@@ -140,107 +281,259 @@
 
                         </VerticalStackLayout>
 
-                        <!-- Best Seller -->
+                        <!-- Best Sellers -->
 
-                        <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout Spacing="12">
 
-                            <Label
-                                StyleClass="SectionTitle"
-                                Text="Best Sellers"/>
+                            <Grid ColumnDefinitions="*,Auto">
 
-                            <Label
-                                Grid.Column="1"
-                                FontAttributes="Bold"
-                                Text="View All"
-                                TextColor="{StaticResource Accent}">
+                                <Label StyleClass="SectionTitle"
+                                       Text="Best Sellers"/>
 
-                                <Label.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ViewAllProductsCommand}"/>
-                                </Label.GestureRecognizers>
+                                <HorizontalStackLayout Grid.Column="1"
+                                                       Spacing="4"
+                                                       VerticalOptions="Center">
+                                    <HorizontalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ViewAllProductsCommand}"/>
+                                    </HorizontalStackLayout.GestureRecognizers>
 
-                            </Label>
+                                    <Label Text="View All"
+                                           FontFamily="SpaceGroteskSemibold"
+                                           FontSize="13"
+                                           TextColor="{StaticResource AccentColor}"/>
 
-                        </Grid>
+                                    <Label Text="{x:Static fontresources:FontAwesomeIcons.AngleRight}"
+                                           FontFamily="FontAwesome"
+                                           FontSize="11"
+                                           TextColor="{StaticResource AccentColor}"
+                                           VerticalOptions="Center"/>
+                                </HorizontalStackLayout>
 
-                        <CollectionView
-                            ItemsSource="{Binding BestSellers}"
-                            SelectionMode="None">
+                            </Grid>
 
-                            <CollectionView.ItemsLayout>
+                            <CollectionView ItemsSource="{Binding BestSellers}"
+                                            SelectionMode="None">
 
-                                <GridItemsLayout
-                                    Orientation="Vertical"
-                                    Span="2"/>
+                                <CollectionView.ItemsLayout>
+                                    <GridItemsLayout Orientation="Vertical"
+                                                     Span="2"
+                                                     HorizontalItemSpacing="12"
+                                                     VerticalItemSpacing="12"/>
+                                </CollectionView.ItemsLayout>
 
-                            </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
 
-                            <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="viewModels:BestSellerItem">
 
-                                <DataTemplate x:DataType="models:Product">
+                                        <Border BackgroundColor="White"
+                                                Padding="12"
+                                                Stroke="{StaticResource BorderColor}"
+                                                StrokeThickness="1">
 
-                                    <Border
-                                        Margin="5"
-                                        Padding="10"
-                                        BackgroundColor="White"
-                                        Stroke="{StaticResource Border}"
-                                        StrokeShape="Rectangle">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="18"/>
+                                            </Border.StrokeShape>
 
-                                        <Border.GestureRecognizers>
-                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=ProductSelectedCommand}"
-                                                                  CommandParameter="{Binding .}"/>
-                                        </Border.GestureRecognizers>
+                                            <Border.Shadow>
+                                                <Shadow Brush="#140E1826"
+                                                        Offset="0,4"
+                                                        Radius="10"
+                                                        Opacity="0.10"/>
+                                            </Border.Shadow>
 
-                                        <VerticalStackLayout>
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=ProductSelectedCommand}"
+                                                                      CommandParameter="{Binding Product}"/>
+                                            </Border.GestureRecognizers>
 
-                                            <Image
-                                                Aspect="AspectFit"
-                                                HeightRequest="120"
-                                                Source="{Binding Image}"/>
+                                            <VerticalStackLayout Spacing="6">
 
-                                            <Label
-                                                Margin="0,10,0,0"
-                                                FontAttributes="Bold"
-                                                FontSize="15"
-                                                LineBreakMode="TailTruncation"
-                                                Text="{Binding Name}"/>
+                                                <Grid>
 
-                                            <Label
-                                                FontSize="12"
-                                                LineBreakMode="TailTruncation"
-                                                MaxLines="2"
-                                                Opacity="0.7"
-                                                Text="{Binding Description}"/>
+                                                    <Border BackgroundColor="{StaticResource SurfaceInsetColor}"
+                                                            Padding="8"
+                                                            HeightRequest="110"
+                                                            Stroke="Transparent">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="14"/>
+                                                        </Border.StrokeShape>
 
-                                            <Label
-                                                FontAttributes="Bold"
-                                                FontSize="18"
-                                                Text="{Binding Price,StringFormat='₹ {0:F0}'}"
-                                                TextColor="{StaticResource Accent}"/>
+                                                        <Image Aspect="AspectFit"
+                                                               Source="{Binding Product.Image}"/>
+                                                    </Border>
 
-                                            <Button
-                                                Margin="0,10,0,0"
-                                                BackgroundColor="{StaticResource Accent}"
-                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=AddToCartCommand}"
-                                                CommandParameter="{Binding .}"
-                                                CornerRadius="0"
-                                                HeightRequest="40"
-                                                Text="Add To Cart"
-                                                TextColor="White"/>
+                                                    <Border IsVisible="{Binding Product.HasDiscount}"
+                                                            BackgroundColor="{StaticResource AccentColor}"
+                                                            Padding="7,3"
+                                                            HorizontalOptions="Start"
+                                                            VerticalOptions="Start"
+                                                            Stroke="Transparent">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="8"/>
+                                                        </Border.StrokeShape>
 
-                                        </VerticalStackLayout>
+                                                        <Label Text="{Binding Product.DiscountPercent, StringFormat='-{0:F0}%'}"
+                                                               FontFamily="SpaceGroteskSemibold"
+                                                               FontSize="10"
+                                                               TextColor="White"/>
+                                                    </Border>
 
-                                    </Border>
+                                                </Grid>
 
-                                </DataTemplate>
+                                                <Label Text="{Binding Product.Name}"
+                                                       FontFamily="SpaceGroteskSemibold"
+                                                       FontSize="14"
+                                                       TextColor="{StaticResource PrimaryColor}"
+                                                       LineBreakMode="TailTruncation"
+                                                       MaxLines="1"/>
 
-                            </CollectionView.ItemTemplate>
+                                                <Label Text="{Binding Product.PartNumber, StringFormat='PN: {0}'}"
+                                                       IsVisible="{Binding Product.PartNumber,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
+                                                       FontFamily="GeistRegular"
+                                                       FontSize="10"
+                                                       TextColor="{StaticResource MutedTextColor}"/>
 
-                        </CollectionView>
+                                                <HorizontalStackLayout Spacing="4"
+                                                                       IsVisible="{Binding Product.HasRating}">
+
+                                                    <Label Text="{x:Static fontresources:FontAwesomeIcons.Star}"
+                                                           FontFamily="FontAwesome"
+                                                           FontSize="10"
+                                                           TextColor="{StaticResource TertiaryColor}"
+                                                           VerticalOptions="Center"/>
+
+                                                    <Label Text="{Binding Product.AverageRating, StringFormat='{0:F1}'}"
+                                                           FontFamily="GeistMedium"
+                                                           FontSize="11"
+                                                           TextColor="{StaticResource PrimaryTextColor}"/>
+
+                                                    <Label Text="{Binding Product.ReviewCount, StringFormat='({0})'}"
+                                                           FontFamily="GeistRegular"
+                                                           FontSize="11"
+                                                           TextColor="{StaticResource MutedTextColor}"/>
+
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="6">
+
+                                                    <Label Text="{Binding Product.Price, StringFormat='₹{0:F0}'}"
+                                                           FontFamily="SpaceGroteskBold"
+                                                           FontSize="16"
+                                                           TextColor="{StaticResource PrimaryColor}"/>
+
+                                                    <Label Text="{Binding Product.Mrp, StringFormat='₹{0:F0}'}"
+                                                           IsVisible="{Binding Product.HasDiscount}"
+                                                           FontFamily="GeistRegular"
+                                                           FontSize="12"
+                                                           TextColor="{StaticResource MutedTextColor}"
+                                                           TextDecorations="Strikethrough"
+                                                           VerticalOptions="Center"/>
+
+                                                </HorizontalStackLayout>
+
+                                                <HorizontalStackLayout Spacing="5">
+
+                                                    <Ellipse WidthRequest="6"
+                                                             HeightRequest="6"
+                                                             Fill="{StaticResource SuccessColor}"
+                                                             VerticalOptions="Center"/>
+
+                                                    <Label Text="{Binding Product.StockStatusDisplay}"
+                                                           FontFamily="GeistRegular"
+                                                           FontSize="11"
+                                                           TextColor="{StaticResource SuccessColor}"/>
+
+                                                </HorizontalStackLayout>
+
+                                                <Grid Margin="0,4,0,0">
+
+                                                    <!-- Not yet in cart: single full-width Add to Cart button -->
+                                                    <Button Text="ADD TO CART"
+                                                            IsVisible="{Binding IsInCart,Converter={toolkit:InvertedBoolConverter}}"
+                                                            FontFamily="SpaceGroteskSemibold"
+                                                            FontSize="12"
+                                                            BackgroundColor="{StaticResource AccentColor}"
+                                                            TextColor="White"
+                                                            BorderWidth="0"
+                                                            CornerRadius="10"
+                                                            HeightRequest="34"
+                                                            Padding="0"
+                                                            Shadow="{x:Null}"
+                                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=AddToCartCommand}"
+                                                            CommandParameter="{Binding .}"/>
+
+                                                    <!-- Already in cart: quantity stepper in the same slot -->
+                                                    <Border IsVisible="{Binding IsInCart}"
+                                                            BackgroundColor="{StaticResource SurfaceInsetColor}"
+                                                            Padding="0"
+                                                            HeightRequest="34"
+                                                            Stroke="Transparent">
+                                                        <Border.StrokeShape>
+                                                            <RoundRectangle CornerRadius="10"/>
+                                                        </Border.StrokeShape>
+
+                                                        <Grid ColumnDefinitions="34,*,34">
+
+                                                            <Button Grid.Column="0"
+                                                                    Text="{x:Static fontresources:FontAwesomeIcons.Minus}"
+                                                                    FontFamily="FontAwesome"
+                                                                    FontSize="11"
+                                                                    Padding="0"
+                                                                    BackgroundColor="Transparent"
+                                                                    TextColor="{StaticResource PrimaryColor}"
+                                                                    BorderWidth="0"
+                                                                    CornerRadius="10"
+                                                                    HeightRequest="34"
+                                                                    Shadow="{x:Null}"
+                                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=DecreaseQuantityCommand}"
+                                                                    CommandParameter="{Binding .}"/>
+
+                                                            <Label Grid.Column="1"
+                                                                   Text="{Binding Quantity}"
+                                                                   FontFamily="SpaceGroteskSemibold"
+                                                                   FontSize="13"
+                                                                   TextColor="{StaticResource PrimaryColor}"
+                                                                   HorizontalOptions="Center"
+                                                                   VerticalOptions="Center"/>
+
+                                                            <Button Grid.Column="2"
+                                                                    Text="{x:Static fontresources:FontAwesomeIcons.Plus}"
+                                                                    FontFamily="FontAwesome"
+                                                                    FontSize="11"
+                                                                    Padding="0"
+                                                                    BackgroundColor="Transparent"
+                                                                    TextColor="{StaticResource PrimaryColor}"
+                                                                    BorderWidth="0"
+                                                                    CornerRadius="10"
+                                                                    HeightRequest="34"
+                                                                    Shadow="{x:Null}"
+                                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=IncreaseQuantityCommand}"
+                                                                    CommandParameter="{Binding .}"/>
+
+                                                        </Grid>
+
+                                                    </Border>
+
+                                                </Grid>
+
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                    </DataTemplate>
+
+                                </CollectionView.ItemTemplate>
+
+                            </CollectionView>
+
+                        </VerticalStackLayout>
 
                     </VerticalStackLayout>
 
                 </ScrollView>
+
             </RefreshView>
+
         </Grid>
     </views:BasePage.PageContent>
 

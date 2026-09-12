@@ -14,8 +14,8 @@ public class LogoRevealDrawable : IDrawable
     private const float ViewW = 410f;
     private const float ViewH = 356f;
 
-    private static readonly Color White = Colors.White;
-    private static readonly Color Accent = Color.FromArgb("#C92027");
+    private static readonly Color White = Color.FromArgb("#C92027");
+    private static readonly Color Accent = Color.FromArgb("#0E1826");
 
     // Same d="..." data as the three <path> elements in ep_logo_animated.svg.
     private readonly PathF _eTop = ParsePath(
@@ -178,21 +178,21 @@ public class LogoRevealDrawable : IDrawable
                     path.LineTo(curX, curY);
                     break;
                 case 'C':
-                {
-                    float x1 = Next(), y1 = Next(), x2 = Next(), y2 = Next(), x = Next(), y = Next();
-                    path.CurveTo(x1, y1, x2, y2, x, y);
-                    curX = x; curY = y;
-                    break;
-                }
+                    {
+                        float x1 = Next(), y1 = Next(), x2 = Next(), y2 = Next(), x = Next(), y = Next();
+                        path.CurveTo(x1, y1, x2, y2, x, y);
+                        curX = x; curY = y;
+                        break;
+                    }
                 case 'c':
-                {
-                    float x1 = curX + Next(), y1 = curY + Next();
-                    float x2 = curX + Next(), y2 = curY + Next();
-                    float x = curX + Next(), y = curY + Next();
-                    path.CurveTo(x1, y1, x2, y2, x, y);
-                    curX = x; curY = y;
-                    break;
-                }
+                    {
+                        float x1 = curX + Next(), y1 = curY + Next();
+                        float x2 = curX + Next(), y2 = curY + Next();
+                        float x = curX + Next(), y = curY + Next();
+                        path.CurveTo(x1, y1, x2, y2, x, y);
+                        curX = x; curY = y;
+                        break;
+                    }
                 case 'Z':
                 case 'z':
                     path.Close();

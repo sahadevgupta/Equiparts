@@ -12,6 +12,10 @@ public partial class Category : ObservableObject
     public string? ImageUrl { get; set; }
     public List<SubCategory>? SubCategories { get; set; }
 
+    public int SubCategoryCount => SubCategories?.Count ?? 0;
+
+    public bool HasSubCategories => SubCategoryCount > 0;
+
     [ObservableProperty]
     private bool _isSelected;
 }

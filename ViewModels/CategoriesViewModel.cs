@@ -10,10 +10,12 @@ using Xamarin.Google.Crypto.Tink.Shaded.Protobuf;
 
 namespace Equiparts.ViewModels;
 
-public partial class CategoriesViewModel : BaseViewModel
+public partial class CategoriesViewModel : BaseViewModel, IQueryAttributable
 {
     readonly IProductService _service;
     readonly INavigationService _navigationService;
+
+    int? _pendingCategoryId;
 
     [ObservableProperty]
     private ObservableCollection<Category> _categories = [];
@@ -36,6 +38,12 @@ public partial class CategoriesViewModel : BaseViewModel
         _navigationService = navigationService;
     }
 
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.TryGetValue("CategoryId", out var categoryIdValue) && categoryIdValue is int categoryId)
+            _pendingCategoryId = categoryId;
+    }
+
     [RelayCommand]
     async Task LoadAsync()
     {
@@ -52,8 +60,25 @@ public partial class CategoriesViewModel : BaseViewModel
             foreach (var category in categories)
                 Categories.Add(category);
         }
-        Categories.First().IsSelected = true;
-        SelectedCategory = Categories.FirstOrDefault();
+
+        // A tap on Home's category grid arrives here as a pending id (set via
+        // ApplyQueryAttributes); consumed once so a later plain tab switch
+        // still falls back to the first category as before.
+        Category? categoryToSelect = null;
+        if (_pendingCategoryId is int pendingCategoryId)
+        {
+            categoryToSelect = Categories.FirstOrDefault(c => c.CategoryId == pendingCategoryId);
+            _pendingCategoryId = null;
+        }
+        categoryToSelect ??= Categories.FirstOrDefault();
+
+        foreach (var category in Categories)
+            category.IsSelected = false;
+
+        if (categoryToSelect != null)
+            categoryToSelect.IsSelected = true;
+
+        SelectedCategory = categoryToSelect;
     }
 
     [RelayCommand]
