@@ -686,7 +686,6 @@
                         FontSize="14"
                         CharacterSpacing="0.6"
                         HeightRequest="44"
-                        Shadow="{x:Null}"
                         Command="{Binding LogoutCommand}"/>
 
                     <Label

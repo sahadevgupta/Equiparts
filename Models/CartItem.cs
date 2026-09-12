@@ -1,6 +1,8 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace Equiparts.Models;
 
-public class CartItem
+public partial class CartItem : ObservableObject
 {
     public int CartItemId { get; set; }
 
@@ -12,15 +14,31 @@ public class CartItem
 
     public string? ImageUrl { get; set; }
 
-    public int Quantity { get; set; }
+    [ObservableProperty]
+    private int quantity;
 
     public decimal UnitPrice { get; set; }
 
     public double GstRatePercent { get; set; }
 
-    public decimal LineSubTotal { get; set; }
+    [ObservableProperty]
+    private decimal lineSubTotal;
 
-    public decimal LineTax { get; set; }
+    [ObservableProperty]
+    private decimal lineTax;
 
-    public decimal LineTotal { get; set; }
+    [ObservableProperty]
+    private decimal lineTotal;
+
+    /// <summary>True while an Increase/Decrease/Remove request for this item is in flight.</summary>
+    [ObservableProperty]
+    private bool isUpdating;
+
+    public void CopyMutableFieldsFrom(CartItem other)
+    {
+        Quantity = other.Quantity;
+        LineSubTotal = other.LineSubTotal;
+        LineTax = other.LineTax;
+        LineTotal = other.LineTotal;
+    }
 }

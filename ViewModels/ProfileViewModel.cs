@@ -225,7 +225,11 @@ public partial class ProfileViewModel : BaseViewModel
         if (!confirm)
             return;
 
-        await _authenticationService.LogoutAsync();
+        using (_loadingPopupService.Show())
+        {
+            await _authenticationService.LogoutAsync();
+        }
+
         await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
     }
 }

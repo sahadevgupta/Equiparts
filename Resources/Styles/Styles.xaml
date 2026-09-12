@@ -82,9 +82,6 @@
                 Value="{StaticResource PrimaryColor}"/>
     </Style>
 
-    <!-- Primary Button (Action Red): zero radius, 1px navy stroke, hard
-         2px/2px mechanical offset shadow. Pressed collapses the shadow and
-         translates the button 2px down-right instead of only recoloring it. -->
 
     <Style TargetType="Button">
 
@@ -112,12 +109,12 @@
         <Setter Property="FontSize"
                 Value="15"/>
 
-        <Setter Property="Shadow">
+        <!-- <Setter Property="Shadow">
             <Shadow Brush="{StaticResource PrimaryColor}"
                     Offset="2,2"
                     Radius="0"
                     Opacity="1"/>
-        </Setter>
+        </Setter> -->
 
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -129,12 +126,14 @@
                                     Value="2"/>
                             <Setter Property="TranslationY"
                                     Value="2"/>
+                            <!-- <Setter Property="Opacity"
+                                    Value="0.65"/>
                             <Setter Property="Shadow">
                                 <Shadow Brush="{StaticResource PrimaryColor}"
                                         Offset="0,0"
                                         Radius="0"
                                         Opacity="0"/>
-                            </Setter>
+                            </Setter> -->
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Disabled">
@@ -145,12 +144,12 @@
                                     Value="{StaticResource DisabledColor}"/>
                             <Setter Property="TextColor"
                                     Value="White"/>
-                            <Setter Property="Shadow">
+                            <!-- <Setter Property="Shadow">
                                 <Shadow Brush="{StaticResource PrimaryColor}"
                                         Offset="0,0"
                                         Radius="0"
                                         Opacity="0"/>
-                            </Setter>
+                            </Setter> -->
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>

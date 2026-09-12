@@ -4,6 +4,7 @@
     x:Class="Equiparts.Views.CheckoutPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Equiparts.Controls"
     xmlns:fontresources="clr-namespace:Equiparts.Extensions"
     xmlns:viewModels="clr-namespace:Equiparts.ViewModels"
     xmlns:models="clr-namespace:Equiparts.Models"
@@ -325,13 +326,21 @@
                                     StrokeShape="Rectangle"
                                     Padding="12,0"
                                     HeightRequest="46">
-                                    <Entry
+                                    <!-- <Entry
                                         Placeholder="Enter coupon code"
                                         Text="{Binding CouponCode}"
                                         FontSize="14"
                                         VerticalOptions="Center"
-                                        TextColor="{StaticResource TitleText}"/>
+                                        TextColor="{StaticResource TitleText}"/> -->
+
+                                    <controls:BorderlessEntry Placeholder="Enter coupon code"
+                                                              Text="{Binding CouponCode}"
+                                                              FontSize="14"
+                                                              VerticalOptions="Center"
+                                                              TextColor="{StaticResource TitleText}"/>
                                 </Border>
+
+
 
                                 <Button
                                     Grid.Column="1"

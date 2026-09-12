@@ -37,6 +37,25 @@
                     Value="FontAwesome"/>
             <Setter Property="FontSize"
                     Value="14"/>
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale"
+                                        Value="0.9"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <VisualState.Setters>
+                                <Setter Property="Opacity"
+                                        Value="0.5"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
         </Style>
 
     </views:BasePage.Resources>
@@ -209,6 +228,7 @@
                                         BackgroundColor="Transparent"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=RemoveCommand}"
                                         CommandParameter="{Binding .}"
+                                        IsEnabled="{Binding IsUpdating, Converter={toolkit:InvertedBoolConverter}}"
                                         VerticalOptions="Start"
                                         HorizontalOptions="End">
                                         <ImageButton.Source>
@@ -252,7 +272,8 @@
                                             BackgroundColor="{StaticResource ChipBackground}"
                                             TextColor="{StaticResource ChipText}"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=DecreaseCommand}"
-                                            CommandParameter="{Binding .}"/>
+                                            CommandParameter="{Binding .}"
+                                            IsEnabled="{Binding IsUpdating, Converter={toolkit:InvertedBoolConverter}}"/>
 
                                         <Label
                                             FontSize="16"
@@ -269,7 +290,8 @@
                                             BackgroundColor="{StaticResource Accent}"
                                             TextColor="White"
                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:CartViewModel}}, Path=IncreaseCommand}"
-                                            CommandParameter="{Binding .}"/>
+                                            CommandParameter="{Binding .}"
+                                            IsEnabled="{Binding IsUpdating, Converter={toolkit:InvertedBoolConverter}}"/>
 
                                     </HorizontalStackLayout>
 

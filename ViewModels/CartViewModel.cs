@@ -5,6 +5,7 @@ using Equiparts.Models;
 using Equiparts.Services;
 using Equiparts.Views;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Equiparts.ViewModels;
 
@@ -66,10 +67,25 @@ public partial class CartViewModel : BaseViewModel
 
     private void RefreshCart()
     {
-        Items.Clear();
+        var latest = _cartService.Items;
 
-        foreach (var item in _cartService.Items)
-            Items.Add(item);
+        // Merge in place (rather than Clear()+re-add) so the CollectionView doesn't
+        // fully re-render/flicker on every stepper tap and loses scroll position.
+        for (int i = Items.Count - 1; i >= 0; i--)
+        {
+            if (latest.All(l => l.CartItemId != Items[i].CartItemId))
+                Items.RemoveAt(i);
+        }
+
+        foreach (var item in latest)
+        {
+            var existing = Items.FirstOrDefault(i => i.CartItemId == item.CartItemId);
+
+            if (existing is null)
+                Items.Add(item);
+            else
+                existing.CopyMutableFieldsFrom(item);
+        }
 
         OnPropertyChanged(nameof(SubTotal));
         OnPropertyChanged(nameof(TaxTotal));
@@ -84,31 +100,58 @@ public partial class CartViewModel : BaseViewModel
     [RelayCommand]
     async Task Increase(CartItem item)
     {
-        if (item is null)
+        if (item is null || item.IsUpdating)
             return;
 
-        await _cartService.UpdateCartItemAsync(item.CartItemId, item.Quantity + 1);
+        item.IsUpdating = true;
+
+        try
+        {
+            await _cartService.UpdateCartItemAsync(item.CartItemId, item.Quantity + 1);
+        }
+        finally
+        {
+            item.IsUpdating = false;
+        }
     }
 
     [RelayCommand]
     async Task Decrease(CartItem item)
     {
-        if (item is null)
+        if (item is null || item.IsUpdating)
             return;
 
-        if (item.Quantity > 1)
-            await _cartService.UpdateCartItemAsync(item.CartItemId, item.Quantity - 1);
-        else
-            await _cartService.RemoveFromCartAsync(item.CartItemId);
+        item.IsUpdating = true;
+
+        try
+        {
+            if (item.Quantity > 1)
+                await _cartService.UpdateCartItemAsync(item.CartItemId, item.Quantity - 1);
+            else
+                await _cartService.RemoveFromCartAsync(item.CartItemId);
+        }
+        finally
+        {
+            item.IsUpdating = false;
+        }
     }
 
     [RelayCommand]
     async Task Remove(CartItem item)
     {
-        if (item is null)
+        if (item is null || item.IsUpdating)
             return;
 
-        await _cartService.RemoveFromCartAsync(item.CartItemId);
+        item.IsUpdating = true;
+
+        try
+        {
+            await _cartService.RemoveFromCartAsync(item.CartItemId);
+        }
+        finally
+        {
+            item.IsUpdating = false;
+        }
     }
 
     [RelayCommand]

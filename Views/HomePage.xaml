@@ -24,8 +24,8 @@
             <!-- ===================== Header ===================== -->
 
             <controls:AppHeaderView Grid.Row="0"
-                                     SearchQuery="{Binding SearchQuery}"
-                                     SearchCommand="{Binding SearchCommand}"/>
+                                    SearchQuery="{Binding SearchQuery}"
+                                    SearchCommand="{Binding SearchCommand}"/>
 
             <!-- ===================== Body ===================== -->
 
@@ -458,7 +458,6 @@
                                                             CornerRadius="10"
                                                             HeightRequest="34"
                                                             Padding="0"
-                                                            Shadow="{x:Null}"
                                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=AddToCartCommand}"
                                                             CommandParameter="{Binding .}"/>
 
@@ -484,7 +483,6 @@
                                                                     BorderWidth="0"
                                                                     CornerRadius="10"
                                                                     HeightRequest="34"
-                                                                    Shadow="{x:Null}"
                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=DecreaseQuantityCommand}"
                                                                     CommandParameter="{Binding .}"/>
 
@@ -506,7 +504,6 @@
                                                                     BorderWidth="0"
                                                                     CornerRadius="10"
                                                                     HeightRequest="34"
-                                                                    Shadow="{x:Null}"
                                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:HomeViewModel}}, Path=IncreaseQuantityCommand}"
                                                                     CommandParameter="{Binding .}"/>
 
