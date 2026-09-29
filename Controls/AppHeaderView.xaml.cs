@@ -7,6 +7,7 @@ namespace Equiparts.Controls;
 // content the way HomePage does can drop this in at the top of its own Grid.
 public partial class AppHeaderView : ContentView
 {
+    const string supportNumber = "+919733011102";
     public AppHeaderView()
     {
         InitializeComponent();
@@ -24,7 +25,7 @@ public partial class AppHeaderView : ContentView
     }
 
     public static readonly BindableProperty HeaderSubtitleProperty =
-        BindableProperty.Create(nameof(HeaderSubtitle), typeof(string), typeof(AppHeaderView), "Genuine Industrial Parts");
+        BindableProperty.Create(nameof(HeaderSubtitle), typeof(string), typeof(AppHeaderView), "Genuine - OEM - Aftermarket");
 
     public string HeaderSubtitle
     {
@@ -96,5 +97,24 @@ public partial class AppHeaderView : ContentView
     {
         get => (double)GetValue(CurveHeightProperty);
         set => SetValue(CurveHeightProperty, value);
+    }
+
+    private async void QuickSupport_Tapped(object sender, TappedEventArgs e)
+    {
+        await OpenWhatsAppAsync();
+    }
+
+    private async Task OpenWhatsAppAsync()
+    {
+        var whatsappUrl = $"https://wa.me/{supportNumber}";
+
+        try
+        {
+            await Launcher.Default.OpenAsync(whatsappUrl);
+        }
+        catch (Exception ex)
+        {
+            // Handle WhatsApp/browser unavailable
+        }
     }
 }

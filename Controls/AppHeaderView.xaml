@@ -67,12 +67,16 @@
                         <TapGestureRecognizer Command="{Binding NotificationCommand, Source={x:Reference headerControl}}"/>
                     </Border.GestureRecognizers>
 
-                    <Label Text="{x:Static fontresources:FontAwesomeIcons.Bell}"
+                    <Label Text="{x:Static fontresources:FontAwesomeIcons.Headset}"
                            FontFamily="FontAwesome"
                            FontSize="16"
                            TextColor="White"
                            HorizontalOptions="Center"
-                           VerticalOptions="Center"/>
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="QuickSupport_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </Border>
 
             </Grid>

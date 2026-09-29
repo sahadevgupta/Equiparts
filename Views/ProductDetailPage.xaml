@@ -20,7 +20,8 @@
              grey stroke to every Border. That's wrong for the flat badges/chips/dots
              used throughout this page, so it's cleared here rather than for the whole app. -->
         <Style TargetType="Border">
-            <Setter Property="Shadow" Value="{x:Null}"/>
+            <Setter Property="Shadow"
+                    Value="{x:Null}"/>
         </Style>
     </views:BasePage.Resources>
 
@@ -51,6 +52,7 @@
             </VerticalStackLayout>
 
             <ImageButton
+                CornerRadius="0"
                 Grid.Column="1"
                 VerticalOptions="Center"
                 BackgroundColor="Transparent"
@@ -71,6 +73,7 @@
                   HeightRequest="30">
 
                 <ImageButton
+                    CornerRadius="0"
                     BackgroundColor="Transparent"
                     HorizontalOptions="Center"
                     VerticalOptions="Center">
@@ -291,8 +294,8 @@
                                 <Grid ColumnDefinitions="*,Auto">
 
                                     <HorizontalStackLayout Grid.Column="0"
-                                                            Spacing="8"
-                                                            VerticalOptions="Center">
+                                                           Spacing="8"
+                                                           VerticalOptions="Center">
 
                                         <Border
                                             Padding="8,3"

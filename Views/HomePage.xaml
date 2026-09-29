@@ -43,7 +43,8 @@
                         <Border BackgroundColor="White"
                                 Padding="12,16"
                                 Stroke="{StaticResource BorderColor}"
-                                StrokeThickness="1">
+                                StrokeThickness="1"
+                                IsVisible="False">
 
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="18"/>
