@@ -12,15 +12,28 @@ namespace Equiparts.Services
     {
         private readonly INavigationService _navigationService;
         private readonly ITokenService _tokenService;
+        private readonly ICurrentUserService _currentUserService;
         private readonly ILogger<AppLifeCycleCoordinator> _logger;
 
+        // Several in-flight requests can each observe the dead session; only the first
+        // one should navigate to Login.
+        private int _isHandlingSessionExpiry;
+
         public AppLifeCycleCoordinator(ITokenService tokenService,
+            ICurrentUserService currentUserService,
             ILogger<AppLifeCycleCoordinator> logger,
             INavigationService navigationService)
         {
             _navigationService = navigationService;
             _tokenService = tokenService;
+            _currentUserService = currentUserService;
             _logger = logger;
+
+            // Raised only when the server genuinely rejects the refresh token (never for an
+            // expired access token or a network failure), so the stored session is already
+            // gone - send the user to Login now instead of leaving them on a page whose
+            // authenticated calls silently fail until the next launch.
+            _tokenService.SessionExpired += OnSessionExpired;
         }
         public void RegisterGlobalExceptionHandlers()
         {
@@ -61,6 +74,8 @@ namespace Equiparts.Services
         public async Task NavigateToInitialDestinationAsync()
         {
             var hasSession = await _tokenService.HasStoredSessionAsync();
+            _logger.LogInformation("App launch: stored session found: {HasSession}.", hasSession);
+
             if (hasSession)
             {
                 await Shell.Current.GoToAsync("//app/home");
@@ -69,6 +84,32 @@ namespace Equiparts.Services
             {
                 await _navigationService.NaviagteAsync<LoginPage>(true);
             }
+        }
+
+        private void OnSessionExpired(object? sender, EventArgs e)
+        {
+            if (Interlocked.Exchange(ref _isHandlingSessionExpiry, 1) == 1)
+                return;
+
+            _logger.LogWarning("Session expired; redirecting to Login.");
+            _currentUserService.Clear();
+
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    if (Shell.Current?.CurrentPage is not LoginPage)
+                        await _navigationService.NaviagteAsync<LoginPage>(true);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to navigate to Login after session expiry.");
+                }
+                finally
+                {
+                    Interlocked.Exchange(ref _isHandlingSessionExpiry, 0);
+                }
+            });
         }
     }
 }

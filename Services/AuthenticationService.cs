@@ -35,6 +35,11 @@ public class AuthenticationService : IAuthenticationService
             if (response is not { Success: true, Data: not null })
                 return (false, response.Message ?? "Login failed. Please try again.");
 
+            // Without a refresh token the session can't survive an app restart - flag it so a
+            // backend contract break shows up in logs rather than as "asked to log in again".
+            if (string.IsNullOrEmpty(response.Data.RefreshToken))
+                _logger.LogWarning("Login response did not include a refresh token; session will not persist across launches.");
+
             await _tokenService.SaveTokensAsync(response.Data.AccessToken, response.Data.RefreshToken, response.Data.AccessTokenExpiresUtc);
 
             var userSession = BackendToAppModelMapper.GetUserSession(response.Data);

@@ -158,9 +158,15 @@ public sealed class TokenService : ITokenService
 
     public async Task SaveTokensAsync(string accessToken, string refreshToken, DateTime accessTokenExpiresUtc)
     {
-        var expiresUtc = accessTokenExpiresUtc.Kind == DateTimeKind.Utc
-            ? accessTokenExpiresUtc
-            : DateTime.SpecifyKind(accessTokenExpiresUtc, DateTimeKind.Utc);
+        // A timestamp sent with an offset (e.g. +05:30) is deserialized as Local and must be
+        // converted, not relabelled - SpecifyKind alone would shift expiry by the device's
+        // UTC offset. Offset-less values are taken as UTC, per the field's contract.
+        var expiresUtc = accessTokenExpiresUtc.Kind switch
+        {
+            DateTimeKind.Utc => accessTokenExpiresUtc,
+            DateTimeKind.Local => accessTokenExpiresUtc.ToUniversalTime(),
+            _ => DateTime.SpecifyKind(accessTokenExpiresUtc, DateTimeKind.Utc)
+        };
 
         await SecureStorage.Default.SetAsync(AccessTokenKey, accessToken);
         await SecureStorage.Default.SetAsync(RefreshTokenKey, refreshToken);

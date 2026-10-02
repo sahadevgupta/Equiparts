@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 and below. MAUI SecureStorage's encrypted prefs file must not be backed up:
+     its Keystore key is device-bound and never restored, so a restored copy can't be
+     decrypted and MAUI wipes it - silently signing the user out after a reinstall. -->
+<full-backup-content>
+    <exclude domain="sharedpref" path="com.equipartsgroup.equiparts.microsoft.maui.essentials.preferences.xml" />
+</full-backup-content>
