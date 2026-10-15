@@ -22,6 +22,19 @@ public class Product
 
     public string? Image { get; set; }
 
+    // Ordered gallery (primary image first); empty when the product has no images.
+    public List<string> Images { get; set; } = [];
+
+    public string? HsnCode { get; set; }
+
+    public double GstRatePercent { get; set; }
+
+    public int StockQuantity { get; set; }
+
+    public string? UnitOfMeasure { get; set; }
+
+    public List<string> AlternatePartNumbers { get; set; } = [];
+
     public string? StockStatus { get; set; }
 
     public string? SalesStatus { get; set; }
@@ -35,6 +48,27 @@ public class Product
     public string? BrandName { get; set; }
 
     public string? TierName { get; set; }
+
+    // Carousel source: never empty so the detail page always shows a placeholder.
+    public IReadOnlyList<string> CarouselImages => Images.Count > 0 ? Images : [Image ?? "backhoe_loader"];
+
+    public bool HasMultipleImages => Images.Count > 1;
+
+    public bool HasHsnCode => !string.IsNullOrWhiteSpace(HsnCode);
+
+    public bool HasGstRate => GstRatePercent > 0;
+
+    public bool HasUnitOfMeasure => !string.IsNullOrWhiteSpace(UnitOfMeasure);
+
+    public bool HasAlternatePartNumbers => AlternatePartNumbers.Count > 0;
+
+    public bool HasSpecifications => HasHsnCode || HasGstRate || HasUnitOfMeasure || StockQuantity > 0;
+
+    public string GstRateDisplay => $"{GstRatePercent:0.##}%";
+
+    public string StockQuantityDisplay => string.IsNullOrWhiteSpace(UnitOfMeasure)
+        ? StockQuantity.ToString()
+        : $"{StockQuantity} {UnitOfMeasure}";
 
     public bool HasDiscount => DiscountPercent > 0;
 

@@ -1,9 +1,34 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Equiparts.Models.Catalog;
 
 public class ProductResponse
 {
+    [JsonPropertyName("hsnCode")]
+    public string? HsnCode { get; set; }
+
+    [JsonPropertyName("gstRatePercent")]
+    public double GstRatePercent { get; set; }
+
+    [JsonPropertyName("stockQuantity")]
+    public int StockQuantity { get; set; }
+
+    [JsonPropertyName("unitOfMeasure")]
+    public string? UnitOfMeasure { get; set; }
+
+    [JsonPropertyName("images")]
+    public List<string>? Images { get; set; }
+
+    [JsonPropertyName("alternatePartNumbers")]
+    public List<string>? AlternatePartNumbers { get; set; }
+
+    [JsonPropertyName("attributes")]
+    public List<JsonElement>? Attributes { get; set; }
+
+    [JsonPropertyName("fitsMachines")]
+    public List<JsonElement>? FitsMachines { get; set; }
+
     [JsonPropertyName("productId")]
     public int ProductId { get; set; }
 
@@ -34,9 +59,6 @@ public class ProductResponse
     [JsonPropertyName("salesStatus")]
     public string? SalesStatus { get; set; }
 
-    [JsonPropertyName("rank")]
-    public int Rank { get; set; }
-
     [JsonPropertyName("isFeatured")]
     public bool IsFeatured { get; set; }
 
@@ -57,4 +79,22 @@ public class ProductResponse
 
     [JsonPropertyName("primaryImageUrl")]
     public string? PrimaryImageUrl { get; set; }
+
+    [JsonPropertyName("gallery")]
+    public List<ProductImageResponse>? Gallery { get; set; }
+}
+
+public class ProductImageResponse
+{
+    [JsonPropertyName("imageId")]
+    public int ImageId { get; set; }
+
+    [JsonPropertyName("imageUrl")]
+    public string? ImageUrl { get; set; }
+
+    [JsonPropertyName("isPrimary")]
+    public bool IsPrimary { get; set; }
+
+    [JsonPropertyName("displayOrder")]
+    public int DisplayOrder { get; set; }
 }

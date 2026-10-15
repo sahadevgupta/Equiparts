@@ -70,7 +70,8 @@
             <Grid Grid.Column="2"
                   VerticalOptions="Center"
                   WidthRequest="30"
-                  HeightRequest="30">
+                  HeightRequest="30"
+                  Margin="0,0,10,0">
 
                 <ImageButton
                     CornerRadius="0"
@@ -220,11 +221,34 @@
                                         StrokeThickness="0"
                                         StrokeShape="Rectangle">
 
-                                        <ffimageloading:CachedImage
-                                            Aspect="AspectFit"
-                                            Source="{Binding Image,FallbackValue='backhoe_loader',TargetNullValue='backhoe_loader'}"/>
+                                        <CarouselView
+                                            x:Name="ImageCarousel"
+                                            HeightRequest="260"
+                                            Loop="False"
+                                            IndicatorView="ImageIndicator"
+                                            ItemsSource="{Binding CarouselImages}">
+
+                                            <CarouselView.ItemTemplate>
+                                                <DataTemplate x:DataType="x:String">
+                                                    <ffimageloading:CachedImage
+                                                        Aspect="AspectFit"
+                                                        Source="{Binding .}"/>
+                                                </DataTemplate>
+                                            </CarouselView.ItemTemplate>
+
+                                        </CarouselView>
 
                                     </Border>
+
+                                    <IndicatorView
+                                        x:Name="ImageIndicator"
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="End"
+                                        Margin="0,0,0,10"
+                                        IndicatorSize="8"
+                                        IndicatorColor="{StaticResource Border}"
+                                        SelectedIndicatorColor="{StaticResource TertiaryColor}"
+                                        IsVisible="{Binding HasMultipleImages}"/>
 
                                     <Border
                                         HorizontalOptions="End"
@@ -508,6 +532,125 @@
                                     </VerticalStackLayout>
 
                                 </Border>
+
+                                <!-- Specifications -->
+                                <VerticalStackLayout Spacing="8"
+                                                     IsVisible="{Binding HasSpecifications}">
+
+                                    <Label
+                                        StyleClass="SectionTitle"
+                                        Text="Specifications"/>
+
+                                    <Border
+                                        Padding="0"
+                                        BackgroundColor="White"
+                                        Stroke="{StaticResource Border}"
+                                        StrokeThickness="1"
+                                        StrokeShape="Rectangle">
+
+                                        <Grid ColumnDefinitions="*,*"
+                                              RowDefinitions="Auto,Auto">
+
+                                            <VerticalStackLayout Grid.Row="0"
+                                                                 Grid.Column="0"
+                                                                 Padding="12,10"
+                                                                 Spacing="3"
+                                                                 IsVisible="{Binding HasHsnCode}">
+                                                <Label FontSize="11"
+                                                       TextTransform="Uppercase"
+                                                       CharacterSpacing="0.5"
+                                                       TextColor="{StaticResource MutedTextColor}"
+                                                       Text="HSN Code"/>
+                                                <Label FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource TitleText}"
+                                                       Text="{Binding HsnCode}"/>
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Row="0"
+                                                                 Grid.Column="1"
+                                                                 Padding="12,10"
+                                                                 Spacing="3"
+                                                                 IsVisible="{Binding HasGstRate}">
+                                                <Label FontSize="11"
+                                                       TextTransform="Uppercase"
+                                                       CharacterSpacing="0.5"
+                                                       TextColor="{StaticResource MutedTextColor}"
+                                                       Text="GST Rate"/>
+                                                <Label FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource TitleText}"
+                                                       Text="{Binding GstRateDisplay}"/>
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Row="1"
+                                                                 Grid.Column="0"
+                                                                 Padding="12,10"
+                                                                 Spacing="3"
+                                                                 IsVisible="{Binding HasUnitOfMeasure}">
+                                                <Label FontSize="11"
+                                                       TextTransform="Uppercase"
+                                                       CharacterSpacing="0.5"
+                                                       TextColor="{StaticResource MutedTextColor}"
+                                                       Text="Unit"/>
+                                                <Label FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource TitleText}"
+                                                       Text="{Binding UnitOfMeasure}"/>
+                                            </VerticalStackLayout>
+                                            <VerticalStackLayout Grid.Row="1"
+                                                                 Grid.Column="1"
+                                                                 Padding="12,10"
+                                                                 Spacing="3">
+                                                <Label FontSize="11"
+                                                       TextTransform="Uppercase"
+                                                       CharacterSpacing="0.5"
+                                                       TextColor="{StaticResource MutedTextColor}"
+                                                       Text="Stock Quantity"/>
+                                                <Label FontSize="14"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource TitleText}"
+                                                       Text="{Binding StockQuantityDisplay}"/>
+                                            </VerticalStackLayout>
+
+                                        </Grid>
+
+                                    </Border>
+
+                                </VerticalStackLayout>
+
+                                <!-- Alternate part numbers -->
+                                <VerticalStackLayout Spacing="8"
+                                                     IsVisible="{Binding HasAlternatePartNumbers}">
+
+                                    <Label
+                                        StyleClass="SectionTitle"
+                                        Text="Alternate Part Numbers"/>
+
+                                    <FlexLayout Wrap="Wrap"
+                                                BindableLayout.ItemsSource="{Binding AlternatePartNumbers}">
+
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="x:String">
+                                                <Border
+                                                    Margin="0,0,8,8"
+                                                    Padding="10,5"
+                                                    BackgroundColor="White"
+                                                    Stroke="{StaticResource Border}"
+                                                    StrokeThickness="1"
+                                                    StrokeShape="Rectangle">
+
+                                                    <Label
+                                                        FontSize="12"
+                                                        FontAttributes="Bold"
+                                                        TextColor="{StaticResource TitleText}"
+                                                        Text="{Binding .}"/>
+
+                                                </Border>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+
+                                    </FlexLayout>
+
+                                </VerticalStackLayout>
 
                                 <!-- Description -->
                                 <Label
