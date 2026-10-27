@@ -128,4 +128,27 @@ public class ProductService(ICatalogApi catalogApi,
             return Enumerable.Empty<Banner>();
         }
     }
+
+    public async Task<IEnumerable<SimilarProduct>> GetSimilarProductsAsync(int productId, int take = 10, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            await connectivityService.CheckInternetAccessAsync();
+            var response = await catalogApi.GetSimilarProductsAsync(productId, take, cancellationToken);
+
+            if (response is not { Success: true, Data: not null })
+                return Enumerable.Empty<SimilarProduct>();
+
+            return BackendToAppModelMapper.GetSimilarProducts(response.Data);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (ApiException apiEx)
+        {
+            logger.LogWarning(apiEx, "Similar products fetch rejected by server ({StatusCode}).", apiEx.StatusCode);
+            return Enumerable.Empty<SimilarProduct>();
+        }
+    }
 }

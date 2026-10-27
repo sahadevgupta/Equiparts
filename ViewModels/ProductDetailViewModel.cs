@@ -5,6 +5,7 @@ using Equiparts.Enums;
 using Equiparts.Interfaces;
 using Equiparts.Models;
 using Equiparts.Services;
+using Equiparts.Views;
 
 using Microsoft.Maui.ApplicationModel.DataTransfer;
 
@@ -15,6 +16,9 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
     readonly ICartService _cartService;
     readonly INavigationService _navigationService;
     readonly IDialogService _dialogService;
+    readonly IProductService _productService;
+
+    const int SimilarProductsTake = 10;
 
     [ObservableProperty]
     private Product? product;
@@ -28,11 +32,62 @@ public partial class ProductDetailViewModel : BaseViewModel, IQueryAttributable
 
     public bool HasCartItems => CartItemCount > 0;
 
-    public ProductDetailViewModel(ICartService cartService, INavigationService navigationService, IDialogService dialogService)
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(HasSimilarProducts))]
+    private IReadOnlyList<SimilarProduct> similarProducts = [];
+
+    [ObservableProperty]
+    private bool isLoadingSimilarProducts;
+
+    public bool HasSimilarProducts => SimilarProducts.Count > 0;
+
+    public ProductDetailViewModel(ICartService cartService, INavigationService navigationService, IDialogService dialogService, IProductService productService)
     {
         _cartService = cartService;
         _navigationService = navigationService;
         _dialogService = dialogService;
+        _productService = productService;
+    }
+
+    // Runs only on push/replace (not when returning from a similar product's page),
+    // so the list isn't refetched every time the user comes back.
+    public override void LoadDataOnNavigatedTo() => _ = LoadSimilarProductsAsync();
+
+    async Task LoadSimilarProductsAsync()
+    {
+        if (Product is null || IsLoadingSimilarProducts)
+            return;
+
+        IsLoadingSimilarProducts = true;
+        try
+        {
+            var productId = Product.Id;
+            var results = await _productService.GetSimilarProductsAsync(productId, SimilarProductsTake);
+
+            // Defensive: never suggest the product the user is already looking at.
+            SimilarProducts = results.Where(s => s.Product.Id != productId).ToList();
+        }
+        catch (Exception)
+        {
+            // Similar products are supplementary - a failure (e.g. offline) just hides the section.
+            SimilarProducts = [];
+        }
+        finally
+        {
+            IsLoadingSimilarProducts = false;
+        }
+    }
+
+    [RelayCommand]
+    async Task OpenSimilarProduct(SimilarProduct similarProduct)
+    {
+        if (similarProduct is null)
+            return;
+
+        await _navigationService.NaviagteAsync<ProductDetailPage>(parameters: new Dictionary<string, object>
+        {
+            ["Product"] = similarProduct.Product
+        });
     }
 
     // The product listing already fetched the full product record, so the detail

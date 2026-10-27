@@ -22,4 +22,10 @@ public interface ICatalogApi
         [Query] int page = 1,
         [Query] int pageSize = 20,
         CancellationToken cancellationToken = default);
+
+    [Get("/api/products/{productId}/similar")]
+    Task<ApiResult<List<SimilarProductResponse>>> GetSimilarProductsAsync(
+        int productId,
+        [Query] int take = 10,
+        CancellationToken cancellationToken = default);
 }

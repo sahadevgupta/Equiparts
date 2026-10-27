@@ -55,6 +55,15 @@ public static class BackendToAppModelMapper
         return productResponses.Select(converter.Convert).ToList();
     }
 
+    public static List<SimilarProduct> GetSimilarProducts(List<SimilarProductResponse>? similarProductResponses)
+    {
+        if (similarProductResponses is null)
+            return [];
+
+        var converter = new SimilarProductResponseToSimilarProductConverter();
+        return similarProductResponses.Select(converter.Convert).ToList();
+    }
+
     public static Order? GetOrder(OrderResponse? orderResponse)
     {
         if (orderResponse is null)

@@ -9,4 +9,5 @@ public interface IProductService
     Task<IEnumerable<Product>> GetProductsAsync(int? categoryId = null, CancellationToken cancellationToken = default);
     Task<PagedResult<Product>> GetProductsPagedAsync(int? categoryId = null, string? search = null, int page = 1, int pageSize = 10, CancellationToken cancellationToken = default);
     Task<IEnumerable<Banner>> GetBannersAsync(CancellationToken cancellationToken = default);
+    Task<IEnumerable<SimilarProduct>> GetSimilarProductsAsync(int productId, int take = 10, CancellationToken cancellationToken = default);
 }

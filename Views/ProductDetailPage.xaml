@@ -668,6 +668,161 @@
 
                         </Border>
 
+                        <!-- Similar products: rebinds to the page view model because the
+                             surrounding ScrollView is bound to the Product itself. -->
+                        <VerticalStackLayout Spacing="10"
+                                             BindingContext="{Binding BindingContext, Source={RelativeSource AncestorType={x:Type views:ProductDetailPage}}}"
+                                             x:DataType="viewModels:ProductDetailViewModel">
+
+                            <Label
+                                StyleClass="SectionTitle"
+                                Text="Similar Products"
+                                IsVisible="{Binding HasSimilarProducts}"/>
+
+                            <ActivityIndicator
+                                HeightRequest="28"
+                                Color="{StaticResource Accent}"
+                                IsRunning="{Binding IsLoadingSimilarProducts}"
+                                IsVisible="{Binding IsLoadingSimilarProducts}"/>
+
+                            <CollectionView
+                                HeightRequest="268"
+                                SelectionMode="None"
+                                HorizontalScrollBarVisibility="Never"
+                                IsVisible="{Binding HasSimilarProducts}"
+                                ItemsSource="{Binding SimilarProducts}">
+
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Horizontal"
+                                                       ItemSpacing="10"/>
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:SimilarProduct">
+
+                                        <Border
+                                            WidthRequest="160"
+                                            Padding="10"
+                                            BackgroundColor="{StaticResource CardBackground}"
+                                            Stroke="{StaticResource Border}"
+                                            StrokeThickness="1"
+                                            StrokeShape="Rectangle">
+
+                                            <Border.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding OpenSimilarProductCommand, Source={RelativeSource AncestorType={x:Type viewModels:ProductDetailViewModel}}}"
+                                                                      CommandParameter="{Binding .}"/>
+                                            </Border.GestureRecognizers>
+
+                                            <Grid RowDefinitions="Auto,Auto,Auto,Auto,*"
+                                                  RowSpacing="6">
+
+                                                <!-- Image + match badge -->
+                                                <Grid Grid.Row="0">
+
+                                                    <Border
+                                                        Padding="6"
+                                                        HeightRequest="110"
+                                                        BackgroundColor="White"
+                                                        StrokeThickness="0"
+                                                        StrokeShape="Rectangle">
+
+                                                        <ffimageloading:CachedImage
+                                                            Aspect="AspectFit"
+                                                            Source="{Binding Product.CarouselImages[0]}"/>
+
+                                                    </Border>
+
+                                                    <Border
+                                                        HorizontalOptions="Start"
+                                                        VerticalOptions="Start"
+                                                        Padding="6,2"
+                                                        BackgroundColor="{StaticResource Primary}"
+                                                        StrokeThickness="0"
+                                                        StrokeShape="Rectangle"
+                                                        IsVisible="{Binding HasMatchLabel}">
+
+                                                        <Label
+                                                            FontSize="9"
+                                                            FontAttributes="Bold"
+                                                            TextTransform="Uppercase"
+                                                            TextColor="White"
+                                                            Text="{Binding MatchLabel}">
+                                                            <Label.Triggers>
+                                                                <DataTrigger TargetType="Label"
+                                                                             Binding="{Binding IsSamePart}"
+                                                                             Value="True">
+                                                                    <Setter Property="TextColor"
+                                                                            Value="{StaticResource TertiaryColor}"/>
+                                                                </DataTrigger>
+                                                            </Label.Triggers>
+                                                        </Label>
+
+                                                    </Border>
+
+                                                </Grid>
+
+                                                <!-- Brand / tier -->
+                                                <Label
+                                                    Grid.Row="1"
+                                                    FontSize="10"
+                                                    FontAttributes="Bold"
+                                                    TextTransform="Uppercase"
+                                                    CharacterSpacing="0.5"
+                                                    TextColor="{StaticResource MutedTextColor}"
+                                                    LineBreakMode="TailTruncation"
+                                                    Text="{Binding Product.BrandName}"/>
+
+                                                <!-- Name -->
+                                                <Label
+                                                    Grid.Row="2"
+                                                    FontSize="13"
+                                                    FontAttributes="Bold"
+                                                    TextColor="{StaticResource TitleText}"
+                                                    MaxLines="2"
+                                                    LineBreakMode="TailTruncation"
+                                                    HeightRequest="36"
+                                                    Text="{Binding Product.Name}"/>
+
+                                                <!-- Part number -->
+                                                <Label
+                                                    Grid.Row="3"
+                                                    FontSize="11"
+                                                    TextColor="{StaticResource MutedTextColor}"
+                                                    LineBreakMode="TailTruncation"
+                                                    IsVisible="{Binding Product.PartNumber,Converter={toolkit:IsStringNotNullOrEmptyConverter}}"
+                                                    Text="{Binding Product.PartNumber,StringFormat='Part: {0}'}"/>
+
+                                                <!-- Price -->
+                                                <Grid Grid.Row="4"
+                                                      VerticalOptions="End">
+
+                                                    <Label
+                                                        FontSize="16"
+                                                        FontAttributes="Bold"
+                                                        TextColor="{StaticResource Accent}"
+                                                        IsVisible="{Binding Product.RequiresEnquiry,Converter={toolkit:InvertedBoolConverter}}"
+                                                        Text="{Binding Product.Price,StringFormat='₹ {0:F0}'}"/>
+
+                                                    <Label
+                                                        FontSize="13"
+                                                        FontAttributes="Bold"
+                                                        TextColor="{StaticResource TitleText}"
+                                                        IsVisible="{Binding Product.RequiresEnquiry}"
+                                                        Text="Price on Request"/>
+
+                                                </Grid>
+
+                                            </Grid>
+
+                                        </Border>
+
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+
+                            </CollectionView>
+
+                        </VerticalStackLayout>
+
                     </VerticalStackLayout>
 
                 </ScrollView>
